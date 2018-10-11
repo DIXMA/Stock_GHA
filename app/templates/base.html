@@ -143,6 +143,14 @@
                 </li>
                 <li>
                     <a href="{% url 'quotations' %}">
+                        <i class="fa fa-th"></i> <span>Control de Stock</span>
+                        <span class="pull-right-container">
+                            <small class="label pull-right"> > </small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'quotations' %}">
                         <i class="fa fa-th"></i> <span>Cotizaciones</span>
                         <span class="pull-right-container">
                             <small class="label pull-right"> > </small>
@@ -216,7 +224,7 @@
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.table').DataTable();
+        $('.table-bordered').DataTable();
     });
 </script>
 </body>

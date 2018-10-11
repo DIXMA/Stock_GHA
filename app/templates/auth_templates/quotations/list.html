@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="pull-right">
+        <a href="{% url 'quotations_create' %}" class="btn btn-primary">
+            <i class="fa fa-plus"> Nueva cotizacion</i>
+        </a>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Cotizaciones</h3>
+            <hr>
+            {% if quotations %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <td>Empresa</td>
+                        <td>Fecha</td>
+                        <td>Valor</td>
+                        <td>Estado</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for q in quotations %}
+                        <tr>
+                        <td>{{ q.id }}</td>
+                        <td>{{ q.client.name }}</td>
+                        <td>{{ q.created_at }}</td>
+                        <td>{{ q.price }}</td>
+                        <td>{{ q.state }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span class="label label-warning">
+                    No se han registrado cotizaciones en el sistema
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

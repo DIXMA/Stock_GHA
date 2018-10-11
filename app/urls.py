@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from app.class_views.auth_control_views import LoginView, LoginAction, \
     HomeView, LogoutAction
 from app.class_views.roles_views import RolesView, RoleCreateView
+from app.class_views.quotation_views import QuotationsView, QuotationsCreateView
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login"),
@@ -14,5 +15,10 @@ urlpatterns = [
     url(r'^roles/$', login_required(RolesView.as_view()), name="roles"),
     url(r'^roles/create$', login_required(RoleCreateView.as_view()),
         name="roles_create"),
-    url(r'^quotations/$', login_required(RolesView.as_view()), name="quotations"),
+    url(r'^quotations/$', login_required(QuotationsView.as_view()),
+        name="quotations"),
+    url(r'^quotations/create/$', login_required(QuotationsCreateView.as_view()),
+        name="quotations_create"),
+    url(r'^stock/$', login_required(QuotationsCreateView.as_view()),
+        name="stock"),
 ]

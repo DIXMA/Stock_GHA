@@ -26,6 +26,7 @@ class Quotation(models.Model):
                       (3, 'Terminada'),)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    price = models.DecimalField(default=0.0, max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="pull-right">
+        <a href="{% url 'roles_create' %}">
+            <i class="fa fa-plus"></i> Nuevo Rol
+        </a>
+    </div>
+    <hr>
+    <div class="row">
+        <h3>Listado de Roles</h3>
+        <div class="col-md-12">
+            {% if roles %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ROL</th>
+                        <th>GESTIÓN</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for rl in roles %}
+                        <tr>
+                            <td>{{ rl.id }}</td>
+                            <td>{{ rl.name }}</td>
+                            <td>
+                                <a href="#"><i class="fa fa-trash"></i></a>
+                                <a href="#"><i class="fa fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span class="label label-warning">
+                    No se han registrado roles en el sistema
+                </span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

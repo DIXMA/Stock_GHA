@@ -1,3 +1,8 @@
 .idea
 db.sqlite3
 app/migrations/
+core/settings.py
+app/static/node_modules
+app/__pycache__/
+app/class_views/__pycache__/
+core/__pycache__/

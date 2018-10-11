@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <button class="btn btn-sm btn-default pull-right">
+            <i class="fa fa-plus"></i> Nuevo Usuairo
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if users %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Estado</th>
+                        <th>Fecha Registro</th>
+                        <th>Gestión</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for usr in users %}
+                        <tr>
+                            <td>usr.id</td>
+                            <td>usr.name</td>
+                            <td>usr.username</td>
+                            <td>usr.state</td>
+                            <td>usr.created_at</td>
+                            <td><a href="#"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span class="label label-warning">
+            No se han registrado usuarios en el sisitema
+        </span>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -134,7 +134,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'home' %}">
+                    <a href="{% url 'users' %}">
                         <i class="fa fa-th"></i> <span>Usuarios</span>
                         <span class="pull-right-container">
                             <small class="label pull-right"> > </small>
@@ -142,7 +142,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'quotations' %}">
+                    <a href="{% url 'stock' %}">
                         <i class="fa fa-th"></i> <span>Control de Stock</span>
                         <span class="pull-right-container">
                             <small class="label pull-right"> > </small>
@@ -167,6 +167,33 @@
 
         <!-- Main content -->
         <section class="content">
+            <div class="row">
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-danger alert-dismissible"
+                                 role="alert">
+                                <button type="button" class="close"
+                                        data-dismiss="alert"
+                                        aria-label="Close"><span
+                                        aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>Error!</strong> {{ message }}
+                            </div>
+                        {% elif message.tags == 'success' %}
+                            <div class="alert alert-success alert-dismissible"
+                                 role="alert">
+                                <button type="button" class="close"
+                                        data-dismiss="alert"
+                                        aria-label="Close"><span
+                                        aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>Bien hecho!</strong> {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
             {% block content %}
             {% endblock %}
         </section>

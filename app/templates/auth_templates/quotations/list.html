@@ -21,16 +21,33 @@
                         <td>Fecha</td>
                         <td>Valor</td>
                         <td>Estado</td>
+                        <td>Gestión</td>
                     </tr>
                     </thead>
                     <tbody>
                     {% for q in quotations %}
                         <tr>
-                        <td>{{ q.id }}</td>
-                        <td>{{ q.client.name }}</td>
-                        <td>{{ q.created_at }}</td>
-                        <td>{{ q.price }}</td>
-                        <td>{{ q.state }}</td>
+                            <td>{{ q.id }}</td>
+                            <td>{{ q.client.name }}</td>
+                            <td>{{ q.created_at }}</td>
+                            <td>{{ q.price }}</td>
+                            <td>
+                                {% if q.status == 0 %}
+                                    <span class="label label-warning">Enviada</span>
+                                {% elif q.status == 1 %}
+                                    <span class="label label-primary">Aceptada</span>
+                                {% elif q.status == 2 %}
+                                    <span class="label label-danger">Cancelada</span>
+                                {% elif q.status == 3 %}
+                                    <span class="label label-success">Terminada</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatus"
+                                    onclick="openProduct('{{ q.id }}')">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -42,5 +59,58 @@
             {% endif %}
         </div>
     </div>
+
+    <div class="modal fade" id="modalStatus" tabindex="-1" role="dialog"
+         aria-labelledby="modalStatusLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalAddProductsLabel">Agregar
+                        Producto</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <form action="{% url 'quotations_change_state' %}" method="post" id="form_status">
+                            {% csrf_token %}
+                            <div class="form-group col-sm-12">
+                                <label>Estado</label>
+                                <select class="form-control" name="status">
+                                    <option value="">- Seleccione un estado -</option>
+                                    <option value="0">Enviada</option>
+                                    <option value="1">Aceptada</option>
+                                    <option value="2">Cancelada</option>
+                                    <option value="3">Terminada</option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="pk_q" id="pk_q" value="">
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="addProduct()">
+                        Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openProduct(pk) {
+            $("#pk_q").val(pk);
+        }
+
+        function addProduct() {
+            $("#form_status").submit();
+        }
+    </script>
 
 {% endblock %}

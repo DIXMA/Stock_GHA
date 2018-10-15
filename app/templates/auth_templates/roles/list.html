@@ -25,8 +25,11 @@
                             <td>{{ rl.id }}</td>
                             <td>{{ rl.name }}</td>
                             <td>
-                                <a href="#"><i class="fa fa-trash"></i></a>
-                                <a href="#"><i class="fa fa-edit"></i></a>
+                                <form method="post" action="{% url 'roles_delete' %}" id="delete_role">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="uuid" value="{{ rl.id }}">
+                                </form>
+                                <a href="#" onclick="deactivateRole()"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -39,4 +42,13 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+        function deactivateRole(){
+            var rsp = window.confirm("Seguro desea eliminar el rol?");
+            if(rsp){
+                $("#delete_role").submit();
+            }
+        }
+    </script>
 {% endblock %}

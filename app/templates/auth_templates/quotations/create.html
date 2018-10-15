@@ -8,37 +8,43 @@
     <div class="row">
         <h3>Nueva Cotizacion</h3>
         <div class="col-md-12">
-            <div class="form-group">
-                <labe>Empresa:</labe>
-                <input type="text" name="client" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label>Productos</label>
-                <button class="btn btn-primary pull-right" data-toggle="modal"
-                        data-target="#modalAddProducts">
-                    <i class="fa fa-plus"></i>
-                </button>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Referencia</th>
-                        <th>CMS o UND</th>
-                        <th>Valor</th>
-                        <th>Usado</th>
-                        <th>Desperdicio</th>
-                        <th>Valor Total</th>
-                        <th>Para (Pieza)</th>
-                    </tr>
-                    </thead>
-                    <tbody id="products">
-                    </tbody>
-                </table>
-                <span><b>Total: </b> <b id="total"></b></span>
-            </div>
-            <div class="form-group">
-                <button type="button">Enviar</button>
-            </div>
+            <form action="{% url 'quotations_create_action' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <labe>Empresa:</labe>
+                    <input type="text" name="client" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Productos</label>
+                    <button type="button" class="btn btn-primary pull-right" data-toggle="modal"
+                            data-target="#modalAddProducts">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Referencia</th>
+                            <th>CMS o UND</th>
+                            <th>Usado</th>
+                            <th>Desperdicio</th>
+                            <th>Valor</th>
+                            <th>Para (Pieza)</th>
+                            <th>Gestion</th>
+                        </tr>
+                        </thead>
+                        <tbody id="products">
+                        </tbody>
+                    </table>
+                    <span><b>Total: </b> <b id="total">0</b></span>
+                </div>
+                <div class="form-group" id="footer_products">
+                    <input type="hidden" name="total_sd" id="total" value="">
+                    <button type="submit" class="btn btn-primary pull-right">
+                        Enviar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -62,19 +68,27 @@
                                 <option value="">- Seleccione un producto -
                                 </option>
                                 {% for pr in products %}
-                                    <option value="{{ pr.id }}, {{ pr.name }}, {{ pr.price }}">
-                                        {{ pr.name }}
+                                    <option value="{{ pr.id }}/{{ pr.reference }}/{{ pr.price_stock }}">
+                                        {{ pr.reference }}
                                     </option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
                             <label>CMS o UND</label>
-                            <input type="number" class="form-control" min="0">
+                            <input type="number" id="cms" class="form-control" min="0">
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
                             <label>Usado</label>
-                            <input type="number" class="form-control" min="0">
+                            <input type="number" id="used" class="form-control" min="0">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Despericio</label>
+                            <input type="number" id="dsp" class="form-control" min="0">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Para pieza</label>
+                            <input type="number" id="piez" class="form-control" min="0">
                         </div>
                     </div>
                 </div>
@@ -93,8 +107,39 @@
 
     <script>
         function addProduct() {
-            var pr = $("#produt_select").val();
+            var pr = String($("#produt_select").val()).split("/");
+            var used = $("#used").val();
+            var cms = $("#cms").val();
+            var dsp = $("#dsp").val();
+            var piez = $("#piez").val();
             alert(pr);
+            var tr = "<tr id='tr_" + pr[0] + "'>";
+            tr += "<td>" + pr[0] + "</td>";
+            tr += "<td>" + pr[1] + "</td>";
+            tr += "<td>" + cms + "</td>";
+            tr += "<td>" + used + "</td>";
+            tr += "<td>" + dsp + "</td>";
+            tr += "<td id='price_" + pr[0] + "'>" + pr[2] + "</td>";
+            tr += "<td>" + piez + "</td>";
+            tr += "<td><button onclick='rmElm(" + pr[0] + ")'><i class='fa fa-trash'></i></button></td>";
+            tr += "</tr>";
+            var total = parseFloat($("#total").html());
+            var tot = total + parseFloat(pr[2]);
+            $("#total").html(tot);
+            $("#products").append(tr);
+            $("#footer_products").append('<input type="hidden" id="products_pk_' + pr[0] + '" name="products_pk_" value="' + pr[0] + '">');
+
+        }
+
+        function rmElm(pk) {
+            var elm = document.getElementById("tr_" + pk);
+            var elm2 = document.getElementById("products_pk" + pk);
+            var total = parseFloat($("#total").html());
+            var pr2 = $("#price_" + pk).html()
+            var tot = total - parseFloat(pr2);
+            $("#total").html(tot);
+            elm.parentNode.removeChild(elm);
+            elm2.parentNode.removeChild(elm2);
         }
     </script>
 {% endblock %}

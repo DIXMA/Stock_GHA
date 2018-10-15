@@ -10,5 +10,46 @@ class StockView(View):
 
     def get(self, request, *args, **kwargs):
 
-        stok = Product.objects.all()
-        return render(request, self.template_name, {'stok': stok})
+        stock = Product.objects.all()
+        return render(request, self.template_name, {'stock': stock})
+
+
+class StockCreateView(View):
+    template_name = "auth_templates/stock/register.html"
+
+    def get(self, request):
+        return render(request, self.template_name, {})
+
+    def post(self, request, *args, **kwargs):
+        ref = request.POST['ref']
+        in_mp_date = request.POST['in_mp_date']
+        caliber_mp = request.POST['caliber_mp']
+        large_mp = request.POST['large_mp']
+        anch_mp = request.POST['anch_mp']
+        price = request.POST['price']
+        in_inv_date = request.POST['in_inv_date']
+        caliber_inv = request.POST['caliber_inv']
+        large_inv = request.POST['large_inv']
+        anch_inv = request.POST['anch_inv']
+        acb = request.POST['acb']
+        area = request.POST['area']
+        disp = request.POST['disp']
+        price_stock = request.POST['price_stock']
+
+        product = Product(reference=ref,
+                          in_mp=in_mp_date,
+                          in_inv=in_inv_date,
+                          caliber_mp=caliber_mp,
+                          caliber_inv=caliber_inv,
+                          large_mp=large_mp,
+                          large_inv=large_inv,
+                          anch_mp=anch_mp,
+                          anch_inv=anch_inv,
+                          price_lm=price,
+                          price_stock=price_stock,
+                          area=area,
+                          acabado=acb,
+                          state=disp)
+        product.save()
+        messages.success(request, "Se ha actualizado el stock correctamente")
+        return redirect('stock')

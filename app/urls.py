@@ -7,7 +7,7 @@ from app.class_views.auth_control_views import LoginView, LoginAction, \
 from app.class_views.roles_views import RolesView, RoleCreateView, RolDeactivateView
 from app.class_views.quotation_views import QuotationsView, QuotationsCreateView, QuotationStateView
 from app.class_views.users_views import UsersListView, UsersCreateView
-from app.class_views.stock import StockView, StockCreateView
+from app.class_views.stock import StockView, StockCreateView, RawMaterial
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login"),
@@ -39,6 +39,10 @@ urlpatterns = [
         name="quotations_change_state"),
 
     # Stock
+    url(r'^raw_material/$', login_required(RawMaterial.as_view()),
+        name="raw_material"),
+    url(r'^raw_material/create_form/$', login_required(RawMaterial.as_view()),
+        name="raw_material_create_form"),
     url(r'^stock/$', login_required(StockView.as_view()),
         name="stock"),
     url(r'^stock/create_form/$', login_required(StockCreateView.as_view()),

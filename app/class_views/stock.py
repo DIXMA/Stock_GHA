@@ -53,3 +53,37 @@ class StockCreateView(View):
         product.save()
         messages.success(request, "Se ha actualizado el stock correctamente")
         return redirect('stock')
+
+
+class RawMaterial(View):
+    template_name = "auth_templates/stock/list_raw_material.html"
+
+    def get(self, request, *args, **kwargs):
+        materials = Product.objects.filter(status=0).all()
+        return render(request, self.template_name, {'materials': materials})
+
+
+class RawMaterialCreateView(View):
+    template_name = "auth_templates/stock/create_raw_material.html"
+
+    def get(self, request, *args, **kwargs):
+        materials = Product.objects.filter(status=0).all()
+        return render(request, self.template_name, {'materials': materials})
+
+    def post(self, request, *args, **kwargs):
+        ref = request.POST['ref']
+        in_mp_date = request.POST['in_mp_date']
+        caliber_mp = request.POST['caliber_mp']
+        large_mp = request.POST['large_mp']
+        anch_mp = request.POST['anch_mp']
+        price = request.POST['price']
+
+        product = Product(reference=ref,
+                          in_mp=in_mp_date,
+                          caliber_mp=caliber_mp,
+                          large_mp=large_mp,
+                          anch_mp=anch_mp,
+                          price_lm=price)
+        product.save()
+        messages.success(request, "Se ha actualizado la materia prima correctamente")
+        return redirect('raw_material')

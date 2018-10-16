@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <h3>Nueva Materia Prima</h3>
+        <div class="col-md-12">
+            <div class="form-group col-md-6">
+                <label>Referencia</label>
+                <input type="text" name="ref" class="form-control" placeholder="Referencia..." required>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Entrada a Materia Prima</label>
+                <input type="date" name="in_mp_date" class="form-control" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Calibre (mm)</label>
+                <input type="number" name="caliber_mp" class="form-control" min="0" placeholder="Calibre..."
+                       required>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Largo (cm)</label>
+                <input type="number" name="large_mp" class="form-control" min="0" placeholder="Largo..." required>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Ancho (cm)</label>
+                <input type="number" name="anch_mp" class="form-control" min="0" placeholder="Ancho..." required>
+            </div>
+            <div class="form-group col-md-12">
+                <label>Costo Lamina</label>
+                <input type="number" name="price" class="form-control" min="0" placeholder="Costo lamina..."
+                       required>
+            </div>
+            <div class="form-group col-md-12">
+                <a href="{% url 'raw_material' %}" class="btn btn-default">
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary pull-right">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

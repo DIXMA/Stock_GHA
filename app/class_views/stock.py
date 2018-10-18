@@ -59,7 +59,7 @@ class RawMaterial(View):
     template_name = "auth_templates/stock/list_raw_material.html"
 
     def get(self, request, *args, **kwargs):
-        materials = Product.objects.filter(status=0).all()
+        materials = Product.objects.all()
         return render(request, self.template_name, {'materials': materials})
 
 

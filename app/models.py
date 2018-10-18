@@ -31,7 +31,7 @@ class Product(models.Model):
                                    decimal_places=2)
     price_stock = models.DecimalField(default=0.0, max_digits=100,
                                       decimal_places=2)
-    state = models.CharField(max_length=30)
+    state = models.CharField(max_length=30, default='Disponible')
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     area = models.CharField(max_length=30)
     acabado = models.CharField(max_length=30)

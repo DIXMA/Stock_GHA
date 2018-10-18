@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 
 class Client(models.Model):
     name = models.TextField()
+    nit = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -40,13 +41,33 @@ class Product(models.Model):
 
 
 class Project(models.Model):
-    pass
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    init_date = models.DateField()
+    init_requirements = models.TextField()
+    final_requirements = models.TextField(null=True, blank=True)
+    init_design = models.ImageField()
+    final_design = models.ImageField(null=True, blank=True)
+    materials = models.IntegerField(default=0)
+    personal = models.IntegerField(default=0)
+    supplies = models.IntegerField(default=0)
+    sub_total = models.IntegerField(default=0)
+    gain = models.IntegerField(default=0)
+    pre_total = models.IntegerField(default=0)
+    retention = models.IntegerField(default=0)
+    discount = models.IntegerField(default=0)
+    risk_b = models.IntegerField(default=0)
+    secure = models.IntegerField(default=0)
+    commission = models.IntegerField(default=0)
+    unforeseen = models.IntegerField(default=0)
+    discount_opc = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Quotation(models.Model):
     STATUS_CHOICES = ((0, 'Enviada'), (1, 'Aceptada'), (2, 'Cancelada'),
                       (3, 'Terminada'),)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    project = models.ForeignKey(Product, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     price = models.DecimalField(default=0.0, max_digits=100, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -60,6 +81,31 @@ class ProductsQuotation(models.Model):
                                        decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class PersonalProject(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    process = models.CharField(max_length=50)
+    specialty = models.CharField(max_length=50)
+    hour_price = models.IntegerField()
+    hour_work = models.IntegerField()
+    total_price = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class ExternalServiceProject(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    process = models.CharField(max_length=50)
+    unit_price = models.IntegerField()
+    quantity = models.IntegerField()
+    total_price = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class ProjectGestion(models.Model):
+    pass
 
 
 class Role(models.Model):

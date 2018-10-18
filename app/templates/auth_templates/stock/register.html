@@ -2,54 +2,74 @@
 
 {% block content %}
     <div class="row">
-        <h3>Nuevo registro en Stock</h3>
         <div class="col-md-12">
-            <form method="post" action="{% url 'stock_create_action' %}">
-                {% csrf_token %}
-                <div class="form-group col-md-12">
-                    <label>Entrada a Inventario</label>
-                    <input type="date" name="in_inv_date" class="form-control" required>
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Nuevo registro en Stock</h3>
                 </div>
-                <div class="form-group col-md-4">
-                    <label>Calibre (mm)</label>
-                    <input type="number" name="caliber_inv" class="form-control" min="0" placeholder="Calibre..."
-                           required>
+                <div class="box-body">
+                    <form method="post"
+                          action="{% url 'stock_create_action' %}">
+                        {% csrf_token %}
+                        <div class="form-group col-md-12">
+                            <label>Entrada a Inventario</label>
+                            <input type="date" name="in_inv_date"
+                                   class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Calibre (mm)</label>
+                            <input type="number" name="caliber_inv"
+                                   class="form-control" min="0"
+                                   placeholder="Calibre..."
+                                   required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>LARGO (cm)</label>
+                            <input type="number" name="large_inv"
+                                   class="form-control" min="0"
+                                   placeholder="Largo..." required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>ANCHO (cm)</label>
+                            <input type="number" name="anch_inv"
+                                   class="form-control" min="0"
+                                   placeholder="Ancho..." required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>ACABADO</label>
+                            <input type="text" name="acb" class="form-control"
+                                   placeholder="Acabado..." required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>AREA</label>
+                            <input type="text" name="area" class="form-control"
+                                   placeholder="Area..." required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>DISPONIBILIDAD</label>
+                            <select class="form-control" name="disp" required>
+                                <option value="Disponible">Disponible</option>
+                                <option value="Utilizado">Utilizado</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>COSTO STOCK</label>
+                            <input type="number" name="price_stock"
+                                   class="form-control"
+                                   placeholder="Costo stock..." required>
+                        </div>
+                        <hr>
+                        <div class="form-group col-md-12">
+                            <a href="{% url 'stock' %}" class="btn btn-default">
+                                Cancelar
+                            </a>
+                            <button type="submit"
+                                    class="btn btn-primary pull-right">Guardar
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group col-md-4">
-                    <label>LARGO (cm)</label>
-                    <input type="number" name="large_inv" class="form-control" min="0" placeholder="Largo..." required>
-                </div>
-                <div class="form-group col-md-4">
-                    <label>ANCHO (cm)</label>
-                    <input type="number" name="anch_inv" class="form-control" min="0" placeholder="Ancho..." required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>ACABADO</label>
-                    <input type="text" name="acb" class="form-control" placeholder="Acabado..." required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>AREA</label>
-                    <input type="text" name="area" class="form-control" placeholder="Area..." required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>DISPONIBILIDAD</label>
-                    <select class="form-control" name="disp" required>
-                        <option value="Disponible">Disponible</option>
-                        <option value="Utilizado">Utilizado</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>COSTO STOCK</label>
-                    <input type="number" name="price_stock" class="form-control" placeholder="Costo stock..." required>
-                </div>
-                <hr>
-                <div class="form-group col-md-12">
-                    <a href="{% url 'stock' %}" class="btn btn-default">
-                        Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-primary pull-right">Guardar</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 {% endblock %}

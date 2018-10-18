@@ -1,49 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
-        <a href="{% url 'create_form$' %}" class="btn btn-sm btn-default pull-right">
-            <i class="fa fa-plus"></i> Nuevo Usuairo
-        </a>
-    </div>
     <div class="row">
         <div class="col-md-12">
-            {% if employees %}
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Email</th>
-                        <th>Fecha Registro</th>
-                        <th>Gestión</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for usr in employees %}
-                        <tr>
-                            <td>{{ usr.id }}</td>
-                            <td>{{ usr.user.first_name }}</td>
-                            <td>{{ usr.user.last_name }}</td>
-                            <td>{{ usr.user.email }}</td>
-                            <td>{{ usr.created_at }}</td>
-                            <td>
-                                <form action="{% url 'users_delete_action' %}" method="post" id="remo_user">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="user_id" value="{{ usr.id }}">
-                                </form>
-                                <a href="#" onclick="RemoveUser()"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <span class="label label-warning">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Usuarios Registrados</h3>
+                    <div class="box-tools pull-right">
+                        <a href="{% url 'create_form$' %}"
+                           class="btn btn-sm btn-default pull-right">
+                            <i class="fa fa-plus"></i> Nuevo Usuairo
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {% if employees %}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Email</th>
+                                <th>Fecha Registro</th>
+                                <th>Gestión</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for usr in employees %}
+                                <tr>
+                                    <td>{{ usr.id }}</td>
+                                    <td>{{ usr.user.first_name }}</td>
+                                    <td>{{ usr.user.last_name }}</td>
+                                    <td>{{ usr.user.email }}</td>
+                                    <td>{{ usr.created_at }}</td>
+                                    <td>
+                                        <form action="{% url 'users_delete_action' %}"
+                                              method="post" id="remo_user">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="user_id"
+                                                   value="{{ usr.id }}">
+                                        </form>
+                                        <a href="#" onclick="RemoveUser()"><i
+                                                class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <span class="label label-warning">
             No se han registrado usuarios en el sisitema
         </span>
-            {% endif %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 

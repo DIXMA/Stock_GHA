@@ -1,41 +1,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
     <div class="row">
-        <h3>Materia Prima</h3>
         <div class="col-md-12">
-            {% if materials %}
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>REFERENCIA</th>
-                            <th>PRECIO</th>
-                            <th>CALIBRE</th>
-                            <th>LARGO</th>
-                            <th>ANCHO</th>
-                            <th>FECHA ENTRADA ALMACEN</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for m in materials %}
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Materia Prima</h3>
+                    <div class="box-tools pull-right">
+                        <a href="{% url 'raw_material_create_form' %}"
+                           class="btn btn-default pull-right">
+                            <i class="fa fa-plus"></i> Nueva materia prima
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {% if materials %}
+                        <table class="table table-bordered">
+                            <thead>
                             <tr>
-                                <td>{{ m.id }}</td>
-                                <td>{{ m.refefrence }}</td>
-                                <td>{{ m.price_lm }}</td>
-                                <td>{{ m.large_mp }}</td>
-                                <td>{{ m.anch_mp }}</td>
-                                <td>{{ m.in_mp</td>
+                                <th>ID</th>
+                                <th>REFERENCIA</th>
+                                <th>PRECIO</th>
+                                <th>CALIBRE</th>
+                                <th>LARGO</th>
+                                <th>ANCHO</th>
+                                <th>FECHA ENTRADA ALMACEN</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <span class="label label-warning">
+                            </thead>
+                            <tbody>
+                            {% for m in materials %}
+                                <tr>
+                                    <td>{{ m.id }}</td>
+                                    <td>{{ m.reference }}</td>
+                                    <td>{{ m.price_lm }}</td>
+                                    <td>{{ m.caliber_mp }}</td>
+                                    <td>{{ m.large_mp }}</td>
+                                    <td>{{ m.anch_mp }}</td>
+                                    <td>{{ m.in_mp }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <span class="label label-warning">
                     No se ha registrado materia prima en el sistema.
                 </span>
-            {% endif %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 

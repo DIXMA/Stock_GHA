@@ -155,6 +155,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{% url 'stock_operator' %}">
+                                <i class="fa fa-circle-o"></i> Control de Stock (OP)
+                            </a>
+                        </li>
+                        <li>
                             <a href="{% url 'stock' %}">
                                 <i class="fa fa-circle-o"></i> Control de Stock
                             </a>
@@ -162,25 +167,13 @@
                     </ul>
                 </li>
 
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Stock</span>
+                <li>
+                    <a href="{% url 'roles' %}">
+                        <i class="fa fa-th"></i> <span>Proyectos</span>
                         <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
+                            <small class="label pull-right"> > </small>
                         </span>
                     </a>
-                    <ul class="treeview-menu" style="">
-                        <li>
-                            <a href="{% url 'raw_material' %}">
-                                <i class="fa fa-circle-o"></i> Proyecto
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'quotations' %}">
-                                <i class="fa fa-circle-o"></i> Cotizaciones
-                            </a>
-                        </li>
-                    </ul>
                 </li>
 
 

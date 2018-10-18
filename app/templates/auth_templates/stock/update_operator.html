@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Tomar Materia Prima</h3>
+                </div>
+                <div class="box-body">
+                    <form action="{% url 'operator_stock_update_action' %}"
+                          method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk" id="pk" value="">
+                        <div class="form-group">
+                            <label>Seleccione un material:</label>
+                            {% if materials %}
+                                <select class="form-control" name="product"
+                                        id="product"
+                                        onchange="selectedMaterial()" required>
+                                    <option value="">
+                                        - Seleccione una referencia -
+                                    </option>
+                                    {% for m in materials %}
+                                        <option value="{{ m.id }}/{{ m.caliber_mp }}/{{ m.large_mp }}/{{ m.anch_mp }}">
+                                            {{ m.reference }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                <span class="label label-warning">
+                                No hay materiales disponibles en materia prima.
+                            </span>
+                            {% endif %}
+
+                        </div>
+                        <hr>
+                        <div class="col-md-12" id="info_p"
+                             style="display: none;">
+                            <div class="form-group col-md-6">
+                                <label>Calibre</label>
+                                <input type="number" name="caliber" id="caliber"
+                                       class="form-control" value="" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Largo</label>
+                                <input type="number" name="large" id="large"
+                                       class="form-control" value="" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Ancho</label>
+                                <input type="number" name="ancho" id="ancho"
+                                       class="form-control" value="" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Acabado</label>
+                                <input type="text" name="acabado" id="acabado"
+                                       class="form-control" value="" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Area</label>
+                                <input type="text" name="area" id="area"
+                                       class="form-control" value="" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Fecha Ingreso Almacen</label>
+                                <input type="date" name="date" id="date"
+                                       class="form-control" value="" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Disponibilidad</label>
+                                <select class="form-control" name="state"
+                                        id="state" required>
+                                    <option value="Utilizado">Utilizado</option>
+                                    <option value="Disponible">Disponible
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <a href="{% url 'stock_operator' %}" class="btn btn-default">
+                                    <i class="fa fa-close"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary pull-right">
+                                    <i class="fa fa-send"></i> Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function selectedMaterial() {
+            var ref = $("#product").val();
+            if (ref) {
+                var data = ref.split('/');
+                $("#pk").val(data[0]);
+                $("#caliber").val(data[1]);
+                $("#large").val(data[2]);
+                $("#ancho").val(data[3]);
+                $("#info_p").removeAttr('style');
+            } else {
+                $("#info_p").attr('style', 'display: none;');
+                $("#pk").val('');
+                $("#caliber").val('');
+                $("#large").val('');
+                $("#ancho").val('');
+                $("#acabado").val('');
+                $("#area").val('');
+                $("#date").val('');
+                $("#date").val('');
+            }
+        }
+
+    </script>
+
+{% endblock %}

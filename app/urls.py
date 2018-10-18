@@ -4,10 +4,13 @@ from django.contrib.auth.decorators import login_required
 
 from app.class_views.auth_control_views import LoginView, LoginAction, \
     HomeView, LogoutAction
-from app.class_views.roles_views import RolesView, RoleCreateView, RolDeactivateView
-from app.class_views.quotation_views import QuotationsView, QuotationsCreateView, QuotationStateView
+from app.class_views.roles_views import RolesView, RoleCreateView, \
+    RolDeactivateView
+from app.class_views.quotation_views import QuotationsView, \
+    QuotationsCreateView, QuotationStateView
 from app.class_views.users_views import UsersListView, UsersCreateView
-from app.class_views.stock import StockView, StockCreateView, RawMaterial
+from app.class_views.stock import StockView, StockCreateView, RawMaterial, \
+    RawMaterialCreateView, StockOperatorView, StrockOperatorUdateView
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login"),
@@ -28,7 +31,9 @@ urlpatterns = [
     url(r'^roles/delete', login_required(RolDeactivateView.as_view()),
         name="roles_delete"),
 
-    # Quotations
+    # Projects
+    url(r'^projects/$', login_required(QuotationsView.as_view()),
+        name="projects"),
     url(r'^quotations/$', login_required(QuotationsView.as_view()),
         name="quotations"),
     url(r'^quotations/create/$', login_required(QuotationsCreateView.as_view()),
@@ -41,8 +46,18 @@ urlpatterns = [
     # Stock
     url(r'^raw_material/$', login_required(RawMaterial.as_view()),
         name="raw_material"),
-    url(r'^raw_material/create_form/$', login_required(RawMaterial.as_view()),
-        name="raw_material_create_form"),
+    url(r'^raw_material/create_form/$', login_required(
+        RawMaterialCreateView.as_view()), name="raw_material_create_form"),
+    url(r'^raw_material/create_action/$', login_required(
+        RawMaterialCreateView.as_view()), name="raw_material_create_action"),
+    url(r'^stock/operator/$', login_required(StockOperatorView.as_view()),
+        name="stock_operator"),
+    url(r'^stock/operator_stock_update_form/$',
+        login_required(StrockOperatorUdateView.as_view()),
+        name="stock_operator_update_form"),
+    url(r'^stock/operator_stock_update_action/$',
+        login_required(StrockOperatorUdateView.as_view()),
+        name="operator_stock_update_action"),
     url(r'^stock/$', login_required(StockView.as_view()),
         name="stock"),
     url(r'^stock/create_form/$', login_required(StockCreateView.as_view()),

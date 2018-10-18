@@ -3,70 +3,66 @@
 {% block content %}
     <div class="row" style="overflow: auto;">
         <div class="col-md-12">
-            <a href="{% url 'stock_create_form' %}" class="btn btn-default pull-right">
-                <i class="fa fa-plus"></i> Agregar a Stock
-            </a>
-            <a href="{% url 'stock_create_form' %}" class="btn btn-default pull-right">
-                <i class="fa fa-plus"></i> Solicitud de compra
-            </a>
-        </div>
-        <hr>
-        <div class="col-md-12">
-            <h3>Registros en Stock</h3>
-            {% if stock %}
-
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>REFERENCIA</th>
-                        <th>FECHA ENTRADA MP</th>
-                        <th>CALIBRE (mm)</th>
-                        <th>LARGO (cm)</th>
-                        <th>ANCHO (cm)</th>
-                        <th>COSTO LAMINA</th>
-                        <th>FECHA ENTRADA INVENTARIO</th>
-                        <th>CALIBRE (mm)</th>
-                        <th>LARGO (cm)</th>
-                        <th>ANCHO (cm)</th>
-                        <th>ACABADO</th>
-                        <th>AREA</th>
-                        <th>DISPONIBILIDAD</th>
-                        <th>COSTO STOCK</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for pr in stock %}
-                            {% if pr.state == 'Disponible' %}
-                                <tr style="background-color: #9bf39b;">
-                            {% else %}
-                                <tr style="background-color: #f2b5b5;">
-                            {% endif %}
-                                <th>{{ pr.id }}</th>
-                                <th>{{ pr.reference }}</th>
-                                <th>{{ pr.in_mp }}</th>
-                                <th>{{ pr.caliber_mp }}</th>
-                                <th>{{ pr.large_mp }}</th>
-                                <th>{{ pr.anch_mp }}</th>
-                                <th>{{ pr.price_lm }}</th>
-                                <th>{{ pr.in_inv }}</th>
-                                <th>{{ pr.caliber_inv }}</th>
-                                <th>{{ pr.large_inv }}</th>
-                                <th>{{ pr.anch_inv }}</th>
-                                <th>{{ pr.acabado }}</th>
-                                <th>{{ pr.area }}</th>
-                                <th>{{ pr.state }}</th>
-                                <th>{{ pr.price_stock }}</th>
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Registros en Stock</h3>
+                </div>
+                <div class="box-body">
+                    {% if stock %}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>REFERENCIA</th>
+                                <th>FECHA ENTRADA MP</th>
+                                <th>CALIBRE (mm)</th>
+                                <th>LARGO (cm)</th>
+                                <th>ANCHO (cm)</th>
+                                <th>COSTO LAMINA</th>
+                                <th>FECHA ENTRADA INVENTARIO</th>
+                                <th>CALIBRE (mm)</th>
+                                <th>LARGO (cm)</th>
+                                <th>ANCHO (cm)</th>
+                                <th>ACABADO</th>
+                                <th>AREA</th>
+                                <th>DISPONIBILIDAD</th>
+                                <th>COSTO STOCK</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                            {% for pr in stock %}
+                                {% if pr.state == 'Disponible' %}
+                                    <tr style="background-color: #9bf39b;">
+                                        {% else %}
+                                    <tr style="background-color: #f2b5b5;">
+                                {% endif %}
+                            <th>{{ pr.id }}</th>
+                            <th>{{ pr.reference }}</th>
+                            <th>{{ pr.in_mp }}</th>
+                            <th>{{ pr.caliber_mp }}</th>
+                            <th>{{ pr.large_mp }}</th>
+                            <th>{{ pr.anch_mp }}</th>
+                            <th>{{ pr.price_lm }}</th>
+                            <th>{{ pr.in_inv }}</th>
+                            <th>{{ pr.caliber_inv }}</th>
+                            <th>{{ pr.large_inv }}</th>
+                            <th>{{ pr.anch_inv }}</th>
+                            <th>{{ pr.acabado }}</th>
+                            <th>{{ pr.area }}</th>
+                            <th>{{ pr.state }}</th>
+                            <th>{{ pr.price_stock }}</th>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
 
-            {% else %}
-                <span class="label label-warning">
+                    {% else %}
+                        <span class="label label-warning">
         No hay registro de Stock en el sistema.
     </span>
-            {% endif %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

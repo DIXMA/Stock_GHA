@@ -6,45 +6,58 @@
     </div>
     <hr>
     <div class="row">
-        <h3>Nueva Cotizacion</h3>
+
         <div class="col-md-12">
-            <form action="{% url 'quotations_create_action' %}" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <labe>Empresa:</labe>
-                    <input type="text" name="client" class="form-control" required>
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Nueva Cotizacion</h3>
                 </div>
-                <div class="form-group">
-                    <label>Productos</label>
-                    <button type="button" class="btn btn-primary pull-right" data-toggle="modal"
-                            data-target="#modalAddProducts">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Referencia</th>
-                            <th>CMS o UND</th>
-                            <th>Usado</th>
-                            <th>Desperdicio</th>
-                            <th>Valor</th>
-                            <th>Para (Pieza)</th>
-                            <th>Gestion</th>
-                        </tr>
-                        </thead>
-                        <tbody id="products">
-                        </tbody>
-                    </table>
-                    <span><b>Total: </b> <b id="total">0</b></span>
+                <div class="box-body">
+                    <form action="{% url 'quotations_create_action' %}"
+                          method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <labe>Empresa:</labe>
+                            <input type="text" name="client"
+                                   class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Productos</label>
+                            <button type="button"
+                                    class="btn btn-primary pull-right"
+                                    data-toggle="modal"
+                                    data-target="#modalAddProducts">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Referencia</th>
+                                    <th>CMS o UND</th>
+                                    <th>Usado</th>
+                                    <th>Desperdicio</th>
+                                    <th>Valor</th>
+                                    <th>Para (Pieza)</th>
+                                    <th>Gestion</th>
+                                </tr>
+                                </thead>
+                                <tbody id="products">
+                                </tbody>
+                            </table>
+                            <span><b>Total: </b> <b id="total">0</b></span>
+                        </div>
+                        <div class="form-group" id="footer_products">
+                            <input type="hidden" name="total_sd" id="total"
+                                   value="">
+                            <button type="submit"
+                                    class="btn btn-primary pull-right">
+                                Enviar
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group" id="footer_products">
-                    <input type="hidden" name="total_sd" id="total" value="">
-                    <button type="submit" class="btn btn-primary pull-right">
-                        Enviar
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -76,19 +89,23 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <label>CMS o UND</label>
-                            <input type="number" id="cms" class="form-control" min="0">
+                            <input type="number" id="cms" class="form-control"
+                                   min="0">
                         </div>
                         <div class="form-group col-sm-4">
                             <label>Usado</label>
-                            <input type="number" id="used" class="form-control" min="0">
+                            <input type="number" id="used" class="form-control"
+                                   min="0">
                         </div>
                         <div class="form-group col-sm-4">
                             <label>Despericio</label>
-                            <input type="number" id="dsp" class="form-control" min="0">
+                            <input type="number" id="dsp" class="form-control"
+                                   min="0">
                         </div>
                         <div class="form-group col-sm-4">
                             <label>Para pieza</label>
-                            <input type="number" id="piez" class="form-control" min="0">
+                            <input type="number" id="piez" class="form-control"
+                                   min="0">
                         </div>
                     </div>
                 </div>

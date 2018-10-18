@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Zona de Almacenamiento</h3>
+                    <div class="box-tools pull-right">
+                        <a href="{% url 'stock_operator_update_form' %}"
+                           class="btn btn-default pull-right">
+                            <i class="fa fa-plus"></i> Usar Materia Prima
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {% if stock %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>FECHA ENTRADA</th>
+                        <th>REFERENCIA</th>
+                        <th>CALIBRE</th>
+                        <th>LARGO</th>
+                        <th>ANCHO</th>
+                        <th>ACABADO</th>
+                        <th>AREA</th>
+                        <th>DISPONIBILIDAD</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for m in stock %}
+                        <tr>
+                            <td>{{ m.id }}</td>
+                            <td>{{ m.in_inv }}</td>
+                            <td>{{ m.reference }}</td>
+                            <td>{{ m.caliber_inv }}</td>
+                            <td>{{ m.large_inv }}</td>
+                            <td>{{ m.anch_inv }}</td>
+                            <td>{{ m.acabado }}</td>
+                            <td>{{ m.area }}</td>
+                            <td>{{ m.state }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span class="label label-warning">
+                    No se ha registrado materia prima en el sistema.
+                </span>
+            {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

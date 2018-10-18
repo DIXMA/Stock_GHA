@@ -1,52 +1,62 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="pull-right">
-        <a href="{% url 'roles_create' %}">
-            <i class="fa fa-plus"></i> Nuevo Rol
-        </a>
-    </div>
-    <hr>
     <div class="row">
-        <h3>Listado de Roles</h3>
         <div class="col-md-12">
-            {% if roles %}
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>ROL</th>
-                        <th>GESTIÓN</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for rl in roles %}
-                        <tr>
-                            <td>{{ rl.id }}</td>
-                            <td>{{ rl.name }}</td>
-                            <td>
-                                <form method="post" action="{% url 'roles_delete' %}" id="delete_role">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="uuid" value="{{ rl.id }}">
-                                </form>
-                                <a href="#" onclick="deactivateRole()"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <span class="label label-warning">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Listado de Roles</h3>
+                    <div class="box-tools pull-right">
+                        <a href="{% url 'roles_create' %}">
+                            <i class="fa fa-plus"></i> Nuevo Rol
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {% if roles %}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ROL</th>
+                                <th>GESTIÓN</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for rl in roles %}
+                                <tr>
+                                    <td>{{ rl.id }}</td>
+                                    <td>{{ rl.name }}</td>
+                                    <td>
+                                        <form method="post"
+                                              action="{% url 'roles_delete' %}"
+                                              id="delete_role">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="uuid"
+                                                   value="{{ rl.id }}">
+                                        </form>
+                                        <a href="#"
+                                           onclick="deactivateRole()"><i
+                                                class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <span class="label label-warning">
                     No se han registrado roles en el sistema
                 </span>
-            {% endif %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function deactivateRole(){
+        function deactivateRole() {
             var rsp = window.confirm("Seguro desea eliminar el rol?");
-            if(rsp){
+            if (rsp) {
                 $("#delete_role").submit();
             }
         }

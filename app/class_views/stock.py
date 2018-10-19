@@ -199,4 +199,30 @@ class ProjectPersonalCreate(View):
                                                     'total_general': total_general})
 
     def post(self, request, *args, **kwargs):
-        pass
+
+        pr_pk = request.POST['pr_pk']
+        personals = request.POST.getlist('prs_pk_')
+        total_gn = request.POST['total_gn']
+
+        if personals:
+            project = Project.objects.get(pk=pr_pk)
+            for pr in personals:
+                prs = pr.split(',')
+                prs_search = PersonalProject.objects.filter(project=project,
+                                                            process=prs[0]).count()
+                if prs_search == 0:
+                    personal = PersonalProject(project=project, process=prs[0],
+                                               specialty=prs[1],
+                                               hour_price=prs[2],
+                                               hour_work=prs[3],
+                                               total_price=prs[4])
+                    personal.save()
+
+            project.personal = total_gn
+            project.save()
+
+            messages.success(request, "Se ha registrado el personal.")
+            return redirect('project_personal', pr_pk=pr_pk)
+
+        messages.error(request, "No se puede guardar el personal en el proyecto")
+        return redirect('projects_details', pr_pk=pr_pk)

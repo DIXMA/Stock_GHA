@@ -61,6 +61,9 @@ urlpatterns = [
     # Projects -> Personal
     url(r'^projects/personal/(?P<pr_pk>[0-9]+)/$',
         login_required(ProjectPersonalCreate.as_view()), name="project_personal"),
+    url(r'^projects/personal_action/$',
+        login_required(ProjectPersonalCreate.as_view()),
+        name="project_personal_action"),
 
     # Stock
     url(r'^raw_material/$', login_required(RawMaterial.as_view()),

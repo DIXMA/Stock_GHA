@@ -86,11 +86,36 @@
                     <hr/>
                     <h3>Personal</h3>
                     <hr/>
-                    {% if personal %}
-                        <button>Administrar Personal</button>
-                        <table class="table table-responsive"></table>
+                    {% if personal_project %}
+                        <a href="{% url 'project_personal' pr_pk=project.id %}"  class="btn btn-primary pull-right">
+                            Administrar Personal
+                        </a>
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <td>Proceso</td>
+                                <td>Especialidad</td>
+                                <td>Costo Horas</td>
+                                <td>Horas Trabajadas</td>
+                                <td>Total</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for px in personal_project %}
+                                <tr>
+                                    <td>{{ px.process }}</td>
+                                    <td>{{ px.specialty }}</td>
+                                    <td>{{ px.hour_price }}</td>
+                                    <td>{{ px.hour_work }}</td>
+                                    <td>{{ px.total_price }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     {% else %}
-                        <a href="{% url 'project_personal' pr_pk=project.id %}">Agrear Personal</a>
+                        <a href="{% url 'project_personal' pr_pk=project.id %}" class="btn btn-primary pull-right">
+                            Agrear Personal
+                        </a>
                     {% endif %}
 
                     <hr/>

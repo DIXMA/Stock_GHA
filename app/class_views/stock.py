@@ -2,7 +2,8 @@ from django.views.generic import TemplateView, View
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
-from app.models import Product
+from app.models import Product, Project, Client, Quotation, \
+    ProductsQuotation, PersonalProject, ExternalServiceProject
 
 
 class StockView(View):
@@ -51,7 +52,8 @@ class StockCreateView(View):
                           acabado=acb,
                           state=disp)
         product.save()
-        messages.success(request, "Se ha actualizado el stock correctamente")
+        messages.success(request,
+                         "Se ha actualizado el stock correctamente")
         return redirect('stock')
 
 
@@ -60,7 +62,8 @@ class RawMaterial(View):
 
     def get(self, request, *args, **kwargs):
         materials = Product.objects.all()
-        return render(request, self.template_name, {'materials': materials})
+        return render(request, self.template_name,
+                      {'materials': materials})
 
 
 class RawMaterialCreateView(View):
@@ -99,7 +102,8 @@ class StrockOperatorUdateView(View):
 
     def get(self, request, *args, **kwargs):
         materials = Product.objects.filter(status=0).all()
-        return render(request, self.template_name, {'materials': materials})
+        return render(request, self.template_name,
+                      {'materials': materials})
 
     def post(self, request, *args, **kwargs):
 
@@ -124,5 +128,58 @@ class StrockOperatorUdateView(View):
 
         product.save()
 
-        messages.success(request, 'Se ha sacado el material correctamente')
+        messages.success(request,
+                         'Se ha sacado el material correctamente')
         return redirect('stock_operator')
+
+
+class ProjectsView(View):
+    template_name = "auth_templates/stock/list_projects.html"
+
+    def get(self, request, *args, **kwargs):
+        projects = Project.objects.all()
+        return render(request, self.template_name, {'projects': projects})
+
+
+class ProjectCreateView(View):
+    template_name = "auth_templates/stock/create_projects.html"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {})
+
+    def post(self, request, *args, **kwargs):
+
+        name_client = request.POST['name_client']
+        nit_client = request.POST['nit_client']
+        init_date = request.POST['init_date']
+        design = request.FILES['design']
+        requirements = request.POST['requirements']
+
+        client = Client(name=name_client, nit=nit_client)
+        client.save()
+
+        project = Project(client=client, init_date=init_date,
+                          init_requirements=requirements,
+                          init_design=design)
+        project.save()
+        messages.success(request, 'Se ha creado el projecto correctamente')
+        return redirect('projects')
+
+
+class ProjectDetailsView(View):
+    template_name = "auth_templates/stock/show_project.html"
+
+    def get(self, request, pr_pk, *args, **kwargs):
+
+        project = Project.objects.get(pk=pr_pk)
+        quotation = Quotation.objects.filter(project__id=project.id).first()
+        products_quotation = None
+        if quotation:
+            products_quotation = ProductsQuotation.objects.filter(quotation__id=quotation.id).all()
+        personal_project = PersonalProject.objects.filter(project__id=project.id).all()
+        external_services = ExternalServiceProject.objects.filter(project__id=project.id).all()
+        return render(request, self.template_name, {'project': project,
+                                                    'quotation': quotation,
+                                                    'products_quotation': products_quotation,
+                                                    'personal_project': personal_project,
+                                                    'external_services': external_services})

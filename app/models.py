@@ -41,12 +41,14 @@ class Product(models.Model):
 
 
 class Project(models.Model):
+    STATE_CHOICES = ((0, 'Nnuevo'), (1, 'Iniciado'), (2, 'Finalizado'), (3, 'Cancelado'))
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     init_date = models.DateField()
     init_requirements = models.TextField()
+    init_design = models.ImageField(upload_to="uploads/project/init_design/", null=True, blank=True)
+    state = models.IntegerField(choices=STATE_CHOICES, default=0)
     final_requirements = models.TextField(null=True, blank=True)
-    init_design = models.ImageField()
-    final_design = models.ImageField(null=True, blank=True)
+    final_design = models.ImageField(upload_to="uploads/project/final_design/", null=True, blank=True)
     materials = models.IntegerField(default=0)
     personal = models.IntegerField(default=0)
     supplies = models.IntegerField(default=0)

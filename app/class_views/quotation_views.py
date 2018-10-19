@@ -2,7 +2,8 @@ from django.views.generic import TemplateView, View
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
-from app.models import Quotation, Product, Client, ProductsQuotation
+from app.models import Quotation, Product, Client, \
+    ProductsQuotation, Project
 
 
 class QuotationsView(View):
@@ -17,9 +18,16 @@ class QuotationsView(View):
 class QuotationsCreateView(View):
     template_name = 'auth_templates/quotations/create.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, pr_pk, *args, **kwargs):
         products = Product.objects.filter(state="Disponible")
-        return render(request, self.template_name, {'products': products})
+        quotation = Quotation.objects.filter(project__id=pr_pk)
+        project = Proje
+        products_quotation = None
+        if quotation:
+            products_quotation = ProductsQuotation.objects.filter(quotation__id=quotation.id).all()
+        return render(request, self.template_name, {'products': products, 'pr_pk': pr_pk,
+                                                    'products_quotation': products_quotation,
+                                                    'quotation': quotation})
 
     def post(self, request, *args, **kwargs):
         client = request.POST['client']

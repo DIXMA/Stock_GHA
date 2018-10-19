@@ -6,3 +6,4 @@ app/static/node_modules
 app/__pycache__/
 app/class_views/__pycache__/
 core/__pycache__/
+uploads/

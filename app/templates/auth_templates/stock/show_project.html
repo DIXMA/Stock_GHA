@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3>Detalles del Proyecto</h3>
+                    <div class="box-tools pull-right">
+                        <a href="#" class="btn btn-default">
+                            Gestion del Proyecto
+                        </a>
+                        <button class="btn btn-default">
+                            Estado
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Nit</th>
+                            <th>Fecha Inicio</th>
+                            <th>Proyecto</th>
+                        </tr>
+                        <tr>
+                            <td>{{ project.client.name }}</td>
+                            <td>{{ project.client.nit }}</td>
+                            <td>{{ project.init_date }}</td>
+                            <td>{{ project.id }}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Requerimientos Iniciales</th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">{{ project.init_requirements }}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Diseño Preliminar</th>
+                        </tr>
+                        <tr>
+                            <td><img src="{{ project.init_design.url }}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <hr/>
+                    <h3>Cotizaacion</h3>
+                    <hr/>
+                    {% if quotation %}
+                        <button>Administrar Cotización</button>
+                        <table class="table table-responsive"></table>
+                    {% else %}
+                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}">Crear Cotización</a>
+                    {% endif %}
+
+                    <hr/>
+                    <h3>Personal</h3>
+                    <hr/>
+                    {% if personal %}
+                        <button>Administrar Personal</button>
+                        <table class="table table-responsive"></table>
+                    {% else %}
+                        <button>Agrear Personal</button>
+                    {% endif %}
+
+                    <hr/>
+                    <h3>Servicios Externos</h3>
+                    <hr/>
+                    {% if external_services %}
+                        <button>Administrar Servicios</button>
+                        <table class="table table-responsive"></table>
+                    {% else %}
+                        <button>Agrear Servicios</button>
+                    {% endif %}
+
+                    <hr/>
+                    <h3>Liquidación</h3>
+                    <hr/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

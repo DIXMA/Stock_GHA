@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Proyectos</h3>
+                    <div class="box-tools pull-right">
+                        <a href="{% url 'projects_create_form' %}" class="btn btn-default">
+                            <i class="fa fa-plus"></i> Nuevo Proyecto
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {% if projects %}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>EMPRESA</th>
+                                <th>NIT EMPRESA</th>
+                                <th>FECHA INICIO</th>
+                                <th>ESTADO</th>
+                                <th>GESTION</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for p in projects %}
+                                <tr>
+                                <td>{{ p.id }}</td>
+                                <td>{{ p.client.name }}</td>
+                                <td>{{ p.client.nit }}</td>
+                                <td>{{ p.init_date }}</td>
+                                <td>{{ p.state }}</td>
+                                <td>
+                                    <a href="{% url 'projects_details' pr_pk=p.id %}" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Detalles">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <span class="label label-warning">No se han registrado proyectos.</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

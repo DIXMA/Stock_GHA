@@ -69,7 +69,7 @@ class Project(models.Model):
 class Quotation(models.Model):
     STATUS_CHOICES = ((0, 'Enviada'), (1, 'Aceptada'), (2, 'Cancelada'),
                       (3, 'Terminada'),)
-    project = models.ForeignKey(Product, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     price = models.DecimalField(default=0.0, max_digits=100, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -79,8 +79,8 @@ class Quotation(models.Model):
 class ProductsQuotation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quotation = models.ForeignKey(Quotation, on_delete=models.CASCADE)
-    product_used = models.DecimalField(default=0.0, max_digits=100,
-                                       decimal_places=2)
+    quantity = models.IntegerField(default=0)
+    total = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

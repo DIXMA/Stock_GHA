@@ -47,13 +47,40 @@
                     </table>
 
                     <hr/>
-                    <h3>Cotizaacion</h3>
+                    <h3>COTIZACIÓN</h3>
                     <hr/>
                     {% if quotation %}
-                        <button>Administrar Cotización</button>
-                        <table class="table table-responsive"></table>
+                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}" class="btn btn-primary pull-right">
+                            Administrar Cotización
+                        </a>
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <th>Referencia</th>
+                                <th>Valor Uni</th>
+                                <th>Cantidad</th>
+                                <th>Valor Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for prq in products_quotation %}
+                                <tr>
+                                    <td>{{ prq.product.reference }}</td>
+                                    <td>{{ prq.product.price_lm }}</td>
+                                    <td>{{ prq.quantity }}</td>
+                                    <td>{{ prq.total }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <th>TOTAL</th>
+                                <td>{{ quotation.price }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     {% else %}
-                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}">Crear Cotización</a>
+                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}" class="btn btn-primary pull-right">
+                            Crear Cotización
+                        </a>
                     {% endif %}
 
                     <hr/>
@@ -63,7 +90,7 @@
                         <button>Administrar Personal</button>
                         <table class="table table-responsive"></table>
                     {% else %}
-                        <button>Agrear Personal</button>
+                        <a href="{% url 'project_personal' pr_pk=project.id %}">Agrear Personal</a>
                     {% endif %}
 
                     <hr/>

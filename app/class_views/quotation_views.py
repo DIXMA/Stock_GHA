@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, View
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.db.models import Sum
 
 from app.models import Quotation, Product, Client, \
     ProductsQuotation, Project
@@ -20,33 +21,48 @@ class QuotationsCreateView(View):
 
     def get(self, request, pr_pk, *args, **kwargs):
         products = Product.objects.filter(state="Disponible")
-        quotation = Quotation.objects.filter(project__id=pr_pk)
-        project = Proje
+        project = Project.objects.get(pk=pr_pk)
+        quotation = Quotation.objects.filter(project__id=pr_pk).first()
         products_quotation = None
+        total = 0
         if quotation:
-            products_quotation = ProductsQuotation.objects.filter(quotation__id=quotation.id).all()
-        return render(request, self.template_name, {'products': products, 'pr_pk': pr_pk,
-                                                    'products_quotation': products_quotation,
-                                                    'quotation': quotation})
+            products_quotation = ProductsQuotation.objects.filter(
+                quotation=quotation).all()
+            for prq in products_quotation:
+                total += prq.total
+        return render(request, self.template_name,
+                      {'products': products, 'total_general': total,
+                       'products_quotation': products_quotation,
+                       'quotation': quotation, 'project': project})
 
     def post(self, request, *args, **kwargs):
-        client = request.POST['client']
         products = request.POST.getlist('products_pk_')
+        total = request.POST['total_gn']
+        pr_pk = request.POST['pr_pk']
+        qt_pk = request.POST['qt_pk']
+        if products:
+            if qt_pk:
+                quotation = Quotation.objects.get(pk=qt_pk)
+            else:
+                project = Project.objects.get(pk=pr_pk)
+                quotation = Quotation(project=project, price=total)
+                quotation.save()
+            for pr in products:
+                prd = pr.split(",")
+                prod = Product.objects.get(pk=prd[0])
+                prod_search = ProductsQuotation.objects.filter(
+                    product__id=prod.id).count()
+                if prod_search == 0:
+                    prd_q = ProductsQuotation(product=prod, quotation=quotation,
+                                              quantity=prd[1], total=prd[2])
+                    prd_q.save()
+            project.materials = total
+            project.save()
+            messages.success(request, "Se ha registrado la cotizacion.")
+            return redirect('projects_details', pr_pk=pr_pk)
 
-        client_ = Client(name=client)
-        client_.save()
-
-        quotation = Quotation(client=client_, price=123456)
-        quotation.save()
-
-        for pr in products:
-            prod = Product.objects.get(pk=pr)
-            prd_q = ProductsQuotation(product=prod, quotation=quotation)
-            prd_q.save
-
-        messages.success(request, "Se ha creado la cotizacion.")
-
-        return redirect('quotations')
+        messages.error(request, "No se reconocen los materiales seleccionados, intentelo de nuevo.")
+        return redirect('projects_quotation_create', pr_pk=pr_pk)
 
 
 class QuotationStateView(View):
@@ -57,5 +73,6 @@ class QuotationStateView(View):
         qt = Quotation.objects.get(pk=pk)
         qt.status = request.POST['status']
         qt.save()
-        messages.success(request, "Se ha actualizado el estado de la cotizacion")
+        messages.success(request,
+                         "Se ha actualizado el estado de la cotizacion")
         return redirect('quotations')

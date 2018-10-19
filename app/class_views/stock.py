@@ -2,15 +2,14 @@ from django.views.generic import TemplateView, View
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
-from app.models import Product, Project, Client, Quotation, \
-    ProductsQuotation, PersonalProject, ExternalServiceProject
+from app.models import Product, Project, Client, Quotation, ProductsQuotation, \
+    PersonalProject, ExternalServiceProject
 
 
 class StockView(View):
     template_name = 'auth_templates/stock/list.html'
 
     def get(self, request, *args, **kwargs):
-
         stock = Product.objects.all()
         return render(request, self.template_name, {'stock': stock})
 
@@ -106,7 +105,6 @@ class StrockOperatorUdateView(View):
                       {'materials': materials})
 
     def post(self, request, *args, **kwargs):
-
         pk = request.POST['pk']
         caliber = request.POST['caliber']
         large = request.POST['large']
@@ -148,7 +146,6 @@ class ProjectCreateView(View):
         return render(request, self.template_name, {})
 
     def post(self, request, *args, **kwargs):
-
         name_client = request.POST['name_client']
         nit_client = request.POST['nit_client']
         init_date = request.POST['init_date']
@@ -170,16 +167,36 @@ class ProjectDetailsView(View):
     template_name = "auth_templates/stock/show_project.html"
 
     def get(self, request, pr_pk, *args, **kwargs):
-
         project = Project.objects.get(pk=pr_pk)
         quotation = Quotation.objects.filter(project__id=project.id).first()
         products_quotation = None
         if quotation:
-            products_quotation = ProductsQuotation.objects.filter(quotation__id=quotation.id).all()
-        personal_project = PersonalProject.objects.filter(project__id=project.id).all()
-        external_services = ExternalServiceProject.objects.filter(project__id=project.id).all()
+            products_quotation = ProductsQuotation.objects.filter(
+                quotation__id=quotation.id).all()
+        personal_project = PersonalProject.objects.filter(
+            project__id=project.id).all()
+        external_services = ExternalServiceProject.objects.filter(
+            project__id=project.id).all()
         return render(request, self.template_name, {'project': project,
                                                     'quotation': quotation,
                                                     'products_quotation': products_quotation,
                                                     'personal_project': personal_project,
                                                     'external_services': external_services})
+
+
+class ProjectPersonalCreate(View):
+    template_name = "auth_templates/stock/create_personal_project.html"
+
+    def get(self, request, pr_pk, *args, **kwargs):
+        project = Project.objects.get(pk=pr_pk)
+        prs_project = PersonalProject.objects.filter(project=project).all()
+        total_general= 0
+        if prs_project:
+            for prx in prs_project:
+                total_general += prx.total_price
+        return render(request, self.template_name, {'project': project,
+                                                    'prs_project': prs_project,
+                                                    'total_general': total_general})
+
+    def post(self, request, *args, **kwargs):
+        pass

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Personal</h3>
+                </div>
+                <div class="box-body">
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <th>PROYECTO</th>
+                        <th>EMPRESA</th>
+                        <th>NIT</th>
+                        <th>FECHA INICIO</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ project.id }}</td>
+                        <td>{{ project.client.name }}</td>
+                        <td>{{ project.client.nit }}</td>
+                        <td>{{ project.init_date }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <form action="{% url 'projects_quotations_create_action' %}"
+                      method="post">
+                    {% csrf_token %}
+                    <div id="hidden_data">
+                        <input type="hidden" name="pr_pk"
+                               value="{{ project.id }}">
+                        {% if prs_project %}
+                            {% for pr in prs_project %}
+                                <input type="hidden"
+                                       id="prs_pk_{{ pr.id }}"
+                                       name="prs_pk_"
+                                       value="{{ pr.id }}">
+                            {% endfor %}
+                        {% endif %}
+                        <input type="hidden" name="total_gn" id="total_gn"
+                               value="{{ total_general }}">
+                    </div>
+
+                </form>
+                <button type="button"
+                        class="btn btn-primary pull-right"
+                        data-toggle="modal"
+                        data-target="#modalAddPrs">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <td>Proceso</td>
+                        <td>Especialidad</td>
+                        <td>Costo Horas</td>
+                        <td>Horas Trabajadas</td>
+                        <td>Total</td>
+                    </tr>
+                    </thead>
+                    <tbody id="prs_add">
+                    {% if prs_project %}
+                        {% for pr in prs_project %}
+                            <tr>
+                                <td>{{ pr.process }}</td>
+                                <td>{{ pr.specialty }}</td>
+                                <td>{{ pr.hour_price }}</td>
+                                <td>{{ pr.hour_work }}</td>
+                                <td>{{ pr.total_price }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+                <span><b>Total: </b> <b
+                        id="total">{{ total_general }}</b></span>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAddPrs" tabindex="-1" role="dialog"
+         aria-labelledby="modalAddPrsLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalAddPrsLabel">Agregar
+                        Producto</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label>Proceso</label>
+                            <select class="form-control" id="process_select">
+                                <option value="Diseño">Diseño</option>
+                                <option value="Torno">Torno</option>
+                                <option value="Pulida">Pulida</option>
+                                <option value="Soldadura">Soldadura</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Especialidad</label>
+                            <select class="form-control" id="speciality_select">
+                                <option value="Ayudante, 4167">Ayudante</option>
+                                <option value="Tecnico, 6250">Tecnico</option>
+                                <option value="Especialista, 8333">
+                                    Especialista
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Costo Hora</label>
+                            <input type="text" name="hour_price" id="hour_price"
+                                   class="form-control" readonly>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Horas Trabajadas</label>
+                            <input type="number" min="0" name="work_hours"
+                                   id="work_hours" class="form-control"
+                                   readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="addProduct()">
+                        Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addProduct() {
+            var process = $("#process_select").val();
+            var speciality = $("#speciality_select").val().split(',');
+            var work_hours = $("#work_hours").val();
+            var tot = speciality[1] * work_hours;
+            var table = "<tr>";
+            table += "<td>" + process + "</td>";
+            table += "<td>" + speciality[0] + "</td>";
+            table += "<td>" + speciality[1] + "</td>";
+            table += "<td>" + work_hours + "</td>";
+            table += "<td>" + tot + "</td>";
+            table += "</tr>";
+            $("#prs_add").append(table);
+            $("#footer_products").append('<input type="hidden" id="prs_pk_' + process + '" name="prs_pk_" value="' + process + ', ' + speciality + ', ' + work_hours + ', ' + tot + '">');
+        }
+    </script>
+
+{% endblock %}

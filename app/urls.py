@@ -10,8 +10,8 @@ from app.class_views.quotation_views import QuotationsView, \
     QuotationsCreateView, QuotationStateView
 from app.class_views.users_views import UsersListView, UsersCreateView
 from app.class_views.stock import StockView, StockCreateView, RawMaterial, \
-    RawMaterialCreateView, StockOperatorView, StrockOperatorUdateView, ProjectsView, \
-    ProjectCreateView, ProjectDetailsView
+    RawMaterialCreateView, StockOperatorView, StrockOperatorUdateView, \
+    ProjectsView, ProjectCreateView, ProjectDetailsView, ProjectPersonalCreate
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login"),
@@ -21,9 +21,12 @@ urlpatterns = [
 
     # Users
     url(r'^employees/$', login_required(UsersListView.as_view()), name="users"),
-    url(r'^employees/create_form$', login_required(UsersCreateView.as_view()), name="create_form$"),
-    url(r'^employees/create_action', login_required(UsersCreateView.as_view()), name="users_create_action"),
-    url(r'^employees/delete_action', login_required(UsersListView.as_view()), name="users_delete_action"),
+    url(r'^employees/create_form$', login_required(UsersCreateView.as_view()),
+        name="create_form$"),
+    url(r'^employees/create_action', login_required(UsersCreateView.as_view()),
+        name="users_create_action"),
+    url(r'^employees/delete_action', login_required(UsersListView.as_view()),
+        name="users_delete_action"),
 
     # Roles
     url(r'^roles/$', login_required(RolesView.as_view()), name="roles"),
@@ -37,18 +40,27 @@ urlpatterns = [
         name="projects"),
     url(r'^projects/create_form/$', login_required(ProjectCreateView.as_view()),
         name="projects_create_form"),
-    url(r'^projects/create_action/$', login_required(ProjectCreateView.as_view()),
+    url(r'^projects/create_action/$',
+        login_required(ProjectCreateView.as_view()),
         name="projects_create_action"),
-    url(r'^projects/details/(?P<pr_pk>[0-9]+)/$', login_required(ProjectDetailsView.as_view()),
+    url(r'^projects/details/(?P<pr_pk>[0-9]+)/$',
+        login_required(ProjectDetailsView.as_view()),
         name="projects_details"),
+    # Projects -> Quotations
     url(r'^projects/quotation/$', login_required(QuotationsView.as_view()),
         name="quotations"),
-    url(r'^projects/quotation_create/(?P<pr_pk>[0-9]+)/$', login_required(QuotationsCreateView.as_view()),
+    url(r'^projects/quotation_create/(?P<pr_pk>[0-9]+)/$',
+        login_required(QuotationsCreateView.as_view()),
         name="projects_quotation_create"),
-    url(r'^quotations/create_action/$', login_required(QuotationsCreateView.as_view()),
-        name="quotations_create_action"),
-    url(r'^quotations/change_state/$', login_required(QuotationStateView.as_view()),
+    url(r'^quotations/create_action/$',
+        login_required(QuotationsCreateView.as_view()),
+        name="projects_quotations_create_action"),
+    url(r'^quotations/change_state/$',
+        login_required(QuotationStateView.as_view()),
         name="quotations_change_state"),
+    # Projects -> Personal
+    url(r'^projects/personal/(?P<pr_pk>[0-9]+)/$',
+        login_required(ProjectPersonalCreate.as_view()), name="project_personal"),
 
     # Stock
     url(r'^raw_material/$', login_required(RawMaterial.as_view()),

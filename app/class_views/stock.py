@@ -222,6 +222,9 @@ class ProjectPersonalCreate(View):
             project.personal = total_gn
             project.save()
 
+            CalulcateLiquidation(project.id, project.materials,
+                                 project.personal, project.supplies)
+
             messages.success(request, "Se ha registrado el personal.")
             return redirect('project_personal', pr_pk=pr_pk)
 
@@ -264,9 +267,33 @@ class ProjectExternalServicesVew(View):
 
             project.supplies = total_gn
             project.save()
-
+            CalulcateLiquidation(project.id, project.materials,
+                                 project.personal, project.supplies)
             messages.success(request, "Se ha agregado correctamente")
             return redirect('projects_details', pr_pk=pr_pk)
 
-        messages.error(request, "No se reconoce la informacion, intentelo de nuevo")
+        messages.error(request,
+                       "No se reconoce la informacion, intentelo de nuevo")
         return redirect('project_external_services', pr_pk=pr_pk)
+
+
+def CalulcateLiquidation(pr_pk, materials, personal, supplies):
+    sub_total = int(materials) + int(personal) + int(supplies)
+    gain = (sub_total / 100) * 30
+    pre_total = sub_total + gain
+    retention = (pre_total / 100) * 6
+    discount = (pre_total / 100) * 4
+    secure = (pre_total / 100) * 8
+    commission = (pre_total / 100) * 3
+    unforeseen = (pre_total / 100) * 2
+
+    project = Project.objects.get(pk=pr_pk)
+    project.sub_total = sub_total
+    project.gain = gain
+    project.pre_total = pre_total
+    project.retention = retention
+    project.discount = discount
+    project.secure = secure
+    project.commission = commission
+    project.unforeseen = unforeseen
+    project.save()

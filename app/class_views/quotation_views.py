@@ -58,6 +58,8 @@ class QuotationsCreateView(View):
                     prd_q.save()
             project.materials = total
             project.save()
+            CalulcateLiquidation(project.id, project.materials,
+                                 project.personal, project.supplies)
             messages.success(request, "Se ha registrado la cotizacion.")
             return redirect('projects_details', pr_pk=pr_pk)
 
@@ -76,3 +78,25 @@ class QuotationStateView(View):
         messages.success(request,
                          "Se ha actualizado el estado de la cotizacion")
         return redirect('quotations')
+
+
+def CalulcateLiquidation(pr_pk, materials, personal, supplies):
+    sub_total = int(materials) + int(personal) + int(supplies)
+    gain = (sub_total / 100) * 30
+    pre_total = sub_total + gain
+    retention = (pre_total / 100) * 6
+    discount = (pre_total / 100) * 4
+    secure = (pre_total / 100) * 8
+    commission = (pre_total / 100) * 3
+    unforeseen = (pre_total / 100) * 2
+
+    project = Project.objects.get(pk=pr_pk)
+    project.sub_total = sub_total
+    project.gain = gain
+    project.pre_total = pre_total
+    project.retention = retention
+    project.discount = discount
+    project.secure = secure
+    project.commission = commission
+    project.unforeseen = unforeseen
+    project.save()

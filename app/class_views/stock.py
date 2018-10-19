@@ -190,7 +190,7 @@ class ProjectPersonalCreate(View):
     def get(self, request, pr_pk, *args, **kwargs):
         project = Project.objects.get(pk=pr_pk)
         prs_project = PersonalProject.objects.filter(project=project).all()
-        total_general= 0
+        total_general = 0
         if prs_project:
             for prx in prs_project:
                 total_general += prx.total_price
@@ -209,7 +209,8 @@ class ProjectPersonalCreate(View):
             for pr in personals:
                 prs = pr.split(',')
                 prs_search = PersonalProject.objects.filter(project=project,
-                                                            process=prs[0]).count()
+                                                            process=prs[
+                                                                0]).count()
                 if prs_search == 0:
                     personal = PersonalProject(project=project, process=prs[0],
                                                specialty=prs[1],
@@ -224,5 +225,48 @@ class ProjectPersonalCreate(View):
             messages.success(request, "Se ha registrado el personal.")
             return redirect('project_personal', pr_pk=pr_pk)
 
-        messages.error(request, "No se puede guardar el personal en el proyecto")
+        messages.error(request,
+                       "No se puede guardar el personal en el proyecto")
         return redirect('projects_details', pr_pk=pr_pk)
+
+
+class ProjectExternalServicesVew(View):
+    template_name = "auth_templates/stock/create_services_project.html"
+
+    def get(self, request, pr_pk, *args, **kwargs):
+        project = Project.objects.get(pk=pr_pk)
+        ex_services = ExternalServiceProject.objects.filter(
+            project=project).all()
+        total = 0
+        if ex_services:
+            for exs in ex_services:
+                total += exs.total_price
+        return render(request, self.template_name, {'project': project,
+                                                    'ex_services': ex_services,
+                                                    'total_general': total})
+
+    def post(self, request, *args, **kwargs):
+
+        pr_pk = request.POST['pr_pk']
+        total_gn = request.POST['total_gn']
+        exs_pk_ = request.POST.getlist('exs_pk_')
+
+        if exs_pk_:
+            project = Project.objects.get(pk=pr_pk)
+            for exs in exs_pk_:
+                external = exs.split(',')
+                extra = ExternalServiceProject(project=project,
+                                               process=external[0],
+                                               unit_price=external[1],
+                                               quantity=external[2],
+                                               total_price=external[3])
+                extra.save()
+
+            project.supplies = total_gn
+            project.save()
+
+            messages.success(request, "Se ha agregado correctamente")
+            return redirect('projects_details', pr_pk=pr_pk)
+
+        messages.error(request, "No se reconoce la informacion, intentelo de nuevo")
+        return redirect('project_external_services', pr_pk=pr_pk)

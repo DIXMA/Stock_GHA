@@ -50,7 +50,8 @@
                     <h3>COTIZACIÓN</h3>
                     <hr/>
                     {% if quotation %}
-                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}" class="btn btn-primary pull-right">
+                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}"
+                           class="btn btn-primary pull-right">
                             Administrar Cotización
                         </a>
                         <table class="table table-responsive">
@@ -78,7 +79,8 @@
                             </tbody>
                         </table>
                     {% else %}
-                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}" class="btn btn-primary pull-right">
+                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}"
+                           class="btn btn-primary pull-right">
                             Crear Cotización
                         </a>
                     {% endif %}
@@ -87,7 +89,8 @@
                     <h3>Personal</h3>
                     <hr/>
                     {% if personal_project %}
-                        <a href="{% url 'project_personal' pr_pk=project.id %}"  class="btn btn-primary pull-right">
+                        <a href="{% url 'project_personal' pr_pk=project.id %}"
+                           class="btn btn-primary pull-right">
                             Administrar Personal
                         </a>
                         <table class="table table-responsive">
@@ -113,7 +116,8 @@
                             </tbody>
                         </table>
                     {% else %}
-                        <a href="{% url 'project_personal' pr_pk=project.id %}" class="btn btn-primary pull-right">
+                        <a href="{% url 'project_personal' pr_pk=project.id %}"
+                           class="btn btn-primary pull-right">
                             Agrear Personal
                         </a>
                     {% endif %}
@@ -122,10 +126,32 @@
                     <h3>Servicios Externos</h3>
                     <hr/>
                     {% if external_services %}
-                        <button>Administrar Servicios</button>
-                        <table class="table table-responsive"></table>
+                        <a href="{% url 'project_external_services' pr_pk=project.id %}"
+                           class="btn btn-primary pull-right">Administrar Servicios</a>
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <td>Proceso</td>
+                                <td>Valor Unit</td>
+                                <td>Cantidad</td>
+                                <td>Precio Total</td>
+                            </tr>
+                            </thead>
+                            <tbody id="exs_add">
+                            {% for exs in external_services %}
+                                <tr>
+                                    <td>{{ exs.process }}</td>
+                                    <td>{{ exs.unit_price }}</td>
+                                    <td>{{ exs.quantity }}</td>
+                                    <td>{{ exs.total_price }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     {% else %}
-                        <button>Agrear Servicios</button>
+                        <a href="{% url 'project_external_services' pr_pk=project.id %}"
+                           class="btn btn-primary pull-right">
+                            Agrear Servicios</a>
                     {% endif %}
 
                     <hr/>

@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Servicios Extra</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-responsive">
+                        <thead>
+                        <tr>
+                            <th>PROYECTO</th>
+                            <th>EMPRESA</th>
+                            <th>NIT</th>
+                            <th>FECHA INICIO</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ project.id }}</td>
+                            <td>{{ project.client.name }}</td>
+                            <td>{{ project.client.nit }}</td>
+                            <td>{{ project.init_date }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <form action="{% url 'project_external_services_action' %}"
+                          method="post">
+                        {% csrf_token %}
+                        <div id="hidden_data">
+                            <input type="hidden" name="pr_pk"
+                                   value="{{ project.id }}">
+                            {% if prs_project %}
+                                {% for exs in ex_services %}
+                                    <input type="hidden"
+                                           id="exs_pk_{{ exs.id }}"
+                                           name="exs_pk_"
+                                           value="{{ exs.process }}, {{ exs.unit_price }}, {{ exs.quantity }}, {{ exs.total_price }}">
+                                {% endfor %}
+                            {% endif %}
+                            <input type="hidden" name="total_gn" id="total_gn"
+                                   value="{{ total_general }}">
+                        </div>
+                        <button type="button"
+                                class="btn btn-primary pull-right"
+                                data-toggle="modal"
+                                data-target="#modalAddExs">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <td>Proceso</td>
+                                <td>Valor Unit</td>
+                                <td>Cantidad</td>
+                                <td>Precio Total</td>
+                            </tr>
+                            </thead>
+                            <tbody id="exs_add">
+                            {% for exs in ex_services %}
+                                <tr>
+                                    <td>{{ exs.process }}</td>
+                                    <td>{{ exs.unit_price }}</td>
+                                    <td>{{ exs.quantity }}</td>
+                                    <td>{{ exs.total_price }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <span><b>Total: </b> <b
+                                id="total">{{ total_general }}</b></span>
+                        <div class="form-group" id="footer_products">
+                            <button type="submit"
+                                    class="btn btn-primary pull-right">
+                                Enviar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAddExs" tabindex="-1" role="dialog"
+         aria-labelledby="modalAddExsLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalAddExsLabel">
+                        Agregar Personal</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label>Proceso</label>
+                            <select class="form-control" id="process_select">
+                                <option value="Lavado">Lavado</option>
+                                <option value="Desinfectado">Desinfectado
+                                </option>
+                                <option value="Desarmada">Desarmada</option>
+                                <option value="Armada">Armada</option>
+                                <option value="Mecanica">Mecanica</option>
+                                <option value="Hidraulica">Hidraulica</option>
+                                <option value="Niquelado">Niquelado</option>
+                                <option value="Pintura Praymer">Pintura
+                                    Praymer
+                                </option>
+                                <option value="Pintura Electrostática">Pintura
+                                    Electrostática
+                                </option>
+                                <option value="Pintura Epoxica Tuberia">Pintura
+                                    Epoxica Tuberia
+                                </option>
+                                <option value="Pintura Epoxica Lámina">Pintura
+                                    Epoxica Lámina
+                                </option>
+                                <option value="Sanblasting">Sanblasting</option>
+                                <option value="Banco">Banco</option>
+                                <option value="Corte Manual">Corte Manual
+                                </option>
+                                <option value="Corte con máquina">Corte con
+                                    máquina
+                                </option>
+                                <option value="Dobleces con máquina">Dobleces
+                                    con máquina
+                                </option>
+                                <option value="Esmeril">Esmeril</option>
+                                <option value="Pulidora">Pulidora</option>
+                                <option value="Motor tool">Motor tool</option>
+                                <option value="Limada">Limada</option>
+                                <option value="Lijada">Lijada</option>
+                                <option value="Carbo Streep">Carbo Streep
+                                </option>
+                                <option value="Almidonada">Almidonada</option>
+                                <option value="Dobleces banco">Dobleces banco
+                                </option>
+                                <option value="Curvado de Tubo">Curvado de
+                                    Tubo
+                                </option>
+                                <option value="Troquelado Manual">Troquelado
+                                    Manual
+                                </option>
+                                <option value="Cuñero manual">Cuñero manual
+                                </option>
+                                <option value="Espichado de Tubo">Espichado de
+                                    Tubo
+                                </option>
+                                <option value="Taladro">Taladro</option>
+                                <option value="Roscado manual">Roscado manual
+                                </option>
+                                <option value="Fresado">Fresado</option>
+                                <option value="Obra civil">Obra civil</option>
+                                <option value="Remachado">Remachado</option>
+                                <option value="Soldadura de Arco">Soldadura de
+                                    Arco
+                                </option>
+                                <option value="Soldadura MIC">Soldadura MIC
+                                </option>
+                                <option value="Soldadura TIC">Soldadura TIC
+                                </option>
+                                <option value="Soldadura Oxiacetilenica">
+                                    Soldadura Oxiacetilenica
+                                </option>
+                                <option value="Soldadura aluminio">Soldadura
+                                    aluminio
+                                </option>
+                                <option value="Corte laser">Corte laser</option>
+                                <option value="Brillada">Brillada</option>
+                                <option value="Brillada con pulimento">Brillada
+                                    con pulimento
+                                </option>
+                                <option value="Lavado">Lavado</option>
+                                <option value="Pintada">Pintada</option>
+                                <option value="Empacado">Empacado</option>
+                                <option value="Telecarga">Telecarga</option>
+                                <option value="Taxicamioneta">Taxicamioneta
+                                </option>
+                                <option value="Transp.Intermunicipal">
+                                    Transp.Intermunicipal
+                                </option>
+                                <option value="Transportes urbanos bus">
+                                    Transportes urbanos bus
+                                </option>
+                                <option value="Transportes urbanos taxi">
+                                    Transportes urbanos taxi
+                                </option>
+                                <option value="Grua">Grua</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Valor Unitario</label>
+                            <input type="number" id="price_unit"
+                                   class="form-control" value="0">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Cantidad</label>
+                            <input type="number" id="quantity"
+                                   class="form-control" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="addProduct()">
+                        Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addProduct() {
+            var process = $("#process_select").val();
+            var price_unit = $("#price_unit").val();
+            var quantity = $("#quantity").val();
+            var tot = parseInt(quantity) * parseInt(price_unit);
+            var total = parseInt($("#total_gn").val()) + tot;
+            var tr = "<tr>";
+            tr += "<td>" + process + "</td>";
+            tr += "<td>" + price_unit + "</td>";
+            tr += "<td>" + quantity + "</td>";
+            tr += "<td>" + tot + "</td>";
+            tr += "</tr>";
+            $("#total_gn").val(total);
+            $("#total").html(total);
+            $("#exs_add").append(tr);
+            $("#footer_products").append('<input type="hidden" id="exs_pk_' + process + '" name="exs_pk_" value="' + process + ', ' + price_unit + ', ' + quantity + ',' + tot + '">');
+        }
+    </script>
+
+{% endblock %}

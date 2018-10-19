@@ -38,7 +38,7 @@
                                     <input type="hidden"
                                            id="prs_pk_{{ pr.id }}"
                                            name="prs_pk_"
-                                           value="{{ pr.id }}">
+                                           value="{{ pr.process }}, {{ pr.specialty }}, {{ pr.hour_price }}, {{ pr.hour_work }}, {{ pr.total_price }}">
                                 {% endfor %}
                             {% endif %}
                             <input type="hidden" name="total_gn" id="total_gn"

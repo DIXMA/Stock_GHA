@@ -12,7 +12,7 @@ from app.class_views.users_views import UsersListView, UsersCreateView
 from app.class_views.stock import StockView, StockCreateView, RawMaterial, \
     RawMaterialCreateView, StockOperatorView, StrockOperatorUdateView, \
     ProjectsView, ProjectCreateView, ProjectDetailsView, ProjectPersonalCreate, \
-    ProjectExternalServicesVew
+    ProjectExternalServicesVew, ProjectUpdateStateView
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login"),
@@ -47,6 +47,9 @@ urlpatterns = [
     url(r'^projects/details/(?P<pr_pk>[0-9]+)/$',
         login_required(ProjectDetailsView.as_view()),
         name="projects_details"),
+    url(r'^projects/update_state/$',
+        login_required(ProjectUpdateStateView.as_view()),
+        name="projects_update_state"),
     # Projects -> Quotations
     url(r'^projects/quotation/$', login_required(QuotationsView.as_view()),
         name="quotations"),
@@ -73,6 +76,10 @@ urlpatterns = [
     url(r'^projects/external_services_action/$',
         login_required(ProjectExternalServicesVew.as_view()),
         name="project_external_services_action"),
+    # Project -> manager
+    url(r'^projects/manager/(?P<pr_pk>[0-9]+)/$',
+        login_required(ProjectExternalServicesVew.as_view()),
+        name="project_manager"),
 
     # Stock
     url(r'^raw_material/$', login_required(RawMaterial.as_view()),

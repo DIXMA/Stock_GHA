@@ -106,9 +106,27 @@ class ExternalServiceProject(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class ProjectGestion(models.Model):
-    pass
-
+class ProjectManagerMan(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    # Man
+    date_man = models.DateField(blank=True, null=True)
+    process_man = models.CharField(max_length=100, blank=True, null=True)
+    init_hour_man = models.CharField(max_length=100, blank=True, null=True)
+    end_hour_man = models.CharField(max_length=100, blank=True, null=True)
+    total_hour_man = models.CharField(max_length=100, blank=True, null=True)
+    type_employee_man = models.CharField(max_length=100, blank=True, null=True)
+    price_real_man = models.IntegerField(blank=True, null=True)
+    # Machine
+    date_machine = models.DateField(blank=True, null=True)
+    process_machine = models.CharField(max_length=100, blank=True, null=True)
+    init_hour_machine = models.CharField(max_length=100, blank=True, null=True)
+    end_hour_machine = models.CharField(max_length=100, blank=True, null=True)
+    total_hour_machine = models.CharField(max_length=100, blank=True, null=True)
+    price_machine = models.IntegerField(blank=True, null=True)
+    price_real_machine = models.IntegerField(blank=True, null=True)
+    resources_machine = models.IntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
 class Role(models.Model):
     STATUS_CHOICES = ((0, 'Inactivo'), (1, 'Activo'),)

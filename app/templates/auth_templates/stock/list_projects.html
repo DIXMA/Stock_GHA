@@ -8,7 +8,8 @@
                 <div class="box-header">
                     <h3 class="box-title">Proyectos</h3>
                     <div class="box-tools pull-right">
-                        <a href="{% url 'projects_create_form' %}" class="btn btn-default">
+                        <a href="{% url 'projects_create_form' %}"
+                           class="btn btn-default">
                             <i class="fa fa-plus"></i> Nuevo Proyecto
                         </a>
                     </div>
@@ -28,18 +29,38 @@
                             </thead>
                             <tbody>
                             {% for p in projects %}
-                                <tr>
-                                <td>{{ p.id }}</td>
-                                <td>{{ p.client.name }}</td>
-                                <td>{{ p.client.nit }}</td>
-                                <td>{{ p.init_date }}</td>
-                                <td>{{ p.state }}</td>
-                                <td>
-                                    <a href="{% url 'projects_details' pr_pk=p.id %}" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Detalles">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                </td>
-                                </tr>
+                                {% if p.state == 1 %}
+                                    <tr style="background-color: #9bf39b;">
+                                        {% elif p.state == 2 %}
+                                    <tr style="background-color: #f2b5b5;">
+                                        {% else %}
+                                    <tr>
+                                {% endif %}
+                            <td>{{ p.id }}</td>
+                            <td>{{ p.client.name }}</td>
+                            <td>{{ p.client.nit }}</td>
+                            <td>{{ p.init_date }}</td>
+                            <td>
+                                {% if p.state == 0 %}
+                                    Nuevo
+                                {% elif p.state == 1 %}
+                                    Iniciado
+                                {% elif p.state == 2 %}
+                                    Finalizado
+                                {% elif p.state == 3 %}
+                                    Cancelado
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'projects_details' pr_pk=p.id %}"
+                                   class="btn btn-primary"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Detalles">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                            </tr>
                             {% endfor %}
                             </tbody>
                         </table>

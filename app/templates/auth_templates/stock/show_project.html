@@ -11,9 +11,12 @@
                         <a href="#" class="btn btn-default">
                             Gestion del Proyecto
                         </a>
-                        <button class="btn btn-default">
-                            Estado
-                        </button>
+                        {% if project.state < 2 %}
+                            <button class="btn btn-default" data-toggle="modal"
+                                    data-target="#modalAddState">
+                                <i class="fa fa-cube"></i> Estado
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="box-body">
@@ -41,8 +44,25 @@
                             <th colspan="4">Diseño Preliminar</th>
                         </tr>
                         <tr>
-                            <td><img src="{{ project.init_design.url }}"></td>
+                            <td><img src="{{ project.init_design.url }}"
+                                     style="width: 50%;"></td>
                         </tr>
+                        {% if project.final_requirements %}
+                            <tr>
+                                <th colspan="4">Requerimientos FInales</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">{{ project.final_requirements }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Diseño Final</th>
+                            </tr>
+                            <tr>
+                                <td><img src="{{ project.final_design.url }}"
+                                         style="width: 50%;">
+                                </td>
+                            </tr>
+                        {% endif %}
                         </tbody>
                     </table>
 
@@ -127,7 +147,8 @@
                     <hr/>
                     {% if external_services %}
                         <a href="{% url 'project_external_services' pr_pk=project.id %}"
-                           class="btn btn-primary pull-right">Administrar Servicios</a>
+                           class="btn btn-primary pull-right">Administrar
+                            Servicios</a>
                         <table class="table table-responsive">
                             <thead>
                             <tr>
@@ -157,8 +178,104 @@
                     <hr/>
                     <h3>Liquidación</h3>
                     <hr/>
-                    <table class="table table-responsive"></table>
+                    <table class="table table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>MATERIALES</th>
+                            <td>$ {{ project.materials }}</td>
+                        </tr>
+                        <tr>
+                            <th>COSTOS PERSONAL</th>
+                            <td>$ {{ project.personal }}</td>
+                        </tr>
+                        <tr>
+                            <th>COSTOS MAQUINARIA E INSUMOS</th>
+                            <td>$ {{ project.supplies }}</td>
+                        </tr>
+                        <tr>
+                            <th>SUBTOTAL</th>
+                            <td>$ {{ project.sub_total }}</td>
+                        </tr>
+                        <tr>
+                            <th>GANANCIA</th>
+                            <td>$ {{ project.gain }}</td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL PARCIAL</th>
+                            <td>$ {{ project.pre_total }}</td>
+                        </tr>
+                        <tr>
+                            <th>RETENCION</th>
+                            <td>$ {{ project.retention }}</td>
+                        </tr>
+                        <tr>
+                            <th>RIESGO BIOLOGICO</th>
+                            <td>$ {{ project.risk_b }}</td>
+                        </tr>
+                        <tr>
+                            <th>DESCUENTO CONTABILIDAD</th>
+                            <td>$ {{ project.discount }}</td>
+                        </tr>
+                        <tr>
+                            <th>SEGURO</th>
+                            <td>$ {{ project.secure }}</td>
+                        </tr>
+                        <tr>
+                            <th>COMISION</th>
+                            <td>$ {{ project.commission }}</td>
+                        </tr>
+                        <tr>
+                            <th>IMPREVISTOS</th>
+                            <td>$ {{ project.unforeseen }}</td>
+                        </tr>
+                        <tr>
+                            <th>DESCUENTO NEGOCIABLE</th>
+                            <td>$ {{ project.discount_opc }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAddState" tabindex="-1" role="dialog"
+         aria-labelledby="modalAddStateLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalAddStateLabel">
+                        Estado del Proyecto</h4>
+                </div>
+                <form action="{% url 'projects_update_state' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label>Proceso</label>
+                                <select class="form-control"
+                                        id="state" name="state">
+                                    <option value="1">Iniciado</option>
+                                    <option value="2">Finalizado</option>
+                                    <option value="3">Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="pr_pk" value="{{ project.id }}">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Cerrar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Guardar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

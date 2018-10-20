@@ -277,6 +277,25 @@ class ProjectExternalServicesVew(View):
         return redirect('project_external_services', pr_pk=pr_pk)
 
 
+class ProjectUpdateStateView(View):
+
+    def post(self, request, *args, **kwargs):
+        pr_pk = request.POST['pr_pk']
+        state = request.POST['state']
+        project = Project.objects.get(pk=pr_pk)
+        project.state = state
+        project.save()
+        messages.success(request, 'Se ha actualizado el estado del proyecto')
+        return redirect('projects_details', pr_pk=pr_pk)
+
+
+class ProjectManagerView(View):
+    template_name = "auth_templates/stock/create_services_project.html"
+
+    def get(self, request, pr_pk, *args, **kwargs):
+        pass
+
+
 def CalulcateLiquidation(pr_pk, materials, personal, supplies):
     sub_total = int(materials) + int(personal) + int(supplies)
     gain = (sub_total / 100) * 30

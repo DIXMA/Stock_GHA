@@ -92,7 +92,7 @@ class StockOperatorView(View):
     template_name = "auth_templates/stock/list_stock_operator.html"
 
     def get(self, request, *args, **kwargs):
-        stock = Product.objects.filter(status=1).all()
+        stock = Product.objects.all()
         return render(request, self.template_name, {'stock': stock})
 
 

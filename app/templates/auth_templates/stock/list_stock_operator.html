@@ -15,24 +15,28 @@
                 </div>
                 <div class="box-body">
                     {% if stock %}
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>FECHA ENTRADA</th>
-                        <th>REFERENCIA</th>
-                        <th>CALIBRE</th>
-                        <th>LARGO</th>
-                        <th>ANCHO</th>
-                        <th>ACABADO</th>
-                        <th>AREA</th>
-                        <th>DISPONIBILIDAD</th>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>FECHA ENTRADA</th>
+                                <th>REFERENCIA</th>
+                                <th>CALIBRE</th>
+                                <th>LARGO</th>
+                                <th>ANCHO</th>
+                                <th>ACABADO</th>
+                                <th>AREA</th>
+                                <th>DISPONIBILIDAD</th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for m in stock %}
-                        <tr>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for m in stock %}
+                                {% if m.state == 'Disponible' %}
+                                    <tr style="background-color: #9bf39b;">
+                                        {% else %}
+                                    <tr style="background-color: #f2b5b5;">
+                                {% endif %}
                             <td>{{ m.id }}</td>
                             <td>{{ m.in_inv }}</td>
                             <td>{{ m.reference }}</td>
@@ -42,15 +46,15 @@
                             <td>{{ m.acabado }}</td>
                             <td>{{ m.area }}</td>
                             <td>{{ m.state }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <span class="label label-warning">
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <span class="label label-warning">
                     No se ha registrado materia prima en el sistema.
                 </span>
-            {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -23,7 +23,7 @@
                                         - Seleccione una referencia -
                                     </option>
                                     {% for m in materials %}
-                                        <option value="{{ m.id }}/{{ m.caliber_mp }}/{{ m.large_mp }}/{{ m.anch_mp }}">
+                                        <option value="{{ m.id }}/{{ m.caliber_mp }}/{{ m.large_mp }}/{{ m.anch_mp }}/{{ m.reference }}">
                                             {{ m.reference }}
                                         </option>
                                     {% endfor %}
@@ -58,17 +58,22 @@
                                 <input type="text" name="acabado" id="acabado"
                                        class="form-control" value="" required>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Area</label>
                                 <input type="text" name="area" id="area"
                                        class="form-control" value="" required>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Fecha Ingreso Almacen</label>
                                 <input type="date" name="date" id="date"
                                        class="form-control" value="" required>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
+                                <label>Zona</label>
+                                <input type="text" name="zone" id="zone"
+                                       class="form-control" value="--" required readonly>
+                            </div>
+                            <div class="form-group col-md-6">
                                 <label>Disponibilidad</label>
                                 <select class="form-control" name="state"
                                         id="state" required>
@@ -114,6 +119,38 @@
                 $("#date").val('');
                 $("#date").val('');
             }
+        }
+
+        function validateZone(){
+            var large = $("#large").val();
+            var anch = $("#anch").val();
+            var pro = split($("#product").val(), '/')[0];
+            var zone = '--';
+            switch (pro) {
+                case 'LA-AI-201':
+                    if(large == 0.45 && anch == 1.52){
+                        zone = 'Zona A';
+                    }else if(large == 0.23 && anch == 0.76){
+                        zone = 'Zona B';
+                    }else if(large == 0.15 && anch == 0.51){
+                        zone = 'Zona C';
+                    }else if(large == 0.11 && anch == 0.38){
+                        zone = 'Zona D';
+                    }
+                    break;
+                case 'LA-AI-204':
+                    if(large == 0.61 && anch == 1.22){
+                        zone = 'Zona A';
+                    }else if(large == 0.30 && anch == 0.61){
+                        zone = 'Zona B';
+                    }else if(large == 0.15 && anch == 0.51){
+                        zone = 'Zona C';
+                    }else if(large == 0.11 && anch == 0.38){
+                        zone = 'Zona D';
+                    }
+                    break;
+            }
+
         }
 
     </script>

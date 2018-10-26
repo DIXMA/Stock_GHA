@@ -10,7 +10,7 @@
                 </div>
                 <div class="box-body">
                     <form action="{% url 'operator_stock_update_action' %}"
-                          method="post">
+                          method="post" id="">
                         {% csrf_token %}
                         <input type="hidden" name="pk" id="pk" value="">
                         <div class="form-group">
@@ -40,17 +40,17 @@
                              style="display: none;">
                             <div class="form-group col-md-6">
                                 <label>Calibre</label>
-                                <input type="number" name="caliber" id="caliber"
+                                <input type="number" name="caliber" id="caliber" step="0.01"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Largo</label>
-                                <input type="number" name="large" id="large"
+                                <input type="number" name="large" id="large" step="0.01"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Ancho</label>
-                                <input type="number" name="ancho" id="ancho"
+                                <input type="number" name="ancho" id="ancho" step="0.01"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
@@ -71,7 +71,7 @@
                             <div class="form-group col-md-6">
                                 <label>Zona</label>
                                 <input type="text" name="zone" id="zone"
-                                       class="form-control" value="--" required readonly>
+                                       class="form-control" value="" required readonly>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Disponibilidad</label>
@@ -86,7 +86,8 @@
                                 <a href="{% url 'stock_operator' %}" class="btn btn-default">
                                     <i class="fa fa-close"></i> Cancelar
                                 </a>
-                                <button type="submit" class="btn btn-primary pull-right">
+                                <button type="button" onclick="validateZone()"
+                                        class="btn btn-primary pull-right">
                                     <i class="fa fa-send"></i> Guardar
                                 </button>
                             </div>
@@ -123,32 +124,84 @@
 
         function validateZone(){
             var large = $("#large").val();
-            var anch = $("#anch").val();
-            var pro = split($("#product").val(), '/')[0];
-            var zone = '--';
+            var anch = $("#ancho").val();
+            var pro = $("#product").val().split('/')[4];
+            var zone = '';
             switch (pro) {
                 case 'LA-AI-201':
-                    if(large == 0.45 && anch == 1.52){
+                    if(large >= 0.45 && anch <= 1.52){
                         zone = 'Zona A';
-                    }else if(large == 0.23 && anch == 0.76){
+                    }else if(large >= 0.23 && anch <= 0.76){
                         zone = 'Zona B';
-                    }else if(large == 0.15 && anch == 0.51){
+                    }else if(large >= 0.15 && anch <= 0.51){
                         zone = 'Zona C';
-                    }else if(large == 0.11 && anch == 0.38){
+                    }else if(large >= 0.11 && anch <= 0.38){
                         zone = 'Zona D';
                     }
                     break;
                 case 'LA-AI-204':
-                    if(large == 0.61 && anch == 1.22){
+                    if(large >= 0.61 && anch == 1.22){
                         zone = 'Zona A';
-                    }else if(large == 0.30 && anch == 0.61){
+                    }else if(large >= 0.30 && anch <= 0.61){
                         zone = 'Zona B';
-                    }else if(large == 0.15 && anch == 0.51){
+                    }else if(large >= 0.20 && anch <= 0.41){
                         zone = 'Zona C';
-                    }else if(large == 0.11 && anch == 0.38){
+                    }else if(large >= 0.15 && anch <= 0.31){
                         zone = 'Zona D';
                     }
                     break;
+                case 'LA-AI-301':
+                    if(large >= 0.61 && anch <= 1.52){
+                        zone = 'Zona A';
+                    }else if(large >= 0.30 && anch <= 0.76){
+                        zone = 'Zona B';
+                    }else if(large >= 0.20 && anch <= 0.51){
+                        zone = 'Zona C';
+                    }else if(large >= 0.15 && anch <= 0.38){
+                        zone = 'Zona D';
+                    }
+                    break;
+                case 'LA-AI-304':
+                    if(large >= 0.76 && anch <= 1.52){
+                        zone = 'Zona A';
+                    }else if(large >= 0.38 && anch <= 0.76){
+                        zone = 'Zona B';
+                    }else if(large >= 0.25 && anch <= 0.51){
+                        zone = 'Zona C';
+                    }else if(large >= 0.19 && anch <= 0.38){
+                        zone = 'Zona D';
+                    }
+                    break;
+                case 'LA-AI-304L':
+                    if(large >= 0.76 && anch <= 1.83){
+                        zone = 'Zona A';
+                    }else if(large >= 0.38 && anch <= 0.92){
+                        zone = 'Zona B';
+                    }else if(large >= 0.25 && anch <= 0.61){
+                        zone = 'Zona C';
+                    }else if(large >= 0.19 && anch <= 0.46){
+                        zone = 'Zona D';
+                    }
+                    break;
+                case 'LA-AI-430':
+                    if(large >= 0.76 && anch <= 3.05){
+                        zone = 'Zona A';
+                    }else if(large >= 0.38 && anch <= 1.52){
+                        zone = 'Zona B';
+                    }else if(large >= 0.25 && anch <= 1.02){
+                        zone = 'Zona C';
+                    }else if(large >= 0.19 && anch <= 0.76){
+                        zone = 'Zona D';
+                    }
+                    break;
+                default:
+                    zone = "Zona A";
+
+            }
+
+            if(zone){
+                $("#zone").val(zone);
+
             }
 
         }

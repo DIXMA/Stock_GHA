@@ -128,6 +128,7 @@ class ProjectManagerMan(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
+
 class Role(models.Model):
     STATUS_CHOICES = ((0, 'Inactivo'), (1, 'Activo'),)
     name = models.CharField(max_length=100)

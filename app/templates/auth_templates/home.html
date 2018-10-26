@@ -5,47 +5,69 @@
         <div class="col-md-12">
             <div class="box box-default">
                 <div class="box-header">
+                    <h3 class="box-title">Proyectos</h3>
                     <div class="box-tools pull-right">
-                        <button class="btn btn-sm btn-default pull-right">
-                            <i class="fa fa-plus"></i> Nuevo Usuairo
-                        </button>
+                        <a href="{% url 'projects_create_form' %}"
+                           class="btn btn-default">
+                            <i class="fa fa-plus"></i> Nuevo Proyecto
+                        </a>
                     </div>
                 </div>
                 <div class="box-body">
-                    {% if users %}
+                    {% if projects %}
                         <table class="table table-bordered">
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Email</th>
-                                <th>Estado</th>
-                                <th>Fecha Registro</th>
-                                <th>Gestión</th>
+                                <th>EMPRESA</th>
+                                <th>NIT EMPRESA</th>
+                                <th>FECHA INICIO</th>
+                                <th>ESTADO</th>
+                                <th>GESTION</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for usr in users %}
-                                <tr>
-                                    <td>usr.id</td>
-                                    <td>usr.name</td>
-                                    <td>usr.username</td>
-                                    <td>usr.state</td>
-                                    <td>usr.created_at</td>
-                                    <td><a href="#"><i class="fa fa-trash"></i></a>
-                                    </td>
-                                </tr>
+                            {% for p in projects %}
+                                {% if p.state == 1 %}
+                                    <tr style="background-color: #9bf39b;">
+                                        {% elif p.state == 2 %}
+                                    <tr style="background-color: #f2b5b5;">
+                                        {% else %}
+                                    <tr>
+                                {% endif %}
+                            <td>{{ p.id }}</td>
+                            <td>{{ p.client.name }}</td>
+                            <td>{{ p.client.nit }}</td>
+                            <td>{{ p.init_date }}</td>
+                            <td>
+                                {% if p.state == 0 %}
+                                    Nuevo
+                                {% elif p.state == 1 %}
+                                    Iniciado
+                                {% elif p.state == 2 %}
+                                    Finalizado
+                                {% elif p.state == 3 %}
+                                    Cancelado
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'projects_details' pr_pk=p.id %}"
+                                   class="btn btn-primary"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Detalles">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                            </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     {% else %}
-                        <span class="label label-warning">
-            No se han registrado usuarios en el sisitema
-        </span>
+                        <span class="label label-warning">No se han registrado proyectos.</span>
                     {% endif %}
                 </div>
             </div>
-
         </div>
     </div>
 

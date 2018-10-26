@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
-from app.models import Employee, Quotation
+from app.models import Project
 
 
 class LoginView(TemplateView):
@@ -37,5 +37,5 @@ class HomeView(View):
     template_name = 'auth_templates/quotations/list.html'
 
     def get(self, request, *args, **kwargs):
-        quotations = Quotation.objects.all()
-        return render(request, self.template_name, {'quotations': quotations})
+        projects = Project.objects.all()
+        return render(request, self.template_name, {'projects': projects})

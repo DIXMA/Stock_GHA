@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 
 from app.models import Product, Project, Client, Quotation, ProductsQuotation, \
-    PersonalProject, ExternalServiceProject
+    PersonalProject, ExternalServiceProject, ProjectManagerMan
 
 
 class StockView(View):
@@ -290,10 +290,46 @@ class ProjectUpdateStateView(View):
 
 
 class ProjectManagerView(View):
-    template_name = "auth_templates/stock/create_services_project.html"
+    template_name = "auth_templates/stock/list_project_manager.html"
 
     def get(self, request, pr_pk, *args, **kwargs):
-        pass
+        project = Project.objects.get(pk=pr_pk)
+        prj_manager = ProjectManagerMan.objects.filter(project=project).all()
+        return render(request, self.template_name, {'prj_manager': prj_manager,
+                                                    'project': project})
+
+    def post(self, request, *args, **kwargs):
+        project_pk = request.POST['pr_pk']
+        date_man = request.POST['date_prc']
+        process_man = request.POST['process_select']
+        # MAN
+        init_hour_man = request.POST['hman_init']
+        end_hour_man = request.POST['hman_end']
+        total_hour_man = request.POST['hman_tot']
+        type_employee_man = request.POST['type_employee']
+        price_real_man = request.POST['price_mo']
+        # MACHINE
+        init_hour_machine = request.POST['hmaq_init']
+        end_hour_machine = request.POST['hmaq_end']
+        total_hour_machine = request.POST['hmaq_tot']
+        price_machine = request.POST['price_mqh']
+        price_real_machine = request.POST['price_ma']
+        resources_machine = request.POST['resources']
+
+        prj_manager = ProjectManagerMan(
+            project_id=project_pk, date_man=date_man, process_man=process_man,
+            init_hour_man=init_hour_man, end_hour_man=end_hour_man,
+            total_hour_man=total_hour_man, type_employee_man=type_employee_man,
+            price_real_man=price_real_man, init_hour_machine=init_hour_machine,
+            end_hour_machine=end_hour_machine, price_machine=price_machine,
+            total_hour_machine=total_hour_machine,
+            price_real_machine=price_real_machine,
+            resources_machine=resources_machine
+        )
+        prj_manager.save()
+        messages.success(request, "Se ha agregado el registro de seguimiento "
+                                  "al proyecto.")
+        return redirect('project_manager', pr_pk=project_pk)
 
 
 def CalulcateLiquidation(pr_pk, materials, personal, supplies):

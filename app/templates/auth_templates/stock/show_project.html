@@ -8,8 +8,8 @@
                 <div class="box-header">
                     <h3>Detalles del Proyecto</h3>
                     <div class="box-tools pull-right">
-                        <a href="#" class="btn btn-default">
-                            Gestion del Proyecto
+                        <a href="{% url 'project_manager' pr_pk=project.id %}" class="btn btn-default">
+                            <i class="fa fa-list-alt"></i> Gestion del Proyecto
                         </a>
                         {% if project.state < 2 %}
                             <button class="btn btn-default" data-toggle="modal"
@@ -256,7 +256,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label>Proceso</label>
+                                <label>Estado: </label>
                                 <select class="form-control"
                                         id="state" name="state">
                                     <option value="1">Iniciado</option>

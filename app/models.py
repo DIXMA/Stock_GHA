@@ -134,6 +134,7 @@ class Role(models.Model):
     name = models.CharField(max_length=100)
     state = models.IntegerField(choices=STATUS_CHOICES, default=1)
     description = models.CharField(max_length=255)
+    objective = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

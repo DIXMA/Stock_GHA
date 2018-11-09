@@ -67,17 +67,17 @@
                     </table>
 
                     <hr/>
-                    <h3>COTIZACIÓN</h3>
+                    <h3>MATERIALES</h3>
                     <hr/>
                     {% if quotation %}
                         <a href="{% url 'projects_quotation_create' pr_pk=project.id %}"
                            class="btn btn-primary pull-right">
-                            Administrar Cotización
+                            Administrar Materiales
                         </a>
                         <table class="table table-responsive">
                             <thead>
                             <tr>
-                                <th>Referencia</th>
+                                <th>Material</th>
                                 <th>Valor Uni</th>
                                 <th>Cantidad</th>
                                 <th>Valor Total</th>
@@ -87,14 +87,14 @@
                             {% for prq in products_quotation %}
                                 <tr>
                                     <td>{{ prq.product.reference }}</td>
-                                    <td>{{ prq.product.price_lm }}</td>
+                                    <td>${{ prq.product.price_lm }}</td>
                                     <td>{{ prq.quantity }}</td>
-                                    <td>{{ prq.total }}</td>
+                                    <td>${{ prq.total }}</td>
                                 </tr>
                             {% endfor %}
                             <tr>
                                 <th>TOTAL</th>
-                                <td>{{ quotation.price }}</td>
+                                <td>${{ quotation.price }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -106,7 +106,7 @@
                     {% endif %}
 
                     <hr/>
-                    <h3>Personal</h3>
+                    <h3>Mano de obra</h3>
                     <hr/>
                     {% if personal_project %}
                         <a href="{% url 'project_personal' pr_pk=project.id %}"
@@ -128,11 +128,15 @@
                                 <tr>
                                     <td>{{ px.process }}</td>
                                     <td>{{ px.specialty }}</td>
-                                    <td>{{ px.hour_price }}</td>
+                                    <td>${{ px.hour_price }}</td>
                                     <td>{{ px.hour_work }}</td>
-                                    <td>{{ px.total_price }}</td>
+                                    <td>${{ px.total_price }}</td>
                                 </tr>
                             {% endfor %}
+                            <tr>
+                                <th>TOTAL</th>
+                                <td>${{ project.personal }}</td>
+                            </tr>
                             </tbody>
                         </table>
                     {% else %}
@@ -162,9 +166,9 @@
                             {% for exs in external_services %}
                                 <tr>
                                     <td>{{ exs.process }}</td>
-                                    <td>{{ exs.unit_price }}</td>
+                                    <td>${{ exs.unit_price }}</td>
                                     <td>{{ exs.quantity }}</td>
-                                    <td>{{ exs.total_price }}</td>
+                                    <td>${{ exs.total_price }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -182,55 +186,55 @@
                         <tbody>
                         <tr>
                             <th>MATERIALES</th>
-                            <td>$ {{ project.materials }}</td>
+                            <td>${{ project.materials }}</td>
                         </tr>
                         <tr>
                             <th>COSTOS PERSONAL</th>
-                            <td>$ {{ project.personal }}</td>
+                            <td>${{ project.personal }}</td>
                         </tr>
                         <tr>
                             <th>COSTOS MAQUINARIA E INSUMOS</th>
-                            <td>$ {{ project.supplies }}</td>
+                            <td>${{ project.supplies }}</td>
                         </tr>
                         <tr>
                             <th>SUBTOTAL</th>
-                            <td>$ {{ project.sub_total }}</td>
+                            <td>${{ project.sub_total }}</td>
                         </tr>
                         <tr>
                             <th>GANANCIA</th>
-                            <td>$ {{ project.gain }}</td>
+                            <td>${{ project.gain }}</td>
                         </tr>
                         <tr>
                             <th>TOTAL PARCIAL</th>
-                            <td>$ {{ project.pre_total }}</td>
+                            <td>${{ project.pre_total }}</td>
                         </tr>
                         <tr>
                             <th>RETENCION</th>
-                            <td>$ {{ project.retention }}</td>
+                            <td>${{ project.retention }}</td>
                         </tr>
                         <tr>
                             <th>RIESGO BIOLOGICO</th>
-                            <td>$ {{ project.risk_b }}</td>
+                            <td>${{ project.risk_b }}</td>
                         </tr>
                         <tr>
                             <th>DESCUENTO CONTABILIDAD</th>
-                            <td>$ {{ project.discount }}</td>
+                            <td>${{ project.discount }}</td>
                         </tr>
                         <tr>
                             <th>SEGURO</th>
-                            <td>$ {{ project.secure }}</td>
+                            <td>${{ project.secure }}</td>
                         </tr>
                         <tr>
                             <th>COMISION</th>
-                            <td>$ {{ project.commission }}</td>
+                            <td>${{ project.commission }}</td>
                         </tr>
                         <tr>
                             <th>IMPREVISTOS</th>
-                            <td>$ {{ project.unforeseen }}</td>
+                            <td>${{ project.unforeseen }}</td>
                         </tr>
                         <tr>
                             <th>DESCUENTO NEGOCIABLE</th>
-                            <td>$ {{ project.discount_opc }}</td>
+                            <td>${{ project.discount_opc }}</td>
                         </tr>
                         </tbody>
                     </table>

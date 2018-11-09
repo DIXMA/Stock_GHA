@@ -78,10 +78,11 @@ class RawMaterialCreateView(View):
         large_mp = request.POST['large_mp']
         anch_mp = request.POST['anch_mp']
         price = request.POST['price']
+        acabado = request.POST['acabado']
 
         product = Product(reference=ref, in_mp=in_mp_date,
                           caliber_mp=caliber_mp, large_mp=large_mp,
-                          anch_mp=anch_mp, price_lm=price)
+                          anch_mp=anch_mp, price_lm=price, acabado=acabado)
         product.save()
         messages.success(request,
                          "Se ha actualizado la materia prima correctamente")
@@ -150,36 +151,35 @@ class ProjectCreateView(View):
         return render(request, self.template_name, {'types': types_arr})
 
     def post(self, request, *args, **kwargs):
-        #try:
-        name_client = request.POST['name_client']
-        nit_client = request.POST['nit_client']
-        prd_type = request.POST['prd_type']
-        description = request.POST['description']
-
         try:
-            client_exist = Client.objects.get(nit=nit_client)
-            client = client_exist
-        except Exception:
-            client = Client(name=name_client, nit=nit_client)
-            client.save()
+            name_client = request.POST['name_client']
+            nit_client = request.POST['nit_client']
+            prd_type = request.POST['prd_type']
+            description = request.POST['description']
 
-        try:
-            product_type = TypeProductHistory.objects.get(name=prd_type)
-            type_product = product_type
-        except Exception:
-            type_product = TypeProductHistory(name=prd_type)
-            type_product.save()
+            try:
+                client_exist = Client.objects.get(nit=nit_client)
+                client = client_exist
+            except Exception:
+                client = Client(name=name_client, nit=nit_client)
+                client.save()
 
-        project = Project(client=client,
-                          description=description,
-                          type_product=type_product)
-        project.save()
-        messages.success(request, 'Se ha creado el projecto correctamente')
-        #except Exception:
-        #    messages.error(request, 'Ha ocurrido un error interno, por favor verifique '
-        #                   'e intentelo de nueo')
+            try:
+                product_type = TypeProductHistory.objects.get(name=prd_type)
+                type_product = product_type
+            except Exception:
+                type_product = TypeProductHistory(name=prd_type)
+                type_product.save()
+
+            project = Project(client=client,
+                              description=description,
+                              type_product=type_product)
+            project.save()
+            messages.success(request, 'Se ha creado el projecto correctamente')
+        except Exception:
+            messages.error(request, 'Ha ocurrido un error interno, por favor verifique '
+                           'e intentelo de nueo')
         return redirect('projects')
-
 
 
 class ProjectDetailsView(View):
@@ -196,11 +196,12 @@ class ProjectDetailsView(View):
             project__id=project.id).all()
         external_services = ExternalServiceProject.objects.filter(
             project__id=project.id).all()
-        return render(request, self.template_name, {'project': project,
-                                                    'quotation': quotation,
-                                                    'products_quotation': products_quotation,
-                                                    'personal_project': personal_project,
-                                                    'external_services': external_services})
+        return render(
+            request, self.template_name, {'project': project,
+                                          'quotation': quotation,
+                                          'products_quotation': products_quotation,
+                                          'personal_project': personal_project,
+                                          'external_services': external_services})
 
 
 class ProjectPersonalCreate(View):

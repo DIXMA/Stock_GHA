@@ -63,15 +63,15 @@
                             {% for exs in ex_services %}
                                 <tr>
                                     <td>{{ exs.process }}</td>
-                                    <td>{{ exs.unit_price }}</td>
+                                    <td>${{ exs.unit_price }}</td>
                                     <td>{{ exs.quantity }}</td>
-                                    <td>{{ exs.total_price }}</td>
+                                    <td>${{ exs.total_price }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                         <span><b>Total: </b> <b
-                                id="total">{{ total_general }}</b></span>
+                                id="total">${{ total_general }}</b></span>
                         <div class="form-group" id="footer_products">
                             <button type="submit"
                                     class="btn btn-primary pull-right">

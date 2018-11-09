@@ -21,7 +21,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>EMPRESA</th>
-                                <th>NIT EMPRESA</th>
+                                <th>NIT EMPRESA
+                                <th>TIPO PRODUCTO</th>
                                 <th>FECHA INICIO</th>
                                 <th>ESTADO</th>
                                 <th>GESTION</th>
@@ -39,7 +40,20 @@
                             <td>{{ p.id }}</td>
                             <td>{{ p.client.name }}</td>
                             <td>{{ p.client.nit }}</td>
-                            <td>{{ p.init_date }}</td>
+                            <td>
+                                {% if p.type_product.name %}
+                                    {{ p.type_product.name }}
+                                {% else %}
+                                    --
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if p.init_date %}
+                                    {{ p.init_date }}
+                                {% else %}
+                                    --
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if p.state == 0 %}
                                     Nuevo

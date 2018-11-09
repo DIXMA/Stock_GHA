@@ -15,7 +15,7 @@ class Client(models.Model):
 class Product(models.Model):
     STATUS_CHOICES = ((0, 'Materia Prima'), (1, 'Inventario'), (3, 'Stock'))
     reference = models.CharField(max_length=100)
-    in_mp = models.DateField()
+    in_mp = models.DateField(null=True, blank=True)
     in_inv = models.DateField(null=True, blank=True)
     caliber_mp = models.DecimalField(default=0.0, max_digits=100,
                                      decimal_places=2)
@@ -40,15 +40,28 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class TypeProductHistory(models.Model):
+    name = models.CharField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Project(models.Model):
-    STATE_CHOICES = ((0, 'Nnuevo'), (1, 'Iniciado'), (2, 'Finalizado'), (3, 'Cancelado'))
+    STATE_CHOICES = ((0, 'Nnuevo'), (1, 'Iniciado'), (2, 'Finalizado'),
+                     (3, 'Cancelado'))
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    init_date = models.DateField()
-    init_requirements = models.TextField()
-    init_design = models.ImageField(upload_to="uploads/project/init_design/", null=True, blank=True)
+    init_date = models.DateField(null=True, blank=True)
+    type_product = models.ForeignKey(TypeProductHistory,
+                                     on_delete=models.CASCADE, null=True,
+                                     blank=True)
+    description = models.TextField(default='--')
+    init_requirements = models.TextField(null=True, blank=True)
+    init_design = models.ImageField(upload_to="uploads/project/init_design/",
+                                    null=True, blank=True)
     state = models.IntegerField(choices=STATE_CHOICES, default=0)
     final_requirements = models.TextField(null=True, blank=True)
-    final_design = models.ImageField(upload_to="uploads/project/final_design/", null=True, blank=True)
+    final_design = models.ImageField(upload_to="uploads/project/final_design/",
+                                     null=True, blank=True)
     materials = models.IntegerField(default=0)
     personal = models.IntegerField(default=0)
     supplies = models.IntegerField(default=0)

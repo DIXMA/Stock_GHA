@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 
 from app.models import Product, Project, Client, Quotation, ProductsQuotation, \
-    PersonalProject, ExternalServiceProject, ProjectManagerMan
+    PersonalProject, ExternalServiceProject, ProjectManagerMan, TypeProductHistory
 
 
 class StockView(View):
@@ -143,24 +143,43 @@ class ProjectCreateView(View):
     template_name = "auth_templates/stock/create_projects.html"
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {})
+        types = TypeProductHistory.objects.all()
+        types_arr = ''
+        for tp in types:
+            types_arr += str(tp.name) + ','
+        return render(request, self.template_name, {'types': types_arr})
 
     def post(self, request, *args, **kwargs):
+        #try:
         name_client = request.POST['name_client']
         nit_client = request.POST['nit_client']
-        init_date = request.POST['init_date']
-        design = request.FILES['design']
-        requirements = request.POST['requirements']
+        prd_type = request.POST['prd_type']
+        description = request.POST['description']
 
-        client = Client(name=name_client, nit=nit_client)
-        client.save()
+        try:
+            client_exist = Client.objects.get(nit=nit_client)
+            client = client_exist
+        except Exception:
+            client = Client(name=name_client, nit=nit_client)
+            client.save()
 
-        project = Project(client=client, init_date=init_date,
-                          init_requirements=requirements,
-                          init_design=design)
+        try:
+            product_type = TypeProductHistory.objects.get(name=prd_type)
+            type_product = product_type
+        except Exception:
+            type_product = TypeProductHistory(name=prd_type)
+            type_product.save()
+
+        project = Project(client=client,
+                          description=description,
+                          type_product=type_product)
         project.save()
         messages.success(request, 'Se ha creado el projecto correctamente')
+        #except Exception:
+        #    messages.error(request, 'Ha ocurrido un error interno, por favor verifique '
+        #                   'e intentelo de nueo')
         return redirect('projects')
+
 
 
 class ProjectDetailsView(View):

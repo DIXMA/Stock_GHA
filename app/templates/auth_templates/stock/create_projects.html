@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 
     <div class="row">
@@ -9,34 +11,55 @@
                     <h3 class="box-title">Nuevo Proyecto</h3>
                 </div>
                 <div class="box-body">
-                    <form action="{% url 'projects_create_action' %}" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'projects_create_action' %}"
+                          method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group col-md-6">
-                            <label>Empresa</label>
-                            <input type="text" name="name_client" id="name_client" class="form-control" required>
+                            <label for="name_client">Empresa</label>
+                            <input type="text" name="name_client"
+                                   id="name_client"
+                                   class="form-control"
+                                   placeholder="Nombre de la empresa a la que se realiza el proyecto..."
+                                   required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Nit</label>
-                            <input type="text" name="nit_client" id="nit_client" class="form-control" required>
+                            <label for="nit_client">Nit</label>
+                            <input type="text" name="nit_client" id="nit_client"
+                                   class="form-control"
+                                   placeholder="Nit de la empresa a la que se realiza el proyecto..."
+                                   required>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label>Fecha de inicio</label>
-                            <input type="date" name="init_date" id="init_date" class="form-control" required>
-                        </div>
-                        <div class="form-group col-md-6">
+                        <!--div class="form-group col-md-6">
+                            <label for="init_date">Fecha de inicio:
+                                (opcional)</label>
+                            <input type="date" name="init_date" id="init_date"
+                                   class="form-control">
+                        </div-->
+                        <!--div class="form-group col-md-6">
                             <label>Diseño preliminar</label>
                             <input type="file" name="design" id="design" accept="image/*" class="form-control" required>
+                        </div-->
+                        <div class="form-group col-md-12">
+                            <label for="prd_type">Tipo de Producto</label>
+                            <input type="text" name="prd_type" id="prd_type"
+                                   class="form-control" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label>Requerimientos</label>
-                            <textarea name="requirements" rows="6" class="form-control" required></textarea>
+                            <label for="description">
+                                Descripción del Producto:
+                            </label>
+                            <textarea name="description" id="description"
+                                      rows="6" class="form-control"
+                                      required></textarea>
                         </div>
                         <div class="form-group col-md-12">
-                            <a href="{% url 'projects' %}" class="btn btn-default">
+                            <a href="{% url 'projects' %}"
+                               class="btn btn-default">
                                 <i class="fa fa-close"></i> Cancelar
                             </a>
-                            <button type="submit" class="btn btn-primary pull-right">
-                                <i class="fa fa-send"></i> Guardar
+                            <button type="submit"
+                                    class="btn btn-primary pull-right">
+                                <i class="fa fa-save"></i> Guardar
                             </button>
                         </div>
                     </form>
@@ -44,5 +67,23 @@
             </div>
         </div>
     </div>
+
+    <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var tipyes = "{{ types }}";
+            var availableTags = tipyes.split(',');
+            if (!availableTags) {
+                var options = {
+                    data: []
+                };
+            } else {
+                var options = {
+                    data: availableTags
+                };
+            }
+            $("#prd_type").easyAutocomplete(options);
+        });
+    </script>
 
 {% endblock %}

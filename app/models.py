@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 class Client(models.Model):
     name = models.TextField()
     nit = models.TextField()
+    city = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -133,6 +135,12 @@ class ProjectManagerMan(models.Model):
     total_hour_man = models.CharField(max_length=100, blank=True, null=True)
     type_employee_man = models.CharField(max_length=100, blank=True, null=True)
     price_real_man = models.IntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+
+class ProjectManagerMachine(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # Machine
     date_machine = models.DateField(blank=True, null=True)
     process_machine = models.CharField(max_length=100, blank=True, null=True)

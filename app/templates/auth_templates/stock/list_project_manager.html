@@ -73,20 +73,216 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalAddProjectManager" tabindex="-1"
+    <!-- Modal MachineHours -->
+    <div class="modal fade" id="modalAddProjectManagerMach" tabindex="-1"
          role="dialog"
-         aria-labelledby="modalAddProjectManagerLabel">
+         aria-labelledby="modalAddProjectManagerMachLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="modalAddProjectManagerLabel">
-                        Estado del Proyecto</h4>
+                    <h4 class="modal-title"
+                        id="modalAddProjectManagerMachLabelLabel">
+                        Seguimiento Maquinaria</h4>
                 </div>
-                <form action="{% url 'projects_manager_add' %}" method="post">
+                <form action="{% url 'projects_manager_add_mach' %}"
+                      method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label>Fecha:</label>
+                                <input type="date" class="form-control"
+                                       id="date_prc" name="date_prc" value=""
+                                       title="Fecha" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Proceso</label>
+                                <select class="form-control"
+                                        id="process_select"
+                                        name="process_select" required>
+                                    <option value="Lavado">Lavado</option>
+                                    <option value="Desinfectado">Desinfectado
+                                    </option>
+                                    <option value="Desarmada">Desarmada</option>
+                                    <option value="Armada">Armada</option>
+                                    <option value="Mecanica">Mecanica</option>
+                                    <option value="Hidraulica">Hidraulica
+                                    </option>
+                                    <option value="Niquelado">Niquelado</option>
+                                    <option value="Pintura Praymer">Pintura
+                                        Praymer
+                                    </option>
+                                    <option value="Pintura Electrostática">
+                                        Pintura
+                                        Electrostática
+                                    </option>
+                                    <option value="Pintura Epoxica Tuberia">
+                                        Pintura
+                                        Epoxica Tuberia
+                                    </option>
+                                    <option value="Pintura Epoxica Lámina">
+                                        Pintura
+                                        Epoxica Lámina
+                                    </option>
+                                    <option value="Sanblasting">Sanblasting
+                                    </option>
+                                    <option value="Banco">Banco</option>
+                                    <option value="Corte Manual">Corte Manual
+                                    </option>
+                                    <option value="Corte con máquina">Corte con
+                                        máquina
+                                    </option>
+                                    <option value="Dobleces con máquina">
+                                        Dobleces
+                                        con máquina
+                                    </option>
+                                    <option value="Esmeril">Esmeril</option>
+                                    <option value="Pulidora">Pulidora</option>
+                                    <option value="Motor tool">Motor tool
+                                    </option>
+                                    <option value="Limada">Limada</option>
+                                    <option value="Lijada">Lijada</option>
+                                    <option value="Carbo Streep">Carbo Streep
+                                    </option>
+                                    <option value="Almidonada">Almidonada
+                                    </option>
+                                    <option value="Dobleces banco">Dobleces
+                                        banco
+                                    </option>
+                                    <option value="Curvado de Tubo">Curvado de
+                                        Tubo
+                                    </option>
+                                    <option value="Troquelado Manual">Troquelado
+                                        Manual
+                                    </option>
+                                    <option value="Cuñero manual">Cuñero manual
+                                    </option>
+                                    <option value="Espichado de Tubo">Espichado
+                                        de
+                                        Tubo
+                                    </option>
+                                    <option value="Taladro">Taladro</option>
+                                    <option value="Roscado manual">Roscado
+                                        manual
+                                    </option>
+                                    <option value="Fresado">Fresado</option>
+                                    <option value="Obra civil">Obra civil
+                                    </option>
+                                    <option value="Remachado">Remachado</option>
+                                    <option value="Soldadura de Arco">Soldadura
+                                        de
+                                        Arco
+                                    </option>
+                                    <option value="Soldadura MIC">Soldadura MIC
+                                    </option>
+                                    <option value="Soldadura TIC">Soldadura TIC
+                                    </option>
+                                    <option value="Soldadura Oxiacetilenica">
+                                        Soldadura Oxiacetilenica
+                                    </option>
+                                    <option value="Soldadura aluminio">Soldadura
+                                        aluminio
+                                    </option>
+                                    <option value="Corte laser">Corte laser
+                                    </option>
+                                    <option value="Brillada">Brillada</option>
+                                    <option value="Brillada con pulimento">
+                                        Brillada
+                                        con pulimento
+                                    </option>
+                                    <option value="Lavado">Lavado</option>
+                                    <option value="Pintada">Pintada</option>
+                                    <option value="Empacado">Empacado</option>
+                                    <option value="Telecarga">Telecarga</option>
+                                    <option value="Taxicamioneta">Taxicamioneta
+                                    </option>
+                                    <option value="Transp.Intermunicipal">
+                                        Transp. Intermunicipal
+                                    </option>
+                                    <option value="Transportes urbanos bus">
+                                        Transportes urbanos bus
+                                    </option>
+                                    <option value="Transportes urbanos taxi">
+                                        Transportes urbanos taxi
+                                    </option>
+                                    <option value="Grua">Grua</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <h3>HORA-MAQUINA</h3>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Inicio</label>
+                                <input type="time" class="form-control"
+                                       id="hmaq_init" name="hmaq_init" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Final</label>
+                                <input type="time" class="form-control"
+                                       id="hmaq_end" name="hmaq_end" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Total Horas</label>
+                                <input type="text" class="form-control"
+                                       id="hmaq_tot" name="hmaq_tot" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Costo Hora</label>
+                                <input type="number" class="form-control"
+                                       name="price_mqh" id="price_mqh" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Costo Real MA</label>
+                                <input type="number" class="form-control"
+                                       name="price_ma" id="price_ma" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label>Recursos</label>
+                                <input type="number" class="form-control"
+                                       name="resources" id="resources" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="pr_pk"
+                               value="{{ project.id }}">
+                        <input type="hidden" name="type_register"
+                               value="mach">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">
+                            <i class="fa fa-close"></i> Cerrar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ManHours -->
+    <div class="modal fade" id="modalAddProjectManagerPrs" tabindex="-1"
+         role="dialog"
+         aria-labelledby="modalAddProjectManagerPrsLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalAddProjectManagerPrsLabel">
+                        Sguimiento a Personal</h4>
+                </div>
+                <form action="{% url 'projects_manager_add_prs' %}"
+                      method="post">
                     {% csrf_token %}
                     <div class="modal-body">
                         <div class="row">
@@ -251,55 +447,19 @@
                                        name="price_mo" id="price_mo" required>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-sm-12">
-                                <h3>HORA-MAQUINA</h3>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label>Inicio</label>
-                                <input type="time" class="form-control"
-                                       id="hmaq_init" name="hmaq_init" required>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label>Final</label>
-                                <input type="time" class="form-control"
-                                       id="hmaq_end" name="hmaq_end" required>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label>Total Horas</label>
-                                <input type="text" class="form-control"
-                                       id="hmaq_tot" name="hmaq_tot" required>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label>Costo Hora</label>
-                                <input type="number" class="form-control"
-                                       name="price_mqh" id="price_mqh" required>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label>Costo Real MA</label>
-                                <input type="number" class="form-control"
-                                       name="price_ma" id="price_ma" required>
-                            </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="pr_pk"
+                                   value="{{ project.id }}">
+                            <input type="hidden" name="type_register"
+                                   value="prs">
+                            <button type="button" class="btn btn-default"
+                                    data-dismiss="modal">
+                                <i class="fa fa-close"></i> Cerrar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save"></i> Guardar
+                            </button>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-sm-12">
-                                <label>Recursos</label>
-                                <input type="number" class="form-control"
-                                       name="resources" id="resources" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="pr_pk"
-                               value="{{ project.id }}">
-                        <button type="button" class="btn btn-default"
-                                data-dismiss="modal">
-                            <i class="fa fa-close"></i> Cerrar
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-save"></i> Guardar
-                        </button>
-                    </div>
                 </form>
             </div>
         </div>

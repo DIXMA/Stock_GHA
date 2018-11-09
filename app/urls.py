@@ -80,9 +80,12 @@ urlpatterns = [
     url(r'^projects/manager/(?P<pr_pk>[0-9]+)/$',
         login_required(ProjectManagerView.as_view()),
         name="project_manager"),
-    url(r'^projects/manager/$',
+    url(r'^projects/manager/add_prs/$',
         login_required(ProjectManagerView.as_view()),
-        name="projects_manager_add"),
+        name="projects_manager_add_prs"),
+    url(r'^projects/manager/add_mach/$',
+        login_required(ProjectManagerView.as_view()),
+        name="projects_manager_add_mach"),
 
     # Stock
     url(r'^raw_material/$', login_required(RawMaterial.as_view()),

@@ -3,7 +3,8 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 
 from app.models import Product, Project, Client, Quotation, ProductsQuotation, \
-    PersonalProject, ExternalServiceProject, ProjectManagerMan, TypeProductHistory
+    PersonalProject, ExternalServiceProject, ProjectManagerMan, \
+    TypeProductHistory, ProjectManagerMachine
 
 
 class StockView(View):
@@ -154,6 +155,8 @@ class ProjectCreateView(View):
         try:
             name_client = request.POST['name_client']
             nit_client = request.POST['nit_client']
+            address_client = request.POST['address_client']
+            city_client = request.POST['city_client']
             prd_type = request.POST['prd_type']
             description = request.POST['description']
 
@@ -161,7 +164,8 @@ class ProjectCreateView(View):
                 client_exist = Client.objects.get(nit=nit_client)
                 client = client_exist
             except Exception:
-                client = Client(name=name_client, nit=nit_client)
+                client = Client(name=name_client, nit=nit_client,
+                                city=city_client, address=address_client)
                 client.save()
 
             try:
@@ -177,7 +181,8 @@ class ProjectCreateView(View):
             project.save()
             messages.success(request, 'Se ha creado el projecto correctamente')
         except Exception:
-            messages.error(request, 'Ha ocurrido un error interno, por favor verifique '
+            messages.error(request,
+                           'Ha ocurrido un error interno, por favor verifique '
                            'e intentelo de nueo')
         return redirect('projects')
 
@@ -322,33 +327,50 @@ class ProjectManagerView(View):
         project_pk = request.POST['pr_pk']
         date_man = request.POST['date_prc']
         process_man = request.POST['process_select']
-        # MAN
-        init_hour_man = request.POST['hman_init']
-        end_hour_man = request.POST['hman_end']
-        total_hour_man = request.POST['hman_tot']
-        type_employee_man = request.POST['type_employee']
-        price_real_man = request.POST['price_mo']
-        # MACHINE
-        init_hour_machine = request.POST['hmaq_init']
-        end_hour_machine = request.POST['hmaq_end']
-        total_hour_machine = request.POST['hmaq_tot']
-        price_machine = request.POST['price_mqh']
-        price_real_machine = request.POST['price_ma']
-        resources_machine = request.POST['resources']
+        type_register = request.POST['type_register']
+        if type_register == 'prs':
+            # MAN
+            init_hour_man = request.POST['hman_init']
+            end_hour_man = request.POST['hman_end']
+            total_hour_man = request.POST['hman_tot']
+            type_employee_man = request.POST['type_employee']
+            price_real_man = request.POST['price_mo']
+            prj_manager = ProjectManagerMan(
+                project_id=project_pk, date_man=date_man,
+                process_man=process_man,
+                init_hour_man=init_hour_man, end_hour_man=end_hour_man,
+                total_hour_man=total_hour_man,
+                type_employee_man=type_employee_man,
+                price_real_man=price_real_man
+            )
+            prj_manager.save()
+            messages.success(request,
+                             "Se ha agregado el registro de seguimiento "
+                             "al proyecto.")
+        elif type_register == 'mach':
+            # MACHINE
+            init_hour_machine = request.POST['hmaq_init']
+            end_hour_machine = request.POST['hmaq_end']
+            total_hour_machine = request.POST['hmaq_tot']
+            price_machine = request.POST['price_mqh']
+            price_real_machine = request.POST['price_ma']
+            resources_machine = request.POST['resources']
+            prj_manager = ProjectManagerMachine(
+                init_hour_machine=init_hour_machine,
+                end_hour_machine=end_hour_machine,
+                price_machine=price_machine,
+                total_hour_machine=total_hour_machine,
+                price_real_machine=price_real_machine,
+                resources_machine=resources_machine)
+            prj_manager.save()
+            messages.success(request,
+                             "Se ha agregado el registro de seguimiento "
+                             "al proyecto.")
+        else:
+            messages.error(request, "Se ha detectado un error en la "
+                                    "información obtenida para almacenar, "
+                                    "por favor verifique e intentelo de nuevo.")
 
-        prj_manager = ProjectManagerMan(
-            project_id=project_pk, date_man=date_man, process_man=process_man,
-            init_hour_man=init_hour_man, end_hour_man=end_hour_man,
-            total_hour_man=total_hour_man, type_employee_man=type_employee_man,
-            price_real_man=price_real_man, init_hour_machine=init_hour_machine,
-            end_hour_machine=end_hour_machine, price_machine=price_machine,
-            total_hour_machine=total_hour_machine,
-            price_real_machine=price_real_machine,
-            resources_machine=resources_machine
-        )
-        prj_manager.save()
-        messages.success(request, "Se ha agregado el registro de seguimiento "
-                                  "al proyecto.")
         return redirect('project_manager', pr_pk=project_pk)
 
 

@@ -9,7 +9,7 @@
                     <div class="box-tools pull-right">
                         <a href="{% url 'stock_operator_update_form' %}"
                            class="btn btn-default pull-right">
-                            <i class="fa fa-plus"></i> Usar Materia Prima
+                            <i class="fa fa-plus"></i> Usar Material
                         </a>
                     </div>
                 </div>
@@ -34,16 +34,16 @@
                             {% for m in stock %}
                                 {% if m.state == 'Disponible' %}
                                     <tr style="background-color: #9bf39b;">
-                                        {% else %}
+                                {% else %}
                                     <tr style="background-color: #f2b5b5;">
                                 {% endif %}
                             <td>{{ m.id }}</td>
-                            <td>{{ m.in_inv }}</td>
-                            <td>{{ m.reference }}</td>
-                            <td>{{ m.caliber_inv }}</td>
-                            <td>{{ m.large_inv }}</td>
-                            <td>{{ m.anch_inv }}</td>
-                            <td>{{ m.acabado }}</td>
+                            <td>{{ m.in_stock }}</td>
+                            <td>{{ m.product.reference }}</td>
+                            <td>{{ m.product.caliber_mp }}</td>
+                            <td>{{ m.large_stock }}</td>
+                            <td>{{ m.anch_stock }}</td>
+                            <td>{{ m.product.acabado }}</td>
                             <td>{{ m.area }}</td>
                             <td>{{ m.state }}</td>
                             </tr>

@@ -9,16 +9,22 @@
                     <h3 class="box-title">Tomar Materia Prima</h3>
                 </div>
                 <div class="box-body">
+                    <a href="{% url 'stock_operator' %}"
+                       class="btn btn-default">
+                        <i class="fa fa-close"></i> Cancelar
+                    </a>
                     <form action="{% url 'operator_stock_update_action' %}"
-                          method="post" id="">
+                          method="post" id="operator_stock_update_form">
                         {% csrf_token %}
                         <input type="hidden" name="pk" id="pk" value="">
                         <div class="form-group">
                             <label>Seleccione un material:</label>
                             {% if materials %}
-                                <select class="form-control" name="product"
+                                <select class="form-control selectpicker"
+                                        name="product"
                                         id="product"
-                                        onchange="selectedMaterial()" required>
+                                        onchange="selectedMaterial()"
+                                        data-live-search="true" required>
                                     <option value="">
                                         - Seleccione una referencia -
                                     </option>
@@ -39,41 +45,29 @@
                         <div class="col-md-12" id="info_p"
                              style="display: none;">
                             <div class="form-group col-md-6">
-                                <label>Calibre</label>
-                                <input type="number" name="caliber" id="caliber" step="0.01"
-                                       class="form-control" value="" required>
-                            </div>
-                            <div class="form-group col-md-6">
                                 <label>Largo</label>
-                                <input type="number" name="large" id="large" step="0.01"
+                                <input type="number" name="large" id="large"
+                                       step="0.01"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Ancho</label>
-                                <input type="number" name="ancho" id="ancho" step="0.01"
-                                       class="form-control" value="" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Acabado</label>
-                                <input type="text" name="acabado" id="acabado"
-                                       class="form-control" value="" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Area</label>
-                                <input type="text" name="area" id="area"
+                                <input type="number" name="anch_stock"
+                                       id="ancho" step="0.01"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Fecha Ingreso Almacen</label>
-                                <input type="date" name="date" id="date"
+                                <input type="date" name="in_stock" id="in_stock"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Zona</label>
                                 <input type="text" name="zone" id="zone"
-                                       class="form-control" value="" required readonly>
+                                       class="form-control" value="" required
+                                       readonly>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label>Disponibilidad</label>
                                 <select class="form-control" name="state"
                                         id="state" required>
@@ -83,9 +77,6 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <a href="{% url 'stock_operator' %}" class="btn btn-default">
-                                    <i class="fa fa-close"></i> Cancelar
-                                </a>
                                 <button type="button" onclick="validateZone()"
                                         class="btn btn-primary pull-right">
                                     <i class="fa fa-send"></i> Guardar
@@ -105,103 +96,98 @@
             if (ref) {
                 var data = ref.split('/');
                 $("#pk").val(data[0]);
-                $("#caliber").val(data[1]);
                 $("#large").val(data[2]);
                 $("#ancho").val(data[3]);
                 $("#info_p").removeAttr('style');
             } else {
                 $("#info_p").attr('style', 'display: none;');
                 $("#pk").val('');
-                $("#caliber").val('');
                 $("#large").val('');
                 $("#ancho").val('');
-                $("#acabado").val('');
-                $("#area").val('');
-                $("#date").val('');
                 $("#date").val('');
             }
         }
 
-        function validateZone(){
+        function validateZone() {
             var large = $("#large").val();
             var anch = $("#ancho").val();
             var pro = $("#product").val().split('/')[4];
             var zone = '';
             switch (pro) {
                 case 'LA-AI-201':
-                    if(large >= 0.45 && anch <= 1.52){
+                    if (large >= 0.45 && anch <= 1.52) {
                         zone = 'Zona A';
-                    }else if(large >= 0.23 && anch <= 0.76){
+                    } else if (large >= 0.23 && anch <= 0.76) {
                         zone = 'Zona B';
-                    }else if(large >= 0.15 && anch <= 0.51){
+                    } else if (large >= 0.15 && anch <= 0.51) {
                         zone = 'Zona C';
-                    }else if(large >= 0.11 && anch <= 0.38){
+                    } else if (large >= 0.11 && anch <= 0.38) {
                         zone = 'Zona D';
                     }
                     break;
                 case 'LA-AI-204':
-                    if(large >= 0.61 && anch == 1.22){
+                    if (large >= 0.61 && anch == 1.22) {
                         zone = 'Zona A';
-                    }else if(large >= 0.30 && anch <= 0.61){
+                    } else if (large >= 0.30 && anch <= 0.61) {
                         zone = 'Zona B';
-                    }else if(large >= 0.20 && anch <= 0.41){
+                    } else if (large >= 0.20 && anch <= 0.41) {
                         zone = 'Zona C';
-                    }else if(large >= 0.15 && anch <= 0.31){
+                    } else if (large >= 0.15 && anch <= 0.31) {
                         zone = 'Zona D';
                     }
                     break;
                 case 'LA-AI-301':
-                    if(large >= 0.61 && anch <= 1.52){
+                    if (large >= 0.61 && anch <= 1.52) {
                         zone = 'Zona A';
-                    }else if(large >= 0.30 && anch <= 0.76){
+                    } else if (large >= 0.30 && anch <= 0.76) {
                         zone = 'Zona B';
-                    }else if(large >= 0.20 && anch <= 0.51){
+                    } else if (large >= 0.20 && anch <= 0.51) {
                         zone = 'Zona C';
-                    }else if(large >= 0.15 && anch <= 0.38){
+                    } else if (large >= 0.15 && anch <= 0.38) {
                         zone = 'Zona D';
                     }
                     break;
                 case 'LA-AI-304':
-                    if(large >= 0.76 && anch <= 1.52){
+                    if (large >= 0.76 && anch <= 1.52) {
                         zone = 'Zona A';
-                    }else if(large >= 0.38 && anch <= 0.76){
+                    } else if (large >= 0.38 && anch <= 0.76) {
                         zone = 'Zona B';
-                    }else if(large >= 0.25 && anch <= 0.51){
+                    } else if (large >= 0.25 && anch <= 0.51) {
                         zone = 'Zona C';
-                    }else if(large >= 0.19 && anch <= 0.38){
+                    } else if (large >= 0.19 && anch <= 0.38) {
                         zone = 'Zona D';
                     }
                     break;
                 case 'LA-AI-304L':
-                    if(large >= 0.76 && anch <= 1.83){
+                    if (large >= 0.76 && anch <= 1.83) {
                         zone = 'Zona A';
-                    }else if(large >= 0.38 && anch <= 0.92){
+                    } else if (large >= 0.38 && anch <= 0.92) {
                         zone = 'Zona B';
-                    }else if(large >= 0.25 && anch <= 0.61){
+                    } else if (large >= 0.25 && anch <= 0.61) {
                         zone = 'Zona C';
-                    }else if(large >= 0.19 && anch <= 0.46){
+                    } else if (large >= 0.19 && anch <= 0.46) {
                         zone = 'Zona D';
                     }
                     break;
                 case 'LA-AI-430':
-                    if(large >= 0.76 && anch <= 3.05){
+                    if (large >= 0.76 && anch <= 3.05) {
                         zone = 'Zona A';
-                    }else if(large >= 0.38 && anch <= 1.52){
+                    } else if (large >= 0.38 && anch <= 1.52) {
                         zone = 'Zona B';
-                    }else if(large >= 0.25 && anch <= 1.02){
+                    } else if (large >= 0.25 && anch <= 1.02) {
                         zone = 'Zona C';
-                    }else if(large >= 0.19 && anch <= 0.76){
+                    } else if (large >= 0.19 && anch <= 0.76) {
                         zone = 'Zona D';
                     }
                     break;
                 default:
-                    zone = "Zona A";
+                    zone = "Desechos";
 
             }
 
-            if(zone){
+            if (zone) {
                 $("#zone").val(zone);
-
+                $("#operator_stock_update_form").submit();
             }
 
         }

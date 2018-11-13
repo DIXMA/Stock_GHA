@@ -4,7 +4,7 @@ from django.contrib import messages
 
 from app.models import Product, Project, Client, Quotation, ProductsQuotation, \
     PersonalProject, ExternalServiceProject, ProjectManagerMan, \
-    TypeProductHistory, ProjectManagerMachine
+    TypeProductHistory, ProjectManagerMachine, StockProduct
 
 
 class StockView(View):
@@ -81,9 +81,31 @@ class RawMaterialCreateView(View):
         price = request.POST['price']
         acabado = request.POST['acabado']
 
+        #zones
+        zone_a_caliber = request.POST['zone_a_caliber']
+        zone_a_large = request.POST['zone_a_large']
+        zone_b_caliber = request.POST['zone_b_caliber']
+        zone_b_large = request.POST['zone_b_large']
+        zone_c_caliber = request.POST['zone_c_caliber']
+        zone_c_large = request.POST['zone_c_large']
+        zone_d_caliber = request.POST['zone_d_caliber']
+        zone_d_large = request.POST['zone_d_large']
+        zone_scrap_caliber = request.POST['zone_scrap_caliber']
+        zone_scrap_large = request.POST['zone_scrap_large']
+
         product = Product(reference=ref, in_mp=in_mp_date,
                           caliber_mp=caliber_mp, large_mp=large_mp,
-                          anch_mp=anch_mp, price_lm=price, acabado=acabado)
+                          anch_mp=anch_mp, price_lm=price, acabado=acabado,
+                          zone_a_caliber=zone_a_caliber,
+                          zone_a_large=zone_a_large,
+                          zone_b_caliber=zone_b_caliber,
+                          zone_b_large=zone_b_large,
+                          zone_c_caliber=zone_c_caliber,
+                          zone_c_large=zone_c_large,
+                          zone_d_caliber=zone_d_caliber,
+                          zone_d_large=zone_d_large,
+                          zone_scrap_caliber=zone_scrap_caliber,
+                          zone_scrap_large=zone_scrap_large)
         product.save()
         messages.success(request,
                          "Se ha actualizado la materia prima correctamente")
@@ -94,7 +116,7 @@ class StockOperatorView(View):
     template_name = "auth_templates/stock/list_stock_operator.html"
 
     def get(self, request, *args, **kwargs):
-        stock = Product.objects.all()
+        stock = StockProduct.objects.all()
         return render(request, self.template_name, {'stock': stock})
 
 
@@ -108,25 +130,18 @@ class StrockOperatorUdateView(View):
 
     def post(self, request, *args, **kwargs):
         pk = request.POST['pk']
-        caliber = request.POST['caliber']
-        large = request.POST['large']
-        ancho = request.POST['ancho']
-        acabado = request.POST['acabado']
-        area = request.POST['area']
-        date = request.POST['date']
+        large_stock = request.POST['large']
+        anch_stock = request.POST['anch_stock']
+        in_stock = request.POST['in_stock']
+        zone = request.POST['zone']
         state = request.POST['state']
 
         product = Product.objects.get(pk=pk)
-        product.caliber_inv = caliber
-        product.large_inv = large
-        product.anch_inv = ancho
-        product.state = state
-        product.area = area
-        product.acabado = acabado
-        product.in_inv = date
-        product.status = 1
+        prod = StockProduct(product=product, in_stock=in_stock,
+                            large_stock=large_stock, anch_stock=anch_stock,
+                            state=state, area=zone)
 
-        product.save()
+        prod.save()
 
         messages.success(request,
                          'Se ha sacado el material correctamente')

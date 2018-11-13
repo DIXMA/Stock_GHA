@@ -19,26 +19,55 @@ class Product(models.Model):
     STATUS_CHOICES = ((0, 'Materia Prima'), (1, 'Inventario'), (3, 'Stock'))
     reference = models.CharField(max_length=100)
     in_mp = models.DateField(null=True, blank=True)
-    in_inv = models.DateField(null=True, blank=True)
     caliber_mp = models.DecimalField(default=0.0, max_digits=100,
                                      decimal_places=2)
-    caliber_inv = models.DecimalField(default=0.0, max_digits=100,
-                                      decimal_places=2, null=True, blank=True)
     large_mp = models.DecimalField(default=0.0, max_digits=100,
                                    decimal_places=2)
-    large_inv = models.DecimalField(default=0.0, max_digits=100,
-                                    decimal_places=2, null=True, blank=True)
     anch_mp = models.DecimalField(default=0.0, max_digits=100, decimal_places=2)
-    anch_inv = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2, null=True, blank=True)
+
     price_lm = models.DecimalField(default=0.0, max_digits=100,
                                    decimal_places=2)
     price_stock = models.DecimalField(default=0.0, max_digits=100,
                                       decimal_places=2)
     state = models.CharField(max_length=30, default='Disponible')
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
-    area = models.CharField(max_length=30)
     acabado = models.CharField(max_length=30)
+    # zones
+    zone_a_caliber = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_a_large = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_b_caliber = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_b_large = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_c_caliber = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_c_large = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_d_caliber = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_d_large = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_scrap_caliber = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    zone_scrap_large = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class StockProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    in_stock = models.DateField(null=True, blank=True)
+    caliber_stock = models.DecimalField(default=0.0, max_digits=100,
+                                      decimal_places=2, null=True, blank=True)
+    large_stock = models.DecimalField(default=0.0, max_digits=100,
+                                    decimal_places=2, null=True, blank=True)
+    anch_stock = models.DecimalField(default=0.0, max_digits=100,
+                                   decimal_places=2, null=True, blank=True)
+    state = models.CharField(max_length=30, default='Utilizado')
+    area = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

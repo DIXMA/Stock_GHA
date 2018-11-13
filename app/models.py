@@ -7,9 +7,10 @@ from django.contrib.auth.models import User
 
 class Client(models.Model):
     name = models.TextField()
-    nit = models.TextField()
-    city = models.CharField(max_length=200)
-    address = models.CharField(max_length=200)
+    nit = models.TextField(default='--', null=True, blank=True)
+    city = models.CharField(max_length=200, default='--', null=True, blank=True)
+    address = models.CharField(max_length=200, default='--', null=True,
+                               blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

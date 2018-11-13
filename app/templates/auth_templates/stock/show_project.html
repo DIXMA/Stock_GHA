@@ -8,7 +8,8 @@
                 <div class="box-header">
                     <h3>Detalles del Proyecto</h3>
                     <div class="box-tools pull-right">
-                        <a href="{% url 'project_manager' pr_pk=project.id %}" class="btn btn-default">
+                        <a href="{% url 'project_manager' pr_pk=project.id %}"
+                           class="btn btn-default">
                             <i class="fa fa-list-alt"></i> Gestion del Proyecto
                         </a>
                         {% if project.state < 2 %}
@@ -20,230 +21,377 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table table-responsive">
-                        <tbody>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Nit</th>
-                            <th>Fecha Inicio</th>
-                            <th>Proyecto</th>
-                        </tr>
-                        <tr>
-                            <td>{{ project.client.name }}</td>
-                            <td>{{ project.client.nit }}</td>
-                            <td>{{ project.init_date }}</td>
-                            <td>{{ project.id }}</td>
-                        </tr>
-                        <tr>
-                            <th colspan="4">Requerimientos Iniciales</th>
-                        </tr>
-                        <tr>
-                            <td colspan="4">{{ project.init_requirements }}</td>
-                        </tr>
-                        <tr>
-                            <th colspan="4">Diseño Preliminar</th>
-                        </tr>
-                        <tr>
-                            <td><img src="{{ project.init_design.url }}"
-                                     style="width: 50%;"></td>
-                        </tr>
-                        {% if project.final_requirements %}
-                            <tr>
-                                <th colspan="4">Requerimientos FInales</th>
-                            </tr>
-                            <tr>
-                                <td colspan="4">{{ project.final_requirements }}</td>
-                            </tr>
-                            <tr>
-                                <th colspan="4">Diseño Final</th>
-                            </tr>
-                            <tr>
-                                <td><img src="{{ project.final_design.url }}"
-                                         style="width: 50%;">
-                                </td>
-                            </tr>
-                        {% endif %}
-                        </tbody>
-                    </table>
+                    <div class="panel-group" id="accordion" role="tablist"
+                         aria-multiselectable="true">
+                        <!-- PROJECT DETAILS -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab"
+                                 id="heading_project_details">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse"
+                                       data-parent="#accordion"
+                                       href="#project_details"
+                                       aria-expanded="true"
+                                       aria-controls="project_details">
+                                        <i class="fa fa-indent"></i> DETALLES
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="project_details"
+                                 class="panel-collapse collapse in"
+                                 role="tabpanel"
+                                 aria-labelledby="heading_project_details">
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary pull-right"
+                                                data-toggle="modal"
+                                                data-target="#modalEditDetails">
+                                            <i class="fa fa-edit"></i> Editar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <table class="chasas_table_border">
+                                            <tbody>
+                                            <tr>
+                                                <th>Cliente</th>
+                                                <th>Nit</th>
+                                                <th>Fecha Inicio</th>
+                                                <th>Proyecto</th>
+                                                <th>Producto</th>
+                                                <th>Inicio</th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ project.client.name }}</td>
+                                                <td>{{ project.client.nit }}</td>
+                                                <td>{{ project.init_date }}</td>
+                                                <td>{{ project.id }}</td>
+                                                <td>{{ project.type_product }}</td>
+                                                <td>{{ project.init_date }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="6">Descripción</th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">{{ project.description }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3">
+                                                    Requerimientos Iniciales
+                                                </th>
+                                                <th colspan="3">
+                                                    Requerimientos Finales
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    {{ project.init_requirements | default_if_none:"--" }}
+                                                </td>
+                                                <td colspan="3">
+                                                    {{ project.final_requirements | default_if_none:"--" }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3">Diseño Inicial
+                                                </th>
+                                                <th colspan="3">Diseño Final
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    {% if project.init_design %}
+                                                        <img style="width: 40%"
+                                                             src="{{ project.init_design.url }}">
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                                <td colspan="3">
+                                                    {% if project.final_design %}
+                                                        <img style="width: 40%"
+                                                             src="{{ project.final_design.url }}">
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /PROJECT DETAILS -->
 
-                    <hr/>
-                    <h3>MATERIALES</h3>
-                    <hr/>
-                    {% if quotation %}
-                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}"
-                           class="btn btn-primary pull-right">
-                            Administrar Materiales
-                        </a>
-                        <table class="table table-responsive">
-                            <thead>
-                            <tr>
-                                <th>Material</th>
-                                <th>Valor Uni</th>
-                                <th>Cantidad</th>
-                                <th>Valor Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for prq in products_quotation %}
-                                <tr>
-                                    <td>{{ prq.product.reference }}</td>
-                                    <td>${{ prq.product.price_lm }}</td>
-                                    <td>{{ prq.quantity }}</td>
-                                    <td>${{ prq.total }}</td>
-                                </tr>
-                            {% endfor %}
-                            <tr>
-                                <th>TOTAL</th>
-                                <td>${{ quotation.price }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}"
-                           class="btn btn-primary pull-right">
-                            Crear Cotización
-                        </a>
-                    {% endif %}
+                        <!-- PROJECT MATERIALS -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab"
+                                 id="heading_project_materials">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#accordion"
+                                       href="#project_materials"
+                                       aria-expanded="false"
+                                       aria-controls="project_materials">
+                                        <i class="fa fa-tasks"></i> MATERIALES
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="project_materials"
+                                 class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="heading_project_materials">
+                                <div class="panel-body">
+                                    {% if quotation %}
+                                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}"
+                                           class="btn btn-primary pull-right">
+                                            <i class="fa fa-plus-square-o"></i>
+                                            Administrar Materiales
+                                        </a>
+                                        <table class="chasas_table_border">
+                                            <thead>
+                                            <tr>
+                                                <th>Material</th>
+                                                <th>Valor Uni</th>
+                                                <th>Cantidad</th>
+                                                <th>Valor Total</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for prq in products_quotation %}
+                                                <tr>
+                                                    <td>{{ prq.product.reference }}</td>
+                                                    <td>
+                                                        ${{ prq.product.price_lm }}</td>
+                                                    <td>{{ prq.quantity }}</td>
+                                                    <td>${{ prq.total }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            <tr>
+                                                <th>TOTAL</th>
+                                                <td>${{ quotation.price }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <a href="{% url 'projects_quotation_create' pr_pk=project.id %}"
+                                           class="btn btn-primary pull-right">
+                                            <i class="fa fa-plus-square-o"></i>
+                                            Administrar Materiales
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /PROJECT MATERIALS-->
 
-                    <hr/>
-                    <h3>Mano de obra</h3>
-                    <hr/>
-                    {% if personal_project %}
-                        <a href="{% url 'project_personal' pr_pk=project.id %}"
-                           class="btn btn-primary pull-right">
-                            Administrar Personal
-                        </a>
-                        <table class="table table-responsive">
-                            <thead>
-                            <tr>
-                                <td>Proceso</td>
-                                <td>Especialidad</td>
-                                <td>Costo Horas</td>
-                                <td>Horas Trabajadas</td>
-                                <td>Total</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for px in personal_project %}
-                                <tr>
-                                    <td>{{ px.process }}</td>
-                                    <td>{{ px.specialty }}</td>
-                                    <td>${{ px.hour_price }}</td>
-                                    <td>{{ px.hour_work }}</td>
-                                    <td>${{ px.total_price }}</td>
-                                </tr>
-                            {% endfor %}
-                            <tr>
-                                <th>TOTAL</th>
-                                <td>${{ project.personal }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <a href="{% url 'project_personal' pr_pk=project.id %}"
-                           class="btn btn-primary pull-right">
-                            Agrear Personal
-                        </a>
-                    {% endif %}
+                        <!-- PROJECT PERSONAL/MACHINE -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab"
+                                 id="heading_project_personal">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#accordion"
+                                       href="#project_personal"
+                                       aria-expanded="false"
+                                       aria-controls="project_personal">
+                                        <i class="fa fa-user-secret"></i> MANO
+                                        DE OBRA
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="project_personal"
+                                 class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="heading_project_personal">
+                                <div class="panel-body">
+                                    <a href="{% url 'project_personal' pr_pk=project.id %}"
+                                       class="btn btn-primary pull-right">
+                                        Administrar Personal
+                                    </a>
+                                    {% if personal_project %}
+                                        <table class="chasas_table_border">
+                                            <thead>
+                                            <tr>
+                                                <td>Proceso</td>
+                                                <td>Especialidad</td>
+                                                <td>Costo Horas</td>
+                                                <td>Horas Trabajadas</td>
+                                                <td>Total</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for px in personal_project %}
+                                                <tr>
+                                                    <td>{{ px.process }}</td>
+                                                    <td>{{ px.specialty }}</td>
+                                                    <td>
+                                                        ${{ px.hour_price }}</td>
+                                                    <td>{{ px.hour_work }}</td>
+                                                    <td>
+                                                        ${{ px.total_price }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            <tr>
+                                                <th>TOTAL</th>
+                                                <td>
+                                                    ${{ project.personal }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        --
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /PROJECT PERSONAL/MACHINE -->
 
-                    <hr/>
-                    <h3>Servicios Externos</h3>
-                    <hr/>
-                    {% if external_services %}
-                        <a href="{% url 'project_external_services' pr_pk=project.id %}"
-                           class="btn btn-primary pull-right">Administrar
-                            Servicios</a>
-                        <table class="table table-responsive">
-                            <thead>
-                            <tr>
-                                <td>Proceso</td>
-                                <td>Valor Unit</td>
-                                <td>Cantidad</td>
-                                <td>Precio Total</td>
-                            </tr>
-                            </thead>
-                            <tbody id="exs_add">
-                            {% for exs in external_services %}
-                                <tr>
-                                    <td>{{ exs.process }}</td>
-                                    <td>${{ exs.unit_price }}</td>
-                                    <td>{{ exs.quantity }}</td>
-                                    <td>${{ exs.total_price }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <a href="{% url 'project_external_services' pr_pk=project.id %}"
-                           class="btn btn-primary pull-right">
-                            Agrear Servicios</a>
-                    {% endif %}
+                        <!-- PROJECT EXTERNAL SERVICE -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab"
+                                 id="heading_project_external_service">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#accordion"
+                                       href="#project_external_service"
+                                       aria-expanded="false"
+                                       aria-controls="project_external_service">
+                                        <i class="fa fa-random"></i> SERVICIOS
+                                        EXTERNOS
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="project_external_service"
+                                 class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="heading_project_external_service">
+                                <div class="panel-body">
+                                    {% if external_services %}
+                                        <a href="{% url 'project_external_services' pr_pk=project.id %}"
+                                           class="btn btn-primary pull-right">Administrar
+                                            Servicios</a>
+                                        <table class="chasas_table_border">
+                                            <thead>
+                                            <tr>
+                                                <td>Proceso</td>
+                                                <td>Valor Unit</td>
+                                                <td>Cantidad</td>
+                                                <td>Precio Total</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="exs_add">
+                                            {% for exs in external_services %}
+                                                <tr>
+                                                    <td>{{ exs.process }}</td>
+                                                    <td>
+                                                        ${{ exs.unit_price }}</td>
+                                                    <td>{{ exs.quantity }}</td>
+                                                    <td>
+                                                        ${{ exs.total_price }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <a href="{% url 'project_external_services' pr_pk=project.id %}"
+                                           class="btn btn-primary pull-right">
+                                            Agrear Servicios</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /PROJECT EXTERNAL/SERVICE -->
 
-                    <hr/>
-                    <h3>Liquidación</h3>
-                    <hr/>
-                    <table class="table table-responsive">
-                        <tbody>
-                        <tr>
-                            <th>MATERIALES</th>
-                            <td>${{ project.materials }}</td>
-                        </tr>
-                        <tr>
-                            <th>COSTOS PERSONAL</th>
-                            <td>${{ project.personal }}</td>
-                        </tr>
-                        <tr>
-                            <th>COSTOS MAQUINARIA E INSUMOS</th>
-                            <td>${{ project.supplies }}</td>
-                        </tr>
-                        <tr>
-                            <th>SUBTOTAL</th>
-                            <td>${{ project.sub_total }}</td>
-                        </tr>
-                        <tr>
-                            <th>GANANCIA</th>
-                            <td>${{ project.gain }}</td>
-                        </tr>
-                        <tr>
-                            <th>TOTAL PARCIAL</th>
-                            <td>${{ project.pre_total }}</td>
-                        </tr>
-                        <tr>
-                            <th>RETENCION</th>
-                            <td>${{ project.retention }}</td>
-                        </tr>
-                        <tr>
-                            <th>RIESGO BIOLOGICO</th>
-                            <td>${{ project.risk_b }}</td>
-                        </tr>
-                        <tr>
-                            <th>DESCUENTO CONTABILIDAD</th>
-                            <td>${{ project.discount }}</td>
-                        </tr>
-                        <tr>
-                            <th>SEGURO</th>
-                            <td>${{ project.secure }}</td>
-                        </tr>
-                        <tr>
-                            <th>COMISION</th>
-                            <td>${{ project.commission }}</td>
-                        </tr>
-                        <tr>
-                            <th>IMPREVISTOS</th>
-                            <td>${{ project.unforeseen }}</td>
-                        </tr>
-                        <tr>
-                            <th>DESCUENTO NEGOCIABLE</th>
-                            <td>${{ project.discount_opc }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <!-- PROJECT PRICE -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab"
+                                 id="heading_project_price">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#accordion"
+                                       href="#project_price"
+                                       aria-expanded="false"
+                                       aria-controls="project_external_service">
+                                        <i class="fa fa-money"></i> LIQUIDACIÓN
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="project_price"
+                                 class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="heading_project_price">
+                                <div class="panel-body">
+                                    <table class="chasas_table_border">
+                                        <tbody>
+                                        <tr>
+                                            <td>MATERIALES</td>
+                                            <td>${{ project.materials }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>COSTOS PERSONAL</td>
+                                            <td>${{ project.personal }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>COSTOS MAQUINARIA E INSUMOS</td>
+                                            <td>${{ project.supplies }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SUBTOTAL</td>
+                                            <td>${{ project.sub_total }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>GANANCIA</td>
+                                            <td>${{ project.gain }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>TOTAL PARCIAL</td>
+                                            <td>${{ project.pre_total }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RETENCION</td>
+                                            <td>${{ project.retention }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RIESGO BIOLOGICO</td>
+                                            <td>${{ project.risk_b }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DESCUENTO CONTABILIDAD</td>
+                                            <td>${{ project.discount }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SEGURO</td>
+                                            <td>${{ project.secure }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>COMISION</td>
+                                            <td>${{ project.commission }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IMPREVISTOS</td>
+                                            <td>${{ project.unforeseen }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DESCUENTO NEGOCIABLE</td>
+                                            <td>${{ project.discount_opc }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>TOTAL</th>
+                                            <td>$0</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /PROJECT PRICE -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Project State-->
     <div class="modal fade" id="modalAddState" tabindex="-1" role="dialog"
          aria-labelledby="modalAddStateLabel">
         <div class="modal-dialog" role="document">
@@ -271,7 +419,81 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="pr_pk" value="{{ project.id }}">
+                        <input type="hidden" name="pr_pk"
+                               value="{{ project.id }}">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Cerrar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Prject details -->
+    <div class="modal fade" id="modalEditDetails" tabindex="-1" role="dialog"
+         aria-labelledby="modalEditDetailsLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalEditDetailsLabel">
+                        Editar Proyecto</h4>
+                </div>
+                <form action="{% url 'projects_update_details' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="init_requirements">
+                                    Requerimientos iniciales:
+                                </label>
+                                <textarea class="form-control"
+                                          name="init_requirements"
+                                          id="init_requirements">{{ project.init_requirements }}</textarea>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="final_requirements">
+                                    Requerimientos Finales:
+                                </label>
+                                <textarea class="form-control"
+                                          name="final_requirements"
+                                          id="final_requirements">{{ project.final_requirements }}</textarea>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="init_design">
+                                    Diseño preliminar:
+                                </label>
+                                <input type="file" name="init_design"
+                                       id="init_design" accept="image/*"
+                                       class="form-control">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="end_design">
+                                    Diseño final:
+                                </label>
+                                <input type="file" name="final_design"
+                                       id="final_design" accept="image/*"
+                                       class="form-control">
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="init_date">
+                                    Fecha de inicio: ({{ project.init_date }})
+                                </label>
+                                <input type="date" name="init_date"
+                                       id="init_date"
+                                       class="form-control" value="{{ project.init_date }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="pr_pk"
+                               value="{{ project.id }}">
                         <button type="button" class="btn btn-default"
                                 data-dismiss="modal">Cerrar
                         </button>

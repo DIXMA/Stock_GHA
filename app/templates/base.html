@@ -40,8 +40,10 @@
 
     <link rel="stylesheet"
           href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="{% static 'dist/easyAutocomplete/easy-autocomplete.min.css' %}">
-    <link rel="stylesheet" href="{% static 'dist/easyAutocomplete/easy-autocomplete.themes.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'dist/easyAutocomplete/easy-autocomplete.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'dist/easyAutocomplete/easy-autocomplete.themes.min.css' %}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -53,8 +55,33 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <style>
+        .chasas_table_border {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .chasas_table_border td, chasas_table_border th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .chasas_table_border tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .chasas_table_border th {
+            padding: 8px;
+            text-align: center;
+            background-color: #abafae;
+            color: white;
+            border: 1px solid #dddddd;
+        }
+    </style>
 </head>
-<body class="hold-transition skin-black sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini sidebar-collapse">
 <div class="wrapper">
 
     <header class="main-header">
@@ -93,7 +120,8 @@
                             </li>
                             <li class="user-footer">
                                 <div class="pull-right">
-                                    <form action="{% url 'logout_action' %}" method="post">
+                                    <form action="{% url 'logout_action' %}"
+                                          method="post">
                                         {% csrf_token %}
                                         <button class="btn btn-default btn-flat">
                                             <i class="fa fa-close"></i> Cerrar
@@ -158,7 +186,8 @@
                         </li>
                         <li>
                             <a href="{% url 'stock_operator' %}">
-                                <i class="fa fa-circle-o"></i> Control de Stock (OP)
+                                <i class="fa fa-circle-o"></i> Control de Stock
+                                (OP)
                             </a>
                         </li>
                         <li>

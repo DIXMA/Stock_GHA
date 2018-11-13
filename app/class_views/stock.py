@@ -314,6 +314,38 @@ class ProjectUpdateStateView(View):
         return redirect('projects_details', pr_pk=pr_pk)
 
 
+class ProjectUpdateDetailsView(View):
+
+    def post(self, request, *args, **kwargs):
+        pr_pk = request.POST['pr_pk']
+
+        #try:
+
+        project = Project.objects.get(pk=pr_pk)
+
+        if 'init_date' in request.POST and request.POST['init_date']:
+            project.init_date = request.POST['init_date']
+
+        if 'init_requirements' in request.POST and request.POST['init_requirements']:
+            project.init_requirements = request.POST['init_requirements']
+
+        if 'final_requirements' in request.POST and request.POST['final_requirements']:
+            project.final_requirements = request.POST['final_requirements']
+
+        if 'init_design' in request.FILES and request.FILES['init_design']:
+            project.init_design = request.FILES['init_design']
+
+        if 'final_design' in request.FILES and request.FILES['final_design']:
+            project.final_design = request.FILES['final_design']
+
+        project.save()
+
+        messages.success(request, 'Se han actualizado detalles al proyecto')
+        #except Exception as e:
+        #    messages.error(request, 'No se reconoce la información obtenida, por favor intentelo de nuevo.')
+        return redirect('projects_details', pr_pk=pr_pk)
+
+
 class ProjectManagerView(View):
     template_name = "auth_templates/stock/list_project_manager.html"
 

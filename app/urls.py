@@ -12,7 +12,8 @@ from app.class_views.users_views import UsersListView, UsersCreateView
 from app.class_views.stock import StockView, StockCreateView, RawMaterial, \
     RawMaterialCreateView, StockOperatorView, StrockOperatorUdateView, \
     ProjectsView, ProjectCreateView, ProjectDetailsView, ProjectPersonalCreate, \
-    ProjectExternalServicesVew, ProjectUpdateStateView, ProjectManagerView
+    ProjectExternalServicesVew, ProjectUpdateStateView, ProjectManagerView, \
+    ProjectUpdateDetailsView
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login"),
@@ -50,6 +51,9 @@ urlpatterns = [
     url(r'^projects/update_state/$',
         login_required(ProjectUpdateStateView.as_view()),
         name="projects_update_state"),
+    url(r'^projects/update_details/$',
+        login_required(ProjectUpdateDetailsView.as_view()),
+        name="projects_update_details"),
     # Projects -> Quotations
     url(r'^projects/quotation/$', login_required(QuotationsView.as_view()),
         name="quotations"),

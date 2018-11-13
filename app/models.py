@@ -95,6 +95,7 @@ class Project(models.Model):
     final_requirements = models.TextField(null=True, blank=True)
     final_design = models.ImageField(upload_to="uploads/project/final_design/",
                                      null=True, blank=True)
+    per_discount = models.IntegerField(default=0)
     materials = models.IntegerField(default=0)
     personal = models.IntegerField(default=0)
     supplies = models.IntegerField(default=0)

@@ -168,6 +168,7 @@ class ProjectCreateView(View):
 
     def post(self, request, *args, **kwargs):
         try:
+            code = request.POST['code']
             name_client = request.POST['name_client']
             nit_client = request.POST['nit_client']
             address_client = request.POST['address_client']
@@ -190,9 +191,8 @@ class ProjectCreateView(View):
                 type_product = TypeProductHistory(name=prd_type)
                 type_product.save()
 
-            project = Project(client=client,
-                              description=description,
-                              type_product=type_product)
+            project = Project(client=client, description=description,
+                              type_product=type_product, code=code)
             project.save()
             messages.success(request, 'Se ha creado el projecto correctamente')
         except Exception:
@@ -352,6 +352,9 @@ class ProjectUpdateDetailsView(View):
             if 'final_design' in request.FILES and request.FILES['final_design']:
                 project.final_design = request.FILES['final_design']
 
+            if 'per_discount' in request.POST and request.POST['per_discount']:
+                project.per_discount = request.POST['per_discount']
+
             project.save()
 
             messages.success(request, 'Se han actualizado detalles al proyecto')
@@ -452,4 +455,6 @@ def CalulcateLiquidation(pr_pk, materials, personal, supplies):
     project.secure = secure
     project.commission = commission
     project.unforeseen = unforeseen
+    if project.per_discount:
+        project.discount_opc = (pre_total / 100) * int(project.per_discount)
     project.save()

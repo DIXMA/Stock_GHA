@@ -37,13 +37,13 @@
                             {% if products_quotation %}
                                 {% for pr in products_quotation %}
                                     <input type="hidden"
-                                           id="products_pk_{{ pr.product.id }}"
+                                           id="products_pk_{{ pr.product_name }}"
                                            name="products_pk_"
-                                           value="{{ pr.product.id }}, {{ pr.quantity }}, {{ pr.total }}">
+                                           value="{{ pr.product_name }}, {{ pr.product_price }}, {{ pr.quantity }}, {{ pr.total }}">
                                 {% endfor %}
                             {% endif %}
                             <input type="hidden" name="total_gn" id="total_gn"
-                                       value="{{ total_general }}">
+                                   value="{{ total_general }}">
                         </div>
 
                         <div class="form-group">
@@ -57,7 +57,6 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Referencia</th>
                                     <th>Valor Uni</th>
                                     <th>Cantidad</th>
@@ -68,14 +67,14 @@
                                 <tbody id="products">
                                 {% if products_quotation %}
                                     {% for pr in products_quotation %}
-                                        <tr id="tr_{{ pr.product.id }}">
-                                            <td>{{ pr.product.id }}</td>
-                                            <td>{{ pr.product.reference }}</td>
-                                            <td>${{ pr.product.price_lm }}</td>
+                                        <tr id="tr_{{ pr.product_name }}">
+                                            <td>{{ pr.product_name }}</td>
+                                            <td>${{ pr.product_price }}</td>
                                             <td>{{ pr.quantity }}</td>
-                                            <td>{${ pr.total }}</td>
+                                            <td>${{ pr.total }}</td>
                                             <td>
-                                                <button onclick="rmElm('{{ pr.product.id }}')">
+                                                <button type="button"
+                                                        onclick="rmElm('{{ pr.product_name }}')">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </td>
@@ -84,15 +83,18 @@
                                 {% endif %}
                                 </tbody>
                             </table>
-                            <span><b>Total: </b> <b id="total">
-                                ${{ total_general }}
-                            </b></span>
+                            <span><b>Total: </b>
+                                $<b id="total">{{ total_general | default_if_none:"0" }}</b>
+                            </span>
                         </div>
                         <div class="form-group" id="footer_products">
                             <button type="submit"
                                     class="btn btn-primary pull-right">
                                 Enviar
                             </button>
+                            <a href="{% url 'projects_details' pr_pk=project.id %}" class="btn btn-default pull-right">
+                                Volver
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -114,23 +116,23 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
                             <label>Producto</label>
-                            <!--select class="form-control" id="produt_select">
-                                <option value="">- Seleccione un producto -
-                                </option>
-                                {% for pr in products %}
-                                    <option value="{{ pr.id }}/{{ pr.reference }}/{{ pr.price_lm }}">
-                                        {{ pr.reference }}
-                                    </option>
-                                {% endfor %}
-                            </select-->
+                            <input type="text" class="form-control"
+                                   name="produt_select" id="produt_select"
+                                   required>
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
+                            <label>Valor unitario</label>
+                            <input type="number" class="form-control" min="0"
+                                   name="unit_price" id="unit_price" value="0"
+                                   required>
+                        </div>
+                        <div class="form-group col-sm-4">
                             <label>Cantidad</label>
                             <input type="number" id="quantity"
                                    class="form-control"
-                                   min="0">
+                                   min="0" value="0" required>
                         </div>
                     </div>
                 </div>
@@ -149,27 +151,31 @@
 
     <script>
         function addProduct() {
-            var pr = String($("#produt_select").val()).split("/");
+            var rf_pr = $("#produt_select").val();
+            var pic_pr = $("#unit_price").val();
             var quantity = $("#quantity").val();
-            var total = pr[2] * quantity;
-            var tr = "<tr id='tr_" + pr[0] + "'>";
-            tr += "<td>" + pr[0] + "</td>";
-            tr += "<td>" + pr[1] + "</td>";
-            tr += "<td>" + pr[2] + "</td>";
+            var total = parseFloat(pic_pr) * parseFloat(quantity);
+            var tr = "<tr id='tr_" + rf_pr + "'>";
+            tr += "<td>" + rf_pr + "</td>";
+            tr += "<td>$" + pic_pr + "</td>";
             tr += "<td>" + quantity + "</td>";
-            tr += "<td>" + total + "</td>";
-            tr += "<td><button onclick='rmElm(" + pr[0] + ")'><i class='fa fa-trash'></i></button></td>";
+            tr += "<td>$" + total + "</td>";
+            tr += "<td><button type='button' onclick='rmElm(\"" + rf_pr + "\")'><i class='fa fa-trash'></i></button></td>";
             tr += "</tr>";
             var total_g = parseFloat($("#total").html());
             var tot = total_g + parseFloat(total);
             $("#total_gn").val(tot);
             $("#total").html(tot);
             $("#products").append(tr);
-            $("#footer_products").append('<input type="hidden" id="products_pk_' + pr[0] + '" name="products_pk_" value="' + pr[0] + ', '+ quantity +', '+ total +'">');
+            $("#footer_products").append('<input type="hidden" id="products_pk_' + rf_pr + '" name="products_pk_" value="' + rf_pr + ', ' + pic_pr + ', ' + quantity + ', ' + total + '">');
 
+            $("#produt_select").val('');
+            $("#unit_price").val(0);
+            $("#quantity").val(0);
         }
 
         function rmElm(pk) {
+            console.log(pk);
             var elm = document.getElementById("tr_" + pk);
             var elm2 = document.getElementById("products_pk_" + pk);
             var total = parseFloat($("#total_gn").val());

@@ -159,16 +159,16 @@
                                             <tbody>
                                             {% for prq in products_quotation %}
                                                 <tr>
-                                                    <td>{{ prq.product.reference }}</td>
+                                                    <td>{{ prq.product_name }}</td>
                                                     <td>
-                                                        ${{ prq.product.price_lm }}</td>
+                                                        ${{ prq.product_price }}</td>
                                                     <td>{{ prq.quantity }}</td>
                                                     <td>${{ prq.total }}</td>
                                                 </tr>
                                             {% endfor %}
                                             <tr>
                                                 <th>TOTAL</th>
-                                                <td>${{ quotation.price }}</td>
+                                                <td>${{ project.materials }}</td>
                                             </tr>
                                             </tbody>
                                         </table>

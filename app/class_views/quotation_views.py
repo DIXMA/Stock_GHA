@@ -41,20 +41,21 @@ class QuotationsCreateView(View):
         pr_pk = request.POST['pr_pk']
         qt_pk = request.POST['qt_pk']
         if products:
+            project = Project.objects.get(pk=pr_pk)
             if qt_pk:
                 quotation = Quotation.objects.get(pk=qt_pk)
             else:
-                project = Project.objects.get(pk=pr_pk)
                 quotation = Quotation(project=project, price=total)
                 quotation.save()
             for pr in products:
                 prd = pr.split(",")
-                prod = Product.objects.get(pk=prd[0])
-                prod_search = ProductsQuotation.objects.filter(
-                    product__id=prod.id).count()
-                if prod_search == 0:
-                    prd_q = ProductsQuotation(product=prod, quotation=quotation,
-                                              quantity=prd[1], total=prd[2])
+                prd_search = ProductsQuotation.objects.filter(
+                    product_name=prd[0], quotation__project=pr_pk).count()
+                if prd_search == 0:
+                    prd_q = ProductsQuotation(product_name=prd[0],
+                                              product_price=prd[1],
+                                              quotation=quotation,
+                                              quantity=prd[2], total=prd[3])
                     prd_q.save()
             project.materials = total
             project.save()

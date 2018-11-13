@@ -365,29 +365,29 @@ class ProjectManagerView(View):
 
     def get(self, request, pr_pk, *args, **kwargs):
         project = Project.objects.get(pk=pr_pk)
-        prj_manager = ProjectManagerMan.objects.filter(project=project).all()
-        return render(request, self.template_name, {'prj_manager': prj_manager,
-                                                    'project': project})
+        prj_manager_man = ProjectManagerMan.objects.filter(project=project).all()
+        prj_manager_machine = ProjectManagerMachine.objects.filter(project=project).all()
+        return render(request, self.template_name,
+                      {'prj_manager_man': prj_manager_man,
+                       'prj_manager_machine': prj_manager_machine,
+                       'project': project})
 
     def post(self, request, *args, **kwargs):
         project_pk = request.POST['pr_pk']
-        date_man = request.POST['date_prc']
-        process_man = request.POST['process_select']
         type_register = request.POST['type_register']
         if type_register == 'prs':
             # MAN
-            init_hour_man = request.POST['hman_init']
-            end_hour_man = request.POST['hman_end']
-            total_hour_man = request.POST['hman_tot']
-            type_employee_man = request.POST['type_employee']
-            price_real_man = request.POST['price_mo']
+            init_hour_man = request.POST['hman_init'].split(":")
+            end_hour_man = request.POST['hman_end'].split(":")
+            type_employee_man = request.POST['type_employee'].split(",")
+            total_hour_man = int(end_hour_man[0]) - int(init_hour_man[0])
             prj_manager = ProjectManagerMan(
-                project_id=project_pk, date_man=date_man,
-                process_man=process_man,
-                init_hour_man=init_hour_man, end_hour_man=end_hour_man,
+                project_id=project_pk, date_man=request.POST['date_prc'],
+                process_man=request.POST['process_select'],
+                init_hour_man=request.POST['hman_init'], end_hour_man=request.POST['hman_end'],
                 total_hour_man=total_hour_man,
-                type_employee_man=type_employee_man,
-                price_real_man=price_real_man
+                type_employee_man=type_employee_man[0],
+                price_real_man=int(type_employee_man[1]) * int(total_hour_man)
             )
             prj_manager.save()
             messages.success(request,
@@ -395,19 +395,32 @@ class ProjectManagerView(View):
                              "al proyecto.")
         elif type_register == 'mach':
             # MACHINE
-            init_hour_machine = request.POST['hmaq_init']
-            end_hour_machine = request.POST['hmaq_end']
-            total_hour_machine = request.POST['hmaq_tot']
-            price_machine = request.POST['price_mqh']
-            price_real_machine = request.POST['price_ma']
-            resources_machine = request.POST['resources']
-            prj_manager = ProjectManagerMachine(
-                init_hour_machine=init_hour_machine,
-                end_hour_machine=end_hour_machine,
-                price_machine=price_machine,
-                total_hour_machine=total_hour_machine,
-                price_real_machine=price_real_machine,
-                resources_machine=resources_machine)
+            date_mach = request.POST['date_mach']
+            process_select = request.POST['process_select']
+            type_machine = request.POST['type_machine']
+            morning_init_time = request.POST['morning_init_time']
+            morning_end_time = request.POST['morning_end_time']
+            morning_stop_time = request.POST['morning_stop_time']
+            evening_init_time = request.POST['evening_init_time']
+            evening_end_time = request.POST['evening_end_time']
+            evening_stop_time = request.POST['evening_stop_time']
+            total_works_our = request.POST['total_works_our']
+            total_real_works_our = request.POST['total_real_works_our']
+            total_stop_time = int(morning_stop_time) + int(evening_stop_time)
+
+            prj_manager = ProjectManagerMachine(date_mach=date_mach,
+                                                project_id=project_pk,
+                                                process_select=process_select,
+                                                type_machine=type_machine,
+                                                morning_init_time=morning_init_time,
+                                                morning_end_time=morning_end_time,
+                                                morning_stop_time=morning_stop_time,
+                                                evening_init_time=evening_init_time,
+                                                evening_end_time=evening_end_time,
+                                                evening_stop_time=evening_stop_time,
+                                                total_works_our=total_works_our,
+                                                total_real_works_our=total_real_works_our,
+                                                total_stop_time=total_stop_time)
             prj_manager.save()
             messages.success(request,
                              "Se ha agregado el registro de seguimiento "

@@ -34,25 +34,25 @@ class Product(models.Model):
     acabado = models.CharField(max_length=30)
     # zones
     zone_a_caliber = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                         decimal_places=2)
     zone_a_large = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                       decimal_places=2)
     zone_b_caliber = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                         decimal_places=2)
     zone_b_large = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                       decimal_places=2)
     zone_c_caliber = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                         decimal_places=2)
     zone_c_large = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                       decimal_places=2)
     zone_d_caliber = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                         decimal_places=2)
     zone_d_large = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                       decimal_places=2)
     zone_scrap_caliber = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                             decimal_places=2)
     zone_scrap_large = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2)
+                                           decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -61,11 +61,11 @@ class StockProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     in_stock = models.DateField(null=True, blank=True)
     caliber_stock = models.DecimalField(default=0.0, max_digits=100,
-                                      decimal_places=2, null=True, blank=True)
+                                        decimal_places=2, null=True, blank=True)
     large_stock = models.DecimalField(default=0.0, max_digits=100,
-                                    decimal_places=2, null=True, blank=True)
+                                      decimal_places=2, null=True, blank=True)
     anch_stock = models.DecimalField(default=0.0, max_digits=100,
-                                   decimal_places=2, null=True, blank=True)
+                                     decimal_places=2, null=True, blank=True)
     state = models.CharField(max_length=30, default='Utilizado')
     area = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -81,6 +81,7 @@ class TypeProductHistory(models.Model):
 class Project(models.Model):
     STATE_CHOICES = ((0, 'Nnuevo'), (1, 'Iniciado'), (2, 'Finalizado'),
                      (3, 'Cancelado'))
+    code = models.CharField(max_length=100, default='--', null=True, blank=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     init_date = models.DateField(null=True, blank=True)
     type_product = models.ForeignKey(TypeProductHistory,
@@ -170,14 +171,19 @@ class ProjectManagerMan(models.Model):
 class ProjectManagerMachine(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # Machine
-    date_machine = models.DateField(blank=True, null=True)
-    process_machine = models.CharField(max_length=100, blank=True, null=True)
-    init_hour_machine = models.CharField(max_length=100, blank=True, null=True)
-    end_hour_machine = models.CharField(max_length=100, blank=True, null=True)
-    total_hour_machine = models.CharField(max_length=100, blank=True, null=True)
-    price_machine = models.IntegerField(blank=True, null=True)
-    price_real_machine = models.IntegerField(blank=True, null=True)
-    resources_machine = models.IntegerField(blank=True, null=True)
+    date_mach = models.DateField(blank=True, null=True)
+    process_select = models.CharField(max_length=100, blank=True, null=True)
+    type_machine = models.CharField(max_length=100, blank=True, null=True)
+    morning_init_time = models.CharField(max_length=100, blank=True, null=True)
+    morning_end_time = models.CharField(max_length=100, blank=True, null=True)
+    morning_stop_time = models.CharField(max_length=100, blank=True, null=True)
+    evening_init_time = models.CharField(max_length=100, blank=True, null=True)
+    evening_end_time = models.CharField(max_length=100, blank=True, null=True)
+    evening_stop_time = models.CharField(max_length=100, blank=True, null=True)
+    total_stop_time = models.CharField(max_length=100, blank=True, null=True)
+    total_works_our = models.CharField(max_length=100, blank=True, null=True)
+    total_real_works_our = models.CharField(max_length=100, blank=True,
+                                            null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 

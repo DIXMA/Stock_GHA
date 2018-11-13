@@ -11,67 +11,160 @@
                         <a href="{% url 'projects_details' pr_pk=project.id %}"
                            class="btn btn-default">Volver</a>
                         <button class="btn btn-default" data-toggle="modal"
-                                data-target="#modalAddProjectManager">
-                            <i class="fa fa-cube"></i> Seguimiento
+                                data-target="#modalAddProjectManagerPrs">
+                            <i class="fa fa-odnoklassniki"></i> Seguimiento
+                            Personal
+                        </button>
+                        <button class="btn btn-default" data-toggle="modal"
+                                data-target="#modalAddProjectManagerMach">
+                            <i class="fa fa-industry"></i> Seguimiento Maquina
                         </button>
                     </div>
                 </div>
                 <div class="box-body">
-                    {% if prj_manager %}
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th colspan="13">GESTION DEL PROYECTO</th>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">Fecha</th>
-                                <th rowspan="2">Proceso</th>
-                                <th colspan="5">Hora-Hombre</th>
-                                <th colspan="5">Hora-Maquina</th>
-                                <th rowspan="2">Recursos</th>
-                            </tr>
-                            <tr>
-                                <th>Inicio</th>
-                                <th>Final</th>
-                                <th>Total Horas</th>
-                                <th>Tipo de empleado</th>
-                                <th>Costo Real MO</th>
-                                <th>Inicio</th>
-                                <th>Final</th>
-                                <th>Costo Horas</th>
-                                <th>Tipo de Maquina</th>
-                                <th>Costo Real MA</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for prm in prj_manager %}
-                                <tr>
-                                    <td>{{ prm.date_man }}</td>
-                                    <td>{{ prm.process_man }}</td>
-                                    <td>{{ prm.init_hour_man }}</td>
-                                    <td>{{ prm.end_hour_man }}</td>
-                                    <td>{{ prm.total_hour_man }}</td>
-                                    <td>{{ prm.type_employee_man }}</td>
-                                    <td>{{ prm.price_real_man }}</td>
-                                    <td>{{ prm.init_hour_machine }}</td>
-                                    <td>{{ prm.end_hour_machine }}</td>
-                                    <td>{{ prm.total_hour_machine }}</td>
-                                    <td>{{ prm.price_machine }}</td>
-                                    <td>{{ prm.price_real_machine }}</td>
-                                    <td>{{ prm.resources_machine }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <span class="label label-warning">
-                            No hay registros de seguimiento para el proyecto
-                        </span>
-                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {% if prj_manager_man %}
+                                <table class="chasas_table_border">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="8">PERSONAL</th>
+                                    </tr>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>FECHA</th>
+                                        <th>PROCESO</th>
+                                        <th>INICIO</th>
+                                        <th>FIN</th>
+                                        <th>TOTAL HORAS</th>
+                                        <th>TIPO EMPLEADO</th>
+                                        <th>COSTO REAL MO</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for mman in prj_manager_man %}
+                                        <tr>
+                                            <td>{{ mman.id }}</td>
+                                            <td>{{ mman.date_man }}</td>
+                                            <td>{{ mman.process_man }}</td>
+                                            <td>{{ mman.init_hour_man }}</td>
+                                            <td>{{ mman.end_hour_man }}</td>
+                                            <td>{{ mman.total_hour_man }}</td>
+                                            <td>{{ mman.type_employee_man }}</td>
+                                            <td>${{ mman.price_real_man }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                No hay registro de seguimiento al personal en el
+                                proyecto.
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-6">
+                            {% if prj_manager_machine %}
+                                <table class="chasas_table_border">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="12">MAQUINARIA</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2">ID</th>
+                                        <th rowspan="2">FECHA</th>
+                                        <th rowspan="2">MAQUINA</th>
+                                        <th colspan="2">MAÑANA</th>
+                                        <th rowspan="2">TIEMPO PAUSA</th>
+                                        <th colspan="2">TARDE</th>
+                                        <th rowspan="2">TIEMPO PAUSA</th>
+                                        <th rowspan="2">TOTAL PAUSAS</th>
+                                        <th rowspan="2">TOTAL HORAS TRABAJADAS</th>
+                                        <th rowspan="2">TOTAL REAL HORAS TRABAJADAS</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Inicio</th>
+                                        <th>Fin</th>
+                                        <th>Inicio</th>
+                                        <th>Fin</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for hm in prj_manager_machine %}
+                                        <tr>
+                                            <td>{{ hm.id }}</td>
+                                            <td>{{ hm.date_mach }}</td>
+                                            <td>{{ hm.type_machine }}</td>
+                                            <td>{{ hm.morning_init_time }}</td>
+                                            <td>{{ hm.morning_end_time }}</td>
+                                            <td>{{ hm.morning_stop_time }}</td>
+                                            <td>{{ hm.evening_init_time }}</td>
+                                            <td>{{ hm.evening_end_time }}</td>
+                                            <td>{{ hm.evening_stop_time }}</td>
+                                            <td>{{ hm.evening_stop_time }}</td>
+                                            <td>{{ hm.total_works_our }}</td>
+                                            <td>{{ hm.total_real_works_our }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                No hay registro de seguimiento a maquinaria en
+                                el proyecto.
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!--
+    <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="13">PERSONAL</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2">Fecha</th>
+                                        <th rowspan="2">Proceso</th>
+                                        <th colspan="5">Hora-Hombre</th>
+                                        <th colspan="5">Hora-Maquina</th>
+                                        <th rowspan="2">Recursos</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Inicio</th>
+                                        <th>Final</th>
+                                        <th>Total Horas</th>
+                                        <th>Tipo de empleado</th>
+                                        <th>Costo Real MO</th>
+                                        <th>Inicio</th>
+                                        <th>Final</th>
+                                        <th>Costo Horas</th>
+                                        <th>Tipo de Maquina</th>
+                                        <th>Costo Real MA</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for prm in prj_manager %}
+                                        <tr>
+                                            <td>{{ prm.date_man }}</td>
+                                            <td>{{ prm.process_man }}</td>
+                                            <td>{{ prm.init_hour_man }}</td>
+                                            <td>{{ prm.end_hour_man }}</td>
+                                            <td>{{ prm.total_hour_man }}</td>
+                                            <td>{{ prm.type_employee_man }}</td>
+                                            <td>{{ prm.price_real_man }}</td>
+                                            <td>{{ prm.init_hour_machine }}</td>
+                                            <td>{{ prm.end_hour_machine }}</td>
+                                            <td>{{ prm.total_hour_machine }}</td>
+                                            <td>{{ prm.price_machine }}</td>
+                                            <td>{{ prm.price_real_machine }}</td>
+                                            <td>{{ prm.resources_machine }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+    -->
 
     <!-- Modal MachineHours -->
     <div class="modal fade" id="modalAddProjectManagerMach" tabindex="-1"
@@ -85,7 +178,8 @@
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"
                         id="modalAddProjectManagerMachLabelLabel">
-                        Seguimiento Maquinaria</h4>
+                        <i class="fa fa-industry"></i> Seguimiento Maquinaria
+                    </h4>
                 </div>
                 <form action="{% url 'projects_manager_add_mach' %}"
                       method="post">
@@ -95,7 +189,7 @@
                             <div class="form-group col-sm-6">
                                 <label>Fecha:</label>
                                 <input type="date" class="form-control"
-                                       id="date_prc" name="date_prc" value=""
+                                       id="date_mach" name="date_mach" value=""
                                        title="Fecha" required>
                             </div>
                             <div class="form-group col-sm-6">
@@ -214,39 +308,67 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-12">
-                                <h3>HORA-MAQUINA</h3>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label>Inicio</label>
-                                <input type="time" class="form-control"
-                                       id="hmaq_init" name="hmaq_init" required>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label>Final</label>
-                                <input type="time" class="form-control"
-                                       id="hmaq_end" name="hmaq_end" required>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label>Total Horas</label>
+                                <label>Maquina</label>
                                 <input type="text" class="form-control"
-                                       id="hmaq_tot" name="hmaq_tot" required>
+                                       id="type_machine" name="type_machine"
+                                       required>
                             </div>
-                            <div class="form-group col-sm-6">
-                                <label>Costo Hora</label>
-                                <input type="number" class="form-control"
-                                       name="price_mqh" id="price_mqh" required>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label>Costo Real MA</label>
-                                <input type="number" class="form-control"
-                                       name="price_ma" id="price_ma" required>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-sm-12">
-                                <label>Recursos</label>
+                                <h4>Mañana</h4>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Hora inicio:</label>
+                                <input type="time" class="form-control"
+                                       id="morning_init_time"
+                                       name="morning_init_time" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Hora final:</label>
+                                <input type="time" class="form-control"
+                                       id="morning_end_time"
+                                       name="morning_end_time" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Tiempo de pausas</label>
                                 <input type="number" class="form-control"
-                                       name="resources" id="resources" required>
+                                       id="morning_stop_time"
+                                       name="morning_stop_time" required>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <h4>Tarde</h4>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Hora inicio:</label>
+                                <input type="time" class="form-control"
+                                       id="evening_init_time"
+                                       name="evening_init_time" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Hora final:</label>
+                                <input type="time" class="form-control"
+                                       id="evening_end_time"
+                                       name="evening_end_time" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Tiempo de pausas</label>
+                                <input type="number" class="form-control"
+                                       id="evening_stop_time"
+                                       name="evening_stop_time" required>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <h4>Totales</h4>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Total horas trabajadas</label>
+                                <input type="number" class="form-control"
+                                       id="total_works_our"
+                                       name="total_works_our" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Total horas reales trabajadas</label>
+                                <input type="number" class="form-control"
+                                       id="total_real_works_our"
+                                       name="total_real_works_our" required>
                             </div>
                         </div>
                     </div>
@@ -279,7 +401,8 @@
                             aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="modalAddProjectManagerPrsLabel">
-                        Sguimiento a Personal</h4>
+                        <i class="fa fa-odnoklassniki"></i> Sguimiento a
+                        Personal</h4>
                 </div>
                 <form action="{% url 'projects_manager_add_prs' %}"
                       method="post">
@@ -407,44 +530,29 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-sm-12">
-                                <h3>HORA-HOMBRE</h3>
-                            </div>
-                            <div class="form-group col-sm-4">
+                            <div class="form-group col-sm-6">
                                 <label>Inicio</label>
                                 <input type="time" class="form-control"
                                        id="hman_init" name="hman_init" required>
                             </div>
-                            <div class="form-group col-sm-4">
+                            <div class="form-group col-sm-6">
                                 <label>Final</label>
                                 <input type="time" class="form-control"
                                        id="hman_end" name="hman_end" required>
                             </div>
-                            <div class="form-group col-sm-4">
-                                <label>Total Horas</label>
-                                <input type="text" class="form-control"
-                                       id="hman_tot" name="hman_tot" required>
-                            </div>
-                            <div class="form-group col-sm-6">
+                            <div class="form-group col-sm-12">
                                 <label>Tipo Empleado</label>
                                 <select class="form-control"
                                         name="type_employee" id="type_employee"
                                         required>
-                                    <option value="Ayudante">
-                                        Ayudante
+                                    <option value="Ayudante, 4167">Ayudante
                                     </option>
-                                    <option value="Tecnico">
-                                        Tecnico
+                                    <option value="Tecnico, 6250">Tecnico
                                     </option>
-                                    <option value="Especialista">
+                                    <option value="Especialista, 8333">
                                         Especialista
                                     </option>
                                 </select>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label>Costo Real MO</label>
-                                <input type="number" class="form-control"
-                                       name="price_mo" id="price_mo" required>
                             </div>
                         </div>
                         <div class="modal-footer">

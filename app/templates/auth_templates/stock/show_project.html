@@ -57,8 +57,7 @@
                                                 <th>Nit</th>
                                                 <th>Fecha Inicio</th>
                                                 <th>Proyecto</th>
-                                                <th>Producto</th>
-                                                <th>Inicio</th>
+                                                <th>Tipo Producto</th>
                                                 <th>Codigo</th>
                                             </tr>
                                             <tr>
@@ -67,7 +66,6 @@
                                                 <td>{{ project.init_date | default_if_none:"--" }}</td>
                                                 <td>{{ project.id | default_if_none:"--" }}</td>
                                                 <td>{{ project.type_product.name | default_if_none:"--" }}</td>
-                                                <td>{{ project.init_date | default_if_none:"--" }}</td>
                                                 <td>{{ project.code | default_if_none:"--" }}</td>
                                             </tr>
                                             <tr>
@@ -170,7 +168,7 @@
                                             {% endfor %}
                                             <tr>
                                                 <th>TOTAL</th>
-                                                <td>${{ project.materials }}</td>
+                                                <td colspan="3">${{ project.materials }}</td>
                                             </tr>
                                             </tbody>
                                         </table>

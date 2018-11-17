@@ -30,9 +30,9 @@
                             </thead>
                             <tbody>
                             {% for p in projects %}
-                                {% if p.state == 1 %}
+                                {% if p.state == 2 %}
                                     <tr style="background-color: #9bf39b;">
-                                        {% elif p.state == 2 %}
+                                        {% elif p.state == 3 %}
                                     <tr style="background-color: #f2b5b5;">
                                         {% else %}
                                     <tr>

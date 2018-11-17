@@ -34,7 +34,7 @@ class LogoutAction(View):
 
 
 class HomeView(View):
-    template_name = 'auth_templates/quotations/list.html'
+    template_name = 'auth_templates/stock/list_projects.html'
 
     def get(self, request, *args, **kwargs):
         projects = Project.objects.all()

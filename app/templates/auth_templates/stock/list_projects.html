@@ -16,7 +16,7 @@
                 </div>
                 <div class="box-body">
                     {% if projects %}
-                        <table class="table table-bordered">
+                        <table class="chasas_table_border table-bordered">
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -56,13 +56,21 @@
                             </td>
                             <td>
                                 {% if p.state == 0 %}
-                                    Nuevo
+                                    <span class="label label-primary">
+                                        <i class="fa fa-newspaper-o"></i> Nuevo
+                                    </span>
                                 {% elif p.state == 1 %}
-                                    Iniciado
+                                    <span class="label label-info">
+                                        <i class="fa fa-server"></i> Iniciado
+                                    </span>
                                 {% elif p.state == 2 %}
-                                    Finalizado
+                                    <span class="label label-success">
+                                        <i class="fa fa-check"></i> Finalizado
+                                    </span>
                                 {% elif p.state == 3 %}
-                                    Cancelado
+                                    <span class="label label-danger">
+                                        <i class="fa fa-close"></i> Cancelado
+                                    </span>
                                 {% endif %}
                             </td>
                             <td>

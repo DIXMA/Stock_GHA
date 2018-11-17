@@ -26,7 +26,7 @@
                                         onchange="selectedMaterial()"
                                         data-live-search="true" required>
                                     <option value="">
-                                        - Seleccione una referencia -
+                                        - Seleccione o escriba una referencia -
                                     </option>
                                     {% for m in materials %}
                                         <option value="{{ m.id }}/{{ m.caliber_mp }}/{{ m.large_mp }}/{{ m.anch_mp }}/{{ m.reference }}">
@@ -45,15 +45,18 @@
                         <div class="col-md-12" id="info_p"
                              style="display: none;">
                             <div class="form-group col-md-6">
-                                <label>Largo</label>
+                                <label>Largo (mts)</label>
                                 <input type="number" name="large" id="large"
-                                       step="0.01"
+                                       step="0.01" onkeypress="validateZone()"
+                                       onkeydown="validateZone()"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
-                                <label>Ancho</label>
+                                <label>Ancho (mts)</label>
                                 <input type="number" name="anch_stock"
                                        id="ancho" step="0.01"
+                                       onkeypress="validateZone()"
+                                       onkeydown="validateZone()"
                                        class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
@@ -77,7 +80,11 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <button type="button" onclick="validateZone()"
+                                <!--button type="button" onclick="validateZone()"
+                                        class="btn btn-primary pull-right">
+                                    <i class="fa fa-send"></i> Guardar
+                                </button-->
+                                <button type="submit"
                                         class="btn btn-primary pull-right">
                                     <i class="fa fa-send"></i> Guardar
                                 </button>
@@ -99,6 +106,7 @@
                 $("#large").val(data[2]);
                 $("#ancho").val(data[3]);
                 $("#info_p").removeAttr('style');
+                validateZone();
             } else {
                 $("#info_p").attr('style', 'display: none;');
                 $("#pk").val('');
@@ -113,6 +121,10 @@
             var anch = $("#ancho").val();
             var pro = $("#product").val().split('/')[4];
             var zone = '';
+            if (large == undefined || large == '' || anch == undefined || anch == '') {
+                $("#zone").val('Complete el largo y el ancho...');
+                return;
+            }
             switch (pro) {
                 case 'LA-AI-201':
                     if (large >= 0.45 && anch <= 1.52) {
@@ -123,6 +135,8 @@
                         zone = 'Zona C';
                     } else if (large >= 0.11 && anch <= 0.38) {
                         zone = 'Zona D';
+                    } else {
+                        zone = "Sin rango..";
                     }
                     break;
                 case 'LA-AI-204':
@@ -134,6 +148,8 @@
                         zone = 'Zona C';
                     } else if (large >= 0.15 && anch <= 0.31) {
                         zone = 'Zona D';
+                    } else {
+                        zone = "Sin rango..";
                     }
                     break;
                 case 'LA-AI-301':
@@ -145,6 +161,8 @@
                         zone = 'Zona C';
                     } else if (large >= 0.15 && anch <= 0.38) {
                         zone = 'Zona D';
+                    } else {
+                        zone = "Sin rango..";
                     }
                     break;
                 case 'LA-AI-304':
@@ -156,6 +174,8 @@
                         zone = 'Zona C';
                     } else if (large >= 0.19 && anch <= 0.38) {
                         zone = 'Zona D';
+                    } else {
+                        zone = "Sin rango..";
                     }
                     break;
                 case 'LA-AI-304L':
@@ -167,6 +187,8 @@
                         zone = 'Zona C';
                     } else if (large >= 0.19 && anch <= 0.46) {
                         zone = 'Zona D';
+                    } else {
+                        zone = "Sin rango..";
                     }
                     break;
                 case 'LA-AI-430':
@@ -178,6 +200,8 @@
                         zone = 'Zona C';
                     } else if (large >= 0.19 && anch <= 0.76) {
                         zone = 'Zona D';
+                    } else {
+                        zone = "Sin rango..";
                     }
                     break;
                 default:
@@ -187,7 +211,7 @@
 
             if (zone) {
                 $("#zone").val(zone);
-                $("#operator_stock_update_form").submit();
+                //$("#operator_stock_update_form").submit();
             }
 
         }

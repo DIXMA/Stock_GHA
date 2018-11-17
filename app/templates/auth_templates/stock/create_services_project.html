@@ -9,7 +9,7 @@
                     <h3 class="box-title">Servicios Extra</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-responsive">
+                    <table class="chasas_table_border table-responsive">
                         <thead>
                         <tr>
                             <th>PROYECTO</th>
@@ -50,13 +50,13 @@
                                 data-target="#modalAddExs">
                             <i class="fa fa-plus"></i>
                         </button>
-                        <table class="table table-responsive">
+                        <table class="chasas_table_border table-responsive">
                             <thead>
                             <tr>
-                                <td>Proceso</td>
-                                <td>Valor Unit</td>
-                                <td>Cantidad</td>
-                                <td>Precio Total</td>
+                                <th>Proceso</th>
+                                <th>Valor Unit</th>
+                                <th>Cantidad</th>
+                                <th>Precio Total</th>
                             </tr>
                             </thead>
                             <tbody id="exs_add">
@@ -70,8 +70,8 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <span><b>Total: </b> <b
-                                id="total">${{ total_general }}</b></span>
+                        <h3><b>Total: </b> <b
+                                id="total">${{ total_general }}</b></h3>
                         <div class="form-group" id="footer_products">
                             <button type="submit"
                                     class="btn btn-primary pull-right">
@@ -233,7 +233,7 @@
             tr += "<td>" + tot + "</td>";
             tr += "</tr>";
             $("#total_gn").val(total);
-            $("#total").html(total);
+            $("#total").html('$'+total);
             $("#exs_add").append(tr);
             $("#footer_products").append('<input type="hidden" id="exs_pk_' + process + '" name="exs_pk_" value="' + process + ', ' + price_unit + ', ' + quantity + ',' + tot + '">');
         }

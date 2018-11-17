@@ -9,7 +9,7 @@
                     <h3 class="box-title">Personal</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-responsive">
+                    <table class="chasas_table_border table-responsive">
                         <thead>
                         <tr>
                             <th>PROYECTO</th>
@@ -44,20 +44,22 @@
                             <input type="hidden" name="total_gn" id="total_gn"
                                    value="{{ total_general }}">
                         </div>
+                        <hr>
                         <button type="button"
                                 class="btn btn-primary pull-right"
                                 data-toggle="modal"
                                 data-target="#modalAddPrs">
                             <i class="fa fa-plus"></i>
                         </button>
-                        <table class="table table-responsive">
+
+                        <table class="chasas_table_border">
                             <thead>
                             <tr>
-                                <td>Proceso</td>
-                                <td>Especialidad</td>
-                                <td>Costo Horas</td>
-                                <td>Horas Trabajadas</td>
-                                <td>Total</td>
+                                <th>Proceso</th>
+                                <th>Especialidad</th>
+                                <th>Costo Horas</th>
+                                <th>Horas Trabajadas</th>
+                                <th>Total</th>
                             </tr>
                             </thead>
                             <tbody id="prs_add">
@@ -74,8 +76,8 @@
                             {% endif %}
                             </tbody>
                         </table>
-                        <span><b>Total: </b> <b
-                                id="total">${{ total_general }}</b></span>
+                        <h3><b>Total: </b> <b
+                                id="total">${{ total_general }}</b></h3>
                         <div class="form-group" id="footer_products">
                             <button type="submit"
                                     class="btn btn-primary pull-right">
@@ -152,12 +154,12 @@
             var table = "<tr>";
             table += "<td>" + process + "</td>";
             table += "<td>" + speciality[0] + "</td>";
-            table += "<td>" + speciality[1] + "</td>";
+            table += "<td>$" + speciality[1] + "</td>";
             table += "<td>" + work_hours + "</td>";
-            table += "<td>" + tot + "</td>";
+            table += "<td>$" + tot + "</td>";
             table += "</tr>";
             $("#total_gn").val(total);
-            $("#total").html(total);
+            $("#total").html('$'+total);
             $("#prs_add").append(table);
             $("#footer_products").append('<input type="hidden" id="prs_pk_' + process + '" name="prs_pk_" value="' + process + ', ' + speciality[0] + ', ' + speciality[1] + ',' + work_hours + ', ' + tot + '">');
         }

@@ -11,7 +11,24 @@ class StockView(View):
     template_name = 'auth_templates/stock/list.html'
 
     def get(self, request, *args, **kwargs):
-        stock = Product.objects.all()
+        products = Product.objects.all()
+        stock = list()
+        for prd in products:
+            print(str(prd.id))
+            prd_stk = StockProduct.objects.filter(product_id=prd.id).first()
+            if prd_stk:
+                prd_aux = {
+                    'product': prd,
+                    'stock': prd_stk
+                }
+            else:
+                prd_aux = {
+                    'product': prd,
+                    'stock': ''
+                }
+            stock.append(prd_aux)
+            print(stock)
+
         return render(request, self.template_name, {'stock': stock})
 
 
@@ -61,7 +78,7 @@ class RawMaterial(View):
     template_name = "auth_templates/stock/list_raw_material.html"
 
     def get(self, request, *args, **kwargs):
-        materials = Product.objects.all()
+        materials = Product.objects.filter(status=0).all()
         return render(request, self.template_name,
                       {'materials': materials})
 
@@ -137,6 +154,8 @@ class StrockOperatorUdateView(View):
         state = request.POST['state']
 
         product = Product.objects.get(pk=pk)
+        product.status = 3
+        product.save()
         prod = StockProduct(product=product, in_stock=in_stock,
                             large_stock=large_stock, anch_stock=anch_stock,
                             state=state, area=zone)
@@ -266,10 +285,9 @@ class ProjectPersonalCreate(View):
                                  project.personal, project.supplies)
 
             messages.success(request, "Se ha registrado el personal.")
-            return redirect('project_personal', pr_pk=pr_pk)
-
-        messages.error(request,
-                       "No se puede guardar el personal en el proyecto")
+        else:
+            messages.error(request,
+                           "No se puede guardar el personal en el proyecto")
         return redirect('projects_details', pr_pk=pr_pk)
 
 
@@ -455,6 +473,9 @@ def CalulcateLiquidation(pr_pk, materials, personal, supplies):
     project.secure = secure
     project.commission = commission
     project.unforeseen = unforeseen
+    dic_opc = 0
     if project.per_discount:
-        project.discount_opc = (pre_total / 100) * int(project.per_discount)
+        dic_opc = (pre_total / 100) * int(project.per_discount)
+        project.discount_opc = dic_opc
+    project.total = (pre_total + retention + discount + secure + commission + unforeseen) - dic_opc
     project.save()

@@ -9,48 +9,48 @@
                 </div>
                 <div class="box-body">
                     {% if stock %}
-                        <table class="table table-bordered">
+                        <table class="chasas_table_border table-bordered">
                             <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>REFERENCIA</th>
                                 <th>FECHA ENTRADA MP</th>
                                 <th>CALIBRE (mm)</th>
-                                <th>LARGO (cm)</th>
-                                <th>ANCHO (cm)</th>
+                                <th>LARGO (mts)</th>
+                                <th>ANCHO (mts)</th>
                                 <th>COSTO LAMINA</th>
-                                <th>FECHA ENTRADA INVENTARIO</th>
+                                <th>FECHA ENTRADA ALMACENAMIENTO</th>
                                 <th>CALIBRE (mm)</th>
-                                <th>LARGO (cm)</th>
-                                <th>ANCHO (cm)</th>
+                                <th>LARGO (mts)</th>
+                                <th>ANCHO (mts)</th>
                                 <th>ACABADO</th>
-                                <th>AREA</th>
+                                <th>ZONA</th>
                                 <th>DISPONIBILIDAD</th>
                                 <th>COSTO STOCK</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for pr in stock %}
-                                {% if pr.state == 'Disponible' %}
+                                {% if pr.product.status == 0 %}
                                     <tr style="background-color: #9bf39b;">
                                         {% else %}
                                     <tr style="background-color: #f2b5b5;">
                                 {% endif %}
-                            <th>{{ pr.id }}</th>
-                            <th>{{ pr.reference }}</th>
-                            <th>{{ pr.in_mp }}</th>
-                            <th>{{ pr.caliber_mp }}</th>
-                            <th>{{ pr.large_mp }}</th>
-                            <th>{{ pr.anch_mp }}</th>
-                            <th>{{ pr.price_lm }}</th>
-                            <th>{{ pr.in_inv }}</th>
-                            <th>{{ pr.caliber_inv }}</th>
-                            <th>{{ pr.large_inv }}</th>
-                            <th>{{ pr.anch_inv }}</th>
-                            <th>{{ pr.acabado }}</th>
-                            <th>{{ pr.area }}</th>
-                            <th>{{ pr.state }}</th>
-                            <th>{{ pr.price_stock }}</th>
+                            <td>{{ pr.product.id|default:"--" }}</td>
+                            <td>{{ pr.product.reference|default:"--" }}</td>
+                            <td>{{ pr.product.in_mp|default:"--" }}</td>
+                            <td>{{ pr.product.caliber_mp|default:"--" }}</td>
+                            <td>{{ pr.product.large_mp|default:"--" }}</td>
+                            <td>{{ pr.product.anch_mp|default:"--" }}</td>
+                            <td>${{ pr.product.price_lm|default:"--" }}</td>
+                            <td>{{ pr.stock.in_stock|default:"--" }}</td>
+                            <td>{{ pr.product.caliber_mp|default:"--" }}</td>
+                            <td>{{ pr.stock.large_stock|default:"--" }}</td>
+                            <td>{{ pr.stock.anch_stock|default:"--" }}</td>
+                            <td>{{ pr.product.acabado|default:"--" }}</td>
+                            <td>{{ pr.stock.area|default:"--" }}</td>
+                            <td>{{ pr.stock.state|default:"--" }}</td>
+                            <td>${{ pr.product.price_lm|default:"--" }}</td>
                             </tr>
                             {% endfor %}
                             </tbody>

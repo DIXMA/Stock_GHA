@@ -135,7 +135,7 @@
                                        href="#project_materials"
                                        aria-expanded="false"
                                        aria-controls="project_materials">
-                                        <i class="fa fa-tasks"></i> MATERIALES
+                                        <i class="fa fa-tasks"></i> MATERIALES: <small>(${{ project.materials }})</small>
                                     </a>
                                 </h4>
                             </div>
@@ -198,7 +198,7 @@
                                        aria-expanded="false"
                                        aria-controls="project_personal">
                                         <i class="fa fa-user-secret"></i> MANO
-                                        DE OBRA
+                                        DE OBRA: <small>(${{ project.personal }})</small>
                                     </a>
                                 </h4>
                             </div>
@@ -235,7 +235,7 @@
                                             {% endfor %}
                                             <tr>
                                                 <th>TOTAL</th>
-                                                <td>
+                                                <td colspan="4">
                                                     ${{ project.personal }}</td>
                                             </tr>
                                             </tbody>
@@ -260,7 +260,7 @@
                                        aria-expanded="false"
                                        aria-controls="project_external_service">
                                         <i class="fa fa-random"></i> SERVICIOS
-                                        EXTERNOS
+                                        EXTERNOS: <small>(${{ project.supplies }})</small>
                                     </a>
                                 </h4>
                             </div>
@@ -275,10 +275,10 @@
                                         <table class="chasas_table_border">
                                             <thead>
                                             <tr>
-                                                <td>Proceso</td>
-                                                <td>Valor Unit</td>
-                                                <td>Cantidad</td>
-                                                <td>Precio Total</td>
+                                                <th>Proceso</th>
+                                                <th>Valor Unit</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio Total</th>
                                             </tr>
                                             </thead>
                                             <tbody id="exs_add">
@@ -292,6 +292,10 @@
                                                         ${{ exs.total_price }}</td>
                                                 </tr>
                                             {% endfor %}
+                                            <tr>
+                                                <th>TOTAL</th>
+                                                <td colspan="3">${{ project.supplies }}</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     {% else %}
@@ -315,7 +319,7 @@
                                        href="#project_price"
                                        aria-expanded="false"
                                        aria-controls="project_external_service">
-                                        <i class="fa fa-money"></i> LIQUIDACIÓN
+                                        <i class="fa fa-money"></i> LIQUIDACIÓN: <small>(${{ project.total }})</small>
                                     </a>
                                 </h4>
                             </div>
@@ -379,7 +383,7 @@
                                         </tr>
                                         <tr>
                                             <th>TOTAL</th>
-                                            <td>$0</td>
+                                            <td>${{ project.total }}</td>
                                         </tr>
                                         </tbody>
                                     </table>

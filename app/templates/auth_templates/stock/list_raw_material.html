@@ -15,16 +15,16 @@
                 </div>
                 <div class="box-body">
                     {% if materials %}
-                        <table class="table table-bordered">
+                        <table class="chasas_table_border table-bordered">
                             <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>REFERENCIA</th>
                                 <th>PRECIO</th>
-                                <th>ACABADO</th>
-                                <th>CALIBRE</th>
-                                <th>LARGO</th>
-                                <th>ANCHO</th>
+                                <th>Tipo de ACABADO</th>
+                                <th>CALIBRE (mm)</th>
+                                <th>LARGO (mts)</th>
+                                <th>ANCHO (mts)</th>
                                 <th>FECHA ENTRADA ALMACEN</th>
                             </tr>
                             </thead>
@@ -33,7 +33,7 @@
                                 <tr>
                                     <td>{{ m.id }}</td>
                                     <td>{{ m.reference }}</td>
-                                    <td>{{ m.price_lm }}</td>
+                                    <td>${{ m.price_lm }}</td>
                                     <td>{{ m.acabado }}</td>
                                     <td>{{ m.caliber_mp }}</td>
                                     <td>{{ m.large_mp }}</td>
@@ -45,7 +45,7 @@
                         </table>
                     {% else %}
                         <span class="label label-warning">
-                    No se ha registrado materia prima en el sistema.
+                    No se han registrado stocks en el sistema.
                 </span>
                     {% endif %}
                 </div>

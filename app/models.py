@@ -109,6 +109,7 @@ class Project(models.Model):
     commission = models.IntegerField(default=0)
     unforeseen = models.IntegerField(default=0)
     discount_opc = models.IntegerField(default=0)
+    total = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

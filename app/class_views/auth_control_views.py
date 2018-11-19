@@ -7,6 +7,7 @@ from app.models import Project
 
 
 class LoginView(TemplateView):
+    # template_name = "login.html"
     template_name = "not_aviable.html"
 
 class LoginAction(View):
